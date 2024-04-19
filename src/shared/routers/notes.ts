@@ -103,7 +103,7 @@ export const notesRouter = router({
       const note = await ctx.db.get(input.noteId);
 
       fs.writeFileSync(
-        `${ctx.app.getPath("documents")}/Insculpo/${note._id}-${note.name}`,
+        `${ctx.app.getPath("documents")}/Insculpo/${note._id}-${note.name}.md`,
         note.body,
         {
           encoding: "utf8",
