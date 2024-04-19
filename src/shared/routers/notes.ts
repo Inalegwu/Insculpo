@@ -36,6 +36,7 @@ export const notesRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.content === "") return;
       console.log(input);
       console.log(input.content.split("\n")[0]);
       if (input.noteId === null) {
@@ -65,14 +66,11 @@ export const notesRouter = router({
   findNote: publicProcedure
     .input(z.object({ query: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      console.log(input);
       const results = await ctx.db.find({
         selector: {
-          name: {
-            $gte: input.query,
-          },
-          body: {
-            $gte: input.query,
-          },
+          name: input.query,
+          body: input.query,
         },
         sort: ["name"],
         limit: 5,

@@ -10,6 +10,9 @@
       "style": {
         "noUselessElse": "warn",
         "noNonNullAssertion": "warn"
+      },
+      "a11y": {
+        "noAutofocus": "warn"
       }
     },
     "ignore": ["./kuma.config.ts"]

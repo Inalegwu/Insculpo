@@ -1,4 +1,4 @@
-import { Show, useObservable } from "@legendapp/state/react";
+import { useObservable } from "@legendapp/state/react";
 import {
   CornersOut,
   GearFine,
@@ -16,7 +16,6 @@ import {
   DropdownMenu,
   Flex,
   Text,
-  TextFieldInput,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
@@ -44,10 +43,25 @@ export default function Layout({ children }: LayoutProps) {
       toast.error(e.message);
     },
   });
+  const { mutate: search, data: results } = t.notes.findNote.useMutation({
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
   const passedThres = useObservable(false);
   const finder = useObservable(false);
   const sideBarFocus = useObservable(false);
+  const searchInputFocus = useObservable(false);
+
+  const findNote = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.currentTarget.value.length < 3) return;
+
+      search({ query: e.currentTarget.value });
+    },
+    [search],
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -57,10 +71,17 @@ export default function Layout({ children }: LayoutProps) {
       }
     }, 2000);
 
+    const finderTimeout = setTimeout(() => {
+      if (finder.get() && !searchInputFocus.get()) {
+        finder.set(false);
+      }
+    }, 3000);
+
     return () => {
       clearTimeout(timeout);
+      clearTimeout(finderTimeout);
     };
-  }, [passedThres, sideBarFocus]);
+  }, [passedThres, sideBarFocus, finder, searchInputFocus]);
 
   useWindow("keypress", (e) => {
     if (e.keyCode === 6 && !finder.get()) {
@@ -165,9 +186,9 @@ export default function Layout({ children }: LayoutProps) {
                         onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                       >
                         <Text size="1" className="text-black">
-                          {v.doc?.name.slice(0, 20)}
+                          {v.doc?.name?.slice(0, 20)}
                         </Text>
-                        <Text className="text-[12px] text-gray-300">{`${v.doc?.body.slice(
+                        <Text className="text-[12px] text-gray-300">{`${v.doc?.body?.slice(
                           0,
                           37,
                         )}`}</Text>
@@ -229,26 +250,42 @@ export default function Layout({ children }: LayoutProps) {
         </Flex>
       </motion.div>
       {/* search bar */}
-      <Show if={finder}>
-        <motion.div
-          animate={{
-            opacity: finder.get() ? 1 : 0,
-            scale: finder.get() ? 1 : 0,
-          }}
-          style={{ width: "100%", height: "100%" }}
-          className="absolute z-20"
-          onClick={() => finder.set(false)}
+      <motion.div
+        animate={{
+          opacity: finder.get() ? 1 : 0,
+          scale: finder.get() ? 1 : 0,
+        }}
+        style={{ width: "100%", height: "100%" }}
+        className="absolute z-20"
+        onClick={() => finder.set(false)}
+      >
+        <Flex
+          direction="column"
+          gap="2"
+          width="100%"
+          height="100%"
+          align="center"
+          justify="center"
         >
-          <Flex width="100%" height="100%" align="center" justify="center">
-            <TextFieldInput
-              size="3"
-              width="100%"
-              className="px-2 py-4"
-              placeholder="Find Note..."
-            />
-          </Flex>
-        </motion.div>
-      </Show>
+          <input
+            type="text"
+            className="px-4 text-lg py-4 w-4/6 outline-none rounded-md shadow-lg border-none"
+            placeholder="Find Note..."
+            autoFocus
+            onChange={findNote}
+            onFocus={() => searchInputFocus.set(true)}
+            onBlur={() => searchInputFocus.set(false)}
+          />
+          {results?.length === 0 && <Text>No Results</Text>}
+          {results && (
+            <Flex direction="column" className="w-4/6 bg-white rounded-md">
+              {results.map((v) => (
+                <Text key={v._id}>{v.name}</Text>
+              ))}
+            </Flex>
+          )}
+        </Flex>
+      </motion.div>
       <motion.div
         animate={{ width: passedThres.get() ? "70%" : "100%" }}
         style={{
