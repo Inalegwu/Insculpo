@@ -38,7 +38,7 @@ function Index() {
         to: "/firstlaunch",
       });
     }
-  }, [globalState$]);
+  }, [nav]);
 
   t.notes.getNote.useQuery(
     {
