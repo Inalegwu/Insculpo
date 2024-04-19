@@ -1,16 +1,27 @@
-import { Show, useObservable, useObserveEffect } from "@legendapp/state/react";
+import { Show, useObservable } from "@legendapp/state/react";
 import {
   CornersOut,
   GearFine,
   Minus,
   Plus,
   Sidebar,
+  Sliders,
+  Trash,
   X,
 } from "@phosphor-icons/react";
-import { Box, Button, Flex, Text, TextFieldInput } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  ContextMenu,
+  DropdownMenu,
+  Flex,
+  Text,
+  TextFieldInput,
+} from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useWindow } from "../hooks";
 import { globalState$, noteState } from "../state";
 
@@ -19,28 +30,37 @@ type LayoutProps = {
 };
 
 export default function Layout({ children }: LayoutProps) {
+  const utils = t.useUtils();
   const { mutate: minimize } = t.window.minimize.useMutation();
   const { mutate: maximize } = t.window.maximize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
 
   const { data: notes } = t.notes.getNotes.useQuery();
-
-  console.log(notes);
+  const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
+    onSuccess: () => {
+      utils.notes.invalidate();
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
   const passedThres = useObservable(false);
   const finder = useObservable(false);
+  const sideBarFocus = useObservable(false);
 
-  useObserveEffect(() => {
+  useEffect(() => {
     const timeout = setTimeout(() => {
-      if (finder.get()) {
-        finder.set(false);
+      if (passedThres.get() && !sideBarFocus.get()) {
+        console.log("here...");
+        passedThres.set(false);
       }
     }, 2000);
 
     return () => {
       clearTimeout(timeout);
     };
-  });
+  }, [passedThres, sideBarFocus]);
 
   useWindow("keypress", (e) => {
     if (e.keyCode === 6 && !finder.get()) {
@@ -54,7 +74,6 @@ export default function Layout({ children }: LayoutProps) {
 
       if (threshold >= 0.97 && !passedThres.get()) {
         passedThres.set(true);
-        console.log("passed threshol");
       }
     },
     [passedThres],
@@ -93,6 +112,8 @@ export default function Layout({ children }: LayoutProps) {
             align="end"
             width="100%"
             className="p-2 h-[94%]"
+            onMouseEnter={() => sideBarFocus.set(true)}
+            onMouseLeave={() => sideBarFocus.set(false)}
           >
             {/* window actions */}
             <Flex align="center" className="gap-4" justify="end" width="100%">
@@ -132,23 +153,38 @@ export default function Layout({ children }: LayoutProps) {
             >
               {notes?.map((v) => {
                 return (
-                  <Flex
-                    key={v.doc?._id}
-                    width="100%"
-                    className="px-2 py-1 rounded-md mt-1 mb-1"
-                    direction="column"
-                    align="end"
-                    justify="center"
-                    onClick={() => noteState.activeNoteId.set(v.doc?._id)}
-                  >
-                    <Text size="1" className="text-black">
-                      {v.doc?.name.slice(0, 20)}
-                    </Text>
-                    <Text className="text-[12px] text-gray-300">{`${v.doc?.body.slice(
-                      0,
-                      37,
-                    )}`}</Text>
-                  </Flex>
+                  <ContextMenu.Root>
+                    <ContextMenu.Trigger>
+                      <Flex
+                        key={v.doc?._id}
+                        width="100%"
+                        className="px-2 py-1 rounded-md mt-1 mb-1"
+                        direction="column"
+                        align="end"
+                        justify="center"
+                        onClick={() => noteState.activeNoteId.set(v.doc?._id)}
+                      >
+                        <Text size="1" className="text-black">
+                          {v.doc?.name.slice(0, 20)}
+                        </Text>
+                        <Text className="text-[12px] text-gray-300">{`${v.doc?.body.slice(
+                          0,
+                          37,
+                        )}`}</Text>
+                      </Flex>
+                    </ContextMenu.Trigger>
+                    <ContextMenu.Content size="1">
+                      <ContextMenu.Item
+                        color="red"
+                        onClick={() =>
+                          deleteNote({ noteId: v.doc?._id!, rev: v.doc?._rev! })
+                        }
+                      >
+                        <Trash />
+                        <Text size="1">Delete Note</Text>
+                      </ContextMenu.Item>
+                    </ContextMenu.Content>
+                  </ContextMenu.Root>
                 );
               })}
             </Flex>
@@ -175,6 +211,20 @@ export default function Layout({ children }: LayoutProps) {
             >
               <Plus size={13} className="text-black" />
             </Button>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <Sliders />
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content size="1">
+                <DropdownMenu.Label>Sort By</DropdownMenu.Label>
+                <DropdownMenu.Item>
+                  <Text>Date Created</Text>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <Text>Recently Updated</Text>
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           </Flex>
         </Flex>
       </motion.div>
