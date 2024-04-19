@@ -26,23 +26,33 @@
     "artifactName": "${product_name}-${version}_${platform}_${arch}.${ext}",
     "buildDependenciesFromSource": true,
     "icon": "assets/icon.png",
-    "files": ["out/**/*"],
+    "files": [
+      "out/**/*"
+    ],
     "directories": {
       "output": "release/${version}"
     },
     "mac": {
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
     "linux": {
-      "target": ["AppImage", "deb"]
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -71,7 +81,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.4.1",
+    "@biomejs/biome": "1.7.0",
     "@tanstack/router-devtools": "^1.12.13",
     "@tanstack/router-vite-plugin": "^1.12.8",
     "@types/better-sqlite3": "^7.6.8",

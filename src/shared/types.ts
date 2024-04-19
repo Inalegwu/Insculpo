@@ -4,6 +4,7 @@
 export type GlobalState = {
   colorMode: "dark" | "light";
   settingsVisible: boolean;
+  firstLaunch: boolean;
 };
 
 export type Note = {

@@ -13,6 +13,7 @@ configureObservablePersistence({
 export const globalState$ = observable<GlobalState>({
   colorMode: "dark",
   settingsVisible: false,
+  firstLaunch: true,
 });
 
 persistObservable(globalState$, {

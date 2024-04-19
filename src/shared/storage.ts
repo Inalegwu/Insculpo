@@ -5,7 +5,7 @@ import { Note } from "./types";
 PouchDB.plugin(Find);
 
 // type annotation here reflects everywhere
-// I guess
+// I
 const store = new PouchDB<Note>("insculpo_db", {});
 
 export default store;
