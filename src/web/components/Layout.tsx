@@ -16,6 +16,8 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: maximize } = t.window.maximize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
 
+  const { data: notes } = t.notes.getNotes.useQuery();
+
   const passedThres = useObservable(false);
   const finder = useObservable(false);
 
@@ -24,7 +26,7 @@ export default function Layout({ children }: LayoutProps) {
       if (finder.get()) {
         finder.set(false);
       }
-    }, 1);
+    }, 2000);
 
     return () => {
       clearTimeout(timeout);
@@ -84,6 +86,7 @@ export default function Layout({ children }: LayoutProps) {
             width="100%"
             className="p-2"
           >
+            {/* window actions */}
             <Flex align="center" className="gap-4" justify="end" width="100%">
               <Flex grow="1" id="drag-region" className="p-2" />
               <button
@@ -115,7 +118,11 @@ export default function Layout({ children }: LayoutProps) {
                 <X size={13} className="text-red-500/50" />
               </button>
             </Flex>
+            {notes?.map((v) => {
+              return v.name;
+            })}
           </Flex>
+          {/* bottom bar */}
           <Flex
             width="100%"
             className="py-2 px-3"
@@ -153,6 +160,10 @@ export default function Layout({ children }: LayoutProps) {
           </Flex>
         </motion.div>
       </Show>
+      <div
+        id="drag-region"
+        className="p-4 w-full h-full absolute z-0 top-0 left-0"
+      />
       <motion.div
         animate={{ width: passedThres.get() ? "70%" : "100%" }}
         style={{
@@ -163,7 +174,7 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
         }}
       >
-        <Box className="w-full h-full rounded-md bg-white">{children}</Box>
+        <Box className="w-full h-full rounded-xl bg-white">{children}</Box>
       </motion.div>
     </Flex>
   );

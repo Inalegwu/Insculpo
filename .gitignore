@@ -7,3 +7,4 @@ out
 *.vite.config.*.mjs
 electron.vite.config.*.mjs
 *.gen.ts
+*.db

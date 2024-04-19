@@ -1,5 +1,6 @@
 import { useObservable } from "@legendapp/state/react";
 import { Flex, TextArea } from "@radix-ui/themes";
+import t from "@src/shared/config";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import React, { useCallback } from "react";
 
@@ -8,13 +9,17 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
+  const utils = t.useUtils();
   const text = useObservable("");
+
+  const { mutate: saveNote } = t.notes.saveNote.useMutation();
 
   const handleEditorInput = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       text.set(e.currentTarget.value);
+      saveNote({ content: e.currentTarget.value });
     },
-    [text],
+    [text, saveNote],
   );
 
   return (
