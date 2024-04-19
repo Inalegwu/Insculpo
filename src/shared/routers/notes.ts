@@ -37,8 +37,6 @@ export const notesRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       if (input.content === "") return;
-      console.log(input);
-      console.log(input.content.split("\n")[0]);
       if (input.noteId === null) {
         const finalized = await ctx.db
           .put({

@@ -38,6 +38,7 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
     onSuccess: () => {
       utils.notes.invalidate();
+      noteState.activeNoteId.set(null);
     },
     onError: (e) => {
       toast.error(e.message);
@@ -236,14 +237,14 @@ export default function Layout({ children }: LayoutProps) {
               <DropdownMenu.Trigger>
                 <Sliders />
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content size="1">
+              <DropdownMenu.Content defaultValue="dateCreated" size="1">
                 <DropdownMenu.Label>Sort By</DropdownMenu.Label>
-                <DropdownMenu.Item>
+                <DropdownMenu.CheckboxItem textValue="dateCreated">
                   <Text>Date Created</Text>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item>
+                </DropdownMenu.CheckboxItem>
+                <DropdownMenu.CheckboxItem textValue="dateUpdated">
                   <Text>Recently Updated</Text>
-                </DropdownMenu.Item>
+                </DropdownMenu.CheckboxItem>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </Flex>
