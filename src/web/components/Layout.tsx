@@ -142,12 +142,12 @@ export default function Layout({ children }: LayoutProps) {
                     onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                   >
                     <Text size="1" className="text-black">
-                      {v.doc?.name}
+                      {v.doc?.name.slice(0, 20)}
                     </Text>
                     <Text className="text-[12px] text-gray-300">{`${v.doc?.body.slice(
                       0,
-                      20,
-                    )}...`}</Text>
+                      37,
+                    )}`}</Text>
                   </Flex>
                 );
               })}
