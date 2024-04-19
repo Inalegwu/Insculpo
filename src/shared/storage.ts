@@ -4,8 +4,12 @@ import { Note } from "./types";
 
 PouchDB.plugin(Find);
 
-// type annotation here reflects everywhere
-// I
 const store = new PouchDB<Note>("insculpo_db", {});
+
+store.createIndex({
+  index: {
+    fields: ["name", "body"],
+  },
+});
 
 export default store;

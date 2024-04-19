@@ -62,6 +62,25 @@ export const notesRouter = router({
         ctx.db.put<Note>(v);
       });
     }),
+  findNote: publicProcedure
+    .input(z.object({ query: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const results = await ctx.db.find({
+        selector: {
+          name: {
+            $gte: input.query,
+          },
+          body: {
+            $gte: input.query,
+          },
+        },
+        sort: ["name"],
+        limit: 5,
+        use_index: "name",
+      });
+
+      return results.docs;
+    }),
   deleteNote: publicProcedure
     .input(
       z.object({

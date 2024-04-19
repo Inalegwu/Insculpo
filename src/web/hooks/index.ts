@@ -1,3 +1,4 @@
+import useDebounce from "./useDebounce";
 import useWindow from "./useWindow";
 
-export { useWindow };
+export { useDebounce, useWindow };

@@ -2,9 +2,9 @@ import { useObservable } from "@legendapp/state/react";
 import { Flex, TextArea } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import toast from "react-hot-toast";
-import { globalState$, noteState } from "../state";
+import { noteState } from "../state";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -31,14 +31,6 @@ function Index() {
       });
     },
   });
-
-  useEffect(() => {
-    if (globalState$.firstLaunch) {
-      nav({
-        to: "/firstlaunch",
-      });
-    }
-  }, [nav]);
 
   t.notes.getNote.useQuery(
     {
