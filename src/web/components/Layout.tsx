@@ -19,7 +19,7 @@ import {
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { useWindow } from "../hooks";
 import { globalState$, noteState } from "../state";
@@ -33,6 +33,8 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: minimize } = t.window.minimize.useMutation();
   const { mutate: maximize } = t.window.maximize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: notes } = t.notes.getNotes.useQuery();
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
@@ -87,6 +89,7 @@ export default function Layout({ children }: LayoutProps) {
   useWindow("keypress", (e) => {
     if (e.keyCode === 6 && !finder.get()) {
       finder.set(true);
+      inputRef.current?.focus();
     }
   });
 
@@ -278,7 +281,7 @@ export default function Layout({ children }: LayoutProps) {
             type="text"
             className="px-4 text-lg py-4 w-4/6 outline-none rounded-md shadow-lg border-none"
             placeholder="Find Note..."
-            autoFocus
+            ref={inputRef}
             onChange={findNote}
             onFocus={() => searchInputFocus.set(true)}
             onBlur={() => searchInputFocus.set(false)}
