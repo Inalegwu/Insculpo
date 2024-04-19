@@ -71,7 +71,7 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
           justifyContent: "flex-end",
         }}
-        className="absolute z-0 bg-teal-0 p-2"
+        className="absolute z-20 bg-teal-0 p-2"
       >
         <Flex
           className="h-full w-[30%]"
@@ -160,10 +160,6 @@ export default function Layout({ children }: LayoutProps) {
           </Flex>
         </motion.div>
       </Show>
-      <div
-        id="drag-region"
-        className="p-4 w-full h-full absolute z-0 top-0 left-0"
-      />
       <motion.div
         animate={{ width: passedThres.get() ? "70%" : "100%" }}
         style={{
