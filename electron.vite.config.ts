@@ -11,9 +11,6 @@ export default defineConfig({
       lib: {
         entry: "src/main.ts",
       },
-      rollupOptions: {
-        external: ["better-sqlite3"],
-      },
     },
     resolve: {
       // path aliases
