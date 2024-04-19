@@ -42,3 +42,10 @@ body {
   width: 0;
   background: transparent;
 }
+
+button{
+  appearance:none;
+  border:none;
+  background:none;
+  outline:none;
+}

@@ -34,7 +34,7 @@ export default function Layout({ children }: LayoutProps) {
 
       console.log(threshold);
 
-      if (threshold > 0.8 && !passedThres.get()) {
+      if (threshold >= 0.97 && !passedThres.get()) {
         passedThres.set(true);
         console.log("passed threshol");
       }
@@ -76,19 +76,35 @@ export default function Layout({ children }: LayoutProps) {
             width="100%"
             className="p-2"
           >
-            <Flex align="center" gap="4" justify="end" width="100%">
-              <Button onClick={() => passedThres.set(false)} variant="ghost">
+            <Flex align="center" className="gap-4" justify="end" width="100%">
+              <button
+                className="w-3 h-5 rounded-full flex items-center justify-center"
+                onClick={() => passedThres.set(false)}
+                type="button"
+              >
                 <Sidebar size={13} className="text-black/30" />
-              </Button>
-              <Button variant="ghost" onClick={() => minimize()}>
+              </button>
+              <button
+                className="w-3 h-5 rounded-full flex items-center justify-center"
+                type="button"
+                onClick={() => minimize()}
+              >
                 <Minus size={13} className="text-black/20" />
-              </Button>
-              <Button variant="ghost" onClick={() => maximize()}>
+              </button>
+              <button
+                className="w-3 h-5 rounded-full flex items-center justify-center"
+                type="button"
+                onClick={() => maximize()}
+              >
                 <CornersOut size={13} className="text-black/20" />
-              </Button>
-              <Button variant="ghost" onClick={() => close()}>
+              </button>
+              <button
+                className="w-3 h-5 rounded-full flex items-center justify-center"
+                type="button"
+                onClick={() => close()}
+              >
                 <X size={13} className="text-red-500/50" />
-              </Button>
+              </button>
             </Flex>
           </Flex>
           <Flex
