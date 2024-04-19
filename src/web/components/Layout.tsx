@@ -1,42 +1,42 @@
-import { CornersOut, Minus, X } from "@phosphor-icons/react";
-import { Button, Flex, Text } from "@radix-ui/themes";
-import t from "@src/shared/config";
+import { Show, useObservable } from "@legendapp/state/react";
+import { Box, Flex } from "@radix-ui/themes";
 import React from "react";
+import { useWindow } from "../hooks";
 
 type LayoutProps = {
   children?: React.ReactNode;
 };
 
 export default function Layout({ children }: LayoutProps) {
-  const { data: appVer } = t.version.useQuery();
-  // window controls
-  const { mutate: minimizeWindow } = t.window.minimize.useMutation();
-  const { mutate: maximizeWindow } = t.window.maximize.useMutation();
-  const { mutate: closeWindow } = t.window.closeWindow.useMutation();
+  const finder = useObservable(false);
+
+  useWindow("keypress", (e) => {
+    if (e.keyCode === 6) {
+      finder.set(true);
+    }
+
+    finder.set(false);
+  });
 
   return (
-    <Flex width="100%" direction="column" grow="1" className="transition">
-      <Flex grow="1" px="2" py="2">
-        <Flex direction="column">
-          <Text className="text-xs ">Electrostatic</Text>
-          <Text className="text-xs" color="gray">
-            {appVer}
-          </Text>
+    <Flex
+      width="100%"
+      className="transition w- h-screen bg-slate-100 relative p-2 font-[nunito]"
+    >
+      <Show if={finder}>
+        <Flex
+          className="absolute z-10 w-full h-screen"
+          align="center"
+          direction="column"
+          justify="center"
+        >
+          <input
+            className="border-[0.1px] border-opacity-[0.3] border-gray w-4/6 px-4 py-4 shadow-lg p-2 bg-white rounded-md outline-none"
+            placeholder="Search..."
+          />
         </Flex>
-        <Flex grow="1" id="drag-region" />
-        <Flex align="center" gap="4" justify="end" className="px-2">
-          <Button variant="ghost" onClick={() => minimizeWindow()} color="gray">
-            <Minus />
-          </Button>
-          <Button onClick={() => maximizeWindow()} variant="ghost" color="gray">
-            <CornersOut />
-          </Button>
-          <Button onClick={() => closeWindow()} variant="ghost" color="red">
-            <X />
-          </Button>
-        </Flex>
-      </Flex>
-      {children}
+      </Show>
+      <Box className="w-full rounded-md bg-white">{children}</Box>
     </Flex>
   );
 }

@@ -1,6 +1,6 @@
 {
-  "name": "Electrostatic",
-  "description": "Starter Template for electron apps with trpc , drizzle-orm and sqlite",
+  "name": "Insculpo",
+  "description": "The note taking app focused on simplicity",
   "version": "0.0.1",
   "license": "MIT",
   "repository": {

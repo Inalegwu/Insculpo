@@ -1,7 +1,7 @@
+import { resolve } from "path";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import react from "@vitejs/plugin-react";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
-import { resolve } from "path";
 import UnoCSS from "unocss/vite";
 
 export default defineConfig({
@@ -12,8 +12,6 @@ export default defineConfig({
         entry: "src/main.ts",
       },
       rollupOptions: {
-        // externalize better-sqlite3 since it uses
-        // a native addon
         external: ["better-sqlite3"],
       },
     },

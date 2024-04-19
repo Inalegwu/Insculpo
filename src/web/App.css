@@ -1,13 +1,26 @@
 @font-face {
-  font-family: Bricolage;
-  src: url("../assets/fonts/bricolage.ttf");
+  font-family: Nunito;
+  src: url("../assets/fonts/Nunito-Italic-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: Nunito;
+  src: url("../assets/fonts/Nunito-VariableFont_wght.ttf");
+}
+
+.radix-themes {
+  --default-font-family: Nunito 
+  --heading-font-family: Nunito 
+  --code-font-family:  Nunito
+  --strong-font-family: Nunito
+  --em-font-family:   Nunito
+  --quote-font-family: Nunito
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Bricolage;
+  font-family: Nunito;
   text-decoration: none;
 }
 
