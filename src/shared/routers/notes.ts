@@ -55,6 +55,7 @@ export const notesRouter = router({
 
       await ctx.db.get<Note>(input.noteId).then((v) => {
         v.body = input.content;
+        v.name = input.content.split("\n")[0];
         ctx.db.put<Note>(v);
       });
     }),
