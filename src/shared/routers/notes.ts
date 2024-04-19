@@ -1,11 +1,12 @@
 import { Note } from "@shared/types";
 import { publicProcedure, router } from "@src/trpc";
+import * as fs from "fs";
 import { v4 } from "uuid";
 import z from "zod";
 
 export const notesRouter = router({
   getNotes: publicProcedure.query(async ({ ctx }) => {
-    const notes = await ctx.db.allDocs<Note>({
+    const notes = await ctx.db.allDocs({
       include_docs: true,
     });
 
@@ -23,7 +24,7 @@ export const notesRouter = router({
       if (input.noteId === null) {
         return null;
       }
-      const note = await ctx.db.get<Note>(input.noteId);
+      const note = await ctx.db.get(input.noteId);
 
       return note;
     }),
@@ -37,7 +38,7 @@ export const notesRouter = router({
     .mutation(async ({ ctx, input }) => {
       if (input.noteId === null) {
         const finalized = await ctx.db
-          .put<Note>({
+          .put({
             _id: v4(),
             body: input.content,
             name: input.content.split("\n")[0],
@@ -72,12 +73,41 @@ export const notesRouter = router({
         _rev: input.rev,
       });
     }),
-  dumpNotes: publicProcedure.mutation(async ({ ctx }) => {}),
+  dumpNotes: publicProcedure.mutation(async ({ ctx }) => {
+    const notes = await ctx.db.allDocs({
+      include_docs: true,
+    });
+
+    for (const note of notes.rows) {
+      if (!note.doc) {
+        continue;
+      }
+      fs.writeFileSync(
+        `${ctx.app.getPath("documents")}/Insculpo/${note.doc._id}-${
+          note.doc.name
+        }`,
+        note.doc.body,
+        {
+          encoding: "utf8",
+        },
+      );
+    }
+  }),
   dumpNote: publicProcedure
     .input(
       z.object({
         noteId: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {}),
+    .mutation(async ({ ctx, input }) => {
+      const note = await ctx.db.get(input.noteId);
+
+      fs.writeFileSync(
+        `${ctx.app.getPath("documents")}/Insculpo/${note._id}-${note.name}`,
+        note.body,
+        {
+          encoding: "utf8",
+        },
+      );
+    }),
 });

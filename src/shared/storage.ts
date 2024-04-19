@@ -1,8 +1,11 @@
 import Find from "pouchdb-find";
 import PouchDB from "pouchdb-node";
+import { Note } from "./types";
 
 PouchDB.plugin(Find);
 
-const store = new PouchDB("insculpo_db", {});
+// type annotation here reflects everywhere
+// I guess
+const store = new PouchDB<Note>("insculpo_db", {});
 
 export default store;

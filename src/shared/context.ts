@@ -1,5 +1,5 @@
 import { inferAsyncReturnType } from "@trpc/server";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, app } from "electron";
 import store from "./storage";
 
 // attach variables and other state you plan on making
@@ -12,6 +12,7 @@ export async function createContext() {
     // exposed under window alias
     window: browserWindow,
     db: store,
+    app,
   };
 }
 
