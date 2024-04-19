@@ -1,42 +1,120 @@
-import { Show, useObservable } from "@legendapp/state/react";
-import { Box, Flex } from "@radix-ui/themes";
-import React from "react";
-import { useWindow } from "../hooks";
+import { useObservable } from "@legendapp/state/react";
+import { CornersOut, GearFine, Minus, Sidebar, X } from "@phosphor-icons/react";
+import { Box, Button, Flex } from "@radix-ui/themes";
+import t from "@src/shared/config";
+import { motion } from "framer-motion";
+import React, { useCallback, useEffect } from "react";
 
 type LayoutProps = {
   children?: React.ReactNode;
 };
 
 export default function Layout({ children }: LayoutProps) {
-  const finder = useObservable(false);
+  const { mutate: minimize } = t.window.minimize.useMutation();
+  const { mutate: maximize } = t.window.maximize.useMutation();
+  const { mutate: close } = t.window.closeWindow.useMutation();
 
-  useWindow("keypress", (e) => {
-    if (e.keyCode === 6) {
-      finder.set(true);
-    }
+  const passedThres = useObservable(false);
 
-    finder.set(false);
-  });
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (passedThres.get()) {
+        passedThres.set(false);
+      }
+    }, 1);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [passedThres]);
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const threshold = e.clientX / window.innerWidth;
+
+      console.log(threshold);
+
+      if (threshold > 0.8 && !passedThres.get()) {
+        passedThres.set(true);
+        console.log("passed threshol");
+      }
+    },
+    [passedThres],
+  );
 
   return (
     <Flex
       width="100%"
-      className="transition w- h-screen bg-slate-100 relative p-2 font-[nunito]"
+      align="center"
+      className="transition w-full h-screen bg-slate-50 relative p-2"
+      onMouseMove={handleMouseMove}
     >
-      <Show if={finder}>
+      <motion.div
+        animate={{
+          opacity: passedThres.get() ? 1 : 0,
+          display: passedThres.get() ? "flex" : "none",
+        }}
+        style={{
+          width: "99%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+        className="absolute z-0 bg-teal-0 p-2"
+      >
         <Flex
-          className="absolute z-10 w-full h-screen"
-          align="center"
+          className="h-full w-[30%]"
           direction="column"
-          justify="center"
+          align="start"
+          justify="between"
         >
-          <input
-            className="border-[0.1px] border-opacity-[0.3] border-gray w-4/6 px-4 py-4 shadow-lg p-2 bg-white rounded-md outline-none"
-            placeholder="Search..."
-          />
+          <Flex
+            grow="1"
+            direction="column"
+            align="end"
+            width="100%"
+            className="p-2"
+          >
+            <Flex align="center" gap="4" justify="end" width="100%">
+              <Button onClick={() => passedThres.set(false)} variant="ghost">
+                <Sidebar size={13} className="text-black/30" />
+              </Button>
+              <Button variant="ghost" onClick={() => minimize()}>
+                <Minus size={13} className="text-black/20" />
+              </Button>
+              <Button variant="ghost" onClick={() => maximize()}>
+                <CornersOut size={13} className="text-black/20" />
+              </Button>
+              <Button variant="ghost" onClick={() => close()}>
+                <X size={13} className="text-red-500/50" />
+              </Button>
+            </Flex>
+          </Flex>
+          <Flex
+            width="100%"
+            className="py-2 px-3"
+            align="center"
+            justify="start"
+          >
+            <Button variant="ghost" className="rounded-full w-3 h-5">
+              <GearFine size={13} className="text-black" />
+            </Button>
+          </Flex>
         </Flex>
-      </Show>
-      <Box className="w-full rounded-md bg-white">{children}</Box>
+      </motion.div>
+      <motion.div
+        animate={{ width: passedThres.get() ? "70%" : "100%" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Box className="w-full h-full rounded-md bg-white">{children}</Box>
+      </motion.div>
     </Flex>
   );
 }

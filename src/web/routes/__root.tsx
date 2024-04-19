@@ -4,6 +4,7 @@ import { Layout } from "../components";
 export const Route = createRootRoute({
   component: () => (
     <Layout>
+      {/* <Settings /> */}
       <Outlet />
     </Layout>
   ),

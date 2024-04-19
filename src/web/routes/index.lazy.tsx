@@ -1,4 +1,5 @@
-import { Flex, Heading } from "@radix-ui/themes";
+import { useObservable } from "@legendapp/state/react";
+import { Flex, TextArea } from "@radix-ui/themes";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
@@ -6,10 +7,16 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
+  const text = useObservable("");
+
   return (
-    <Flex className="w-full h-full p-2">
-      <Heading>Insculpto</Heading>
-      content
+    <Flex className="w-full h-full">
+      <TextArea
+        value={text.get()}
+        onChange={(e) => text.set(e.currentTarget.value)}
+        className="w-full h-full outline-indigo-100"
+      />
+      <Flex className="absolute z-10 bottom-2 rounded-full right-2 px-3 py-3" />
     </Flex>
   );
 }
