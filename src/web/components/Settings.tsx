@@ -1,15 +1,21 @@
 import { X } from "@phosphor-icons/react";
-import { Box, Button, Flex } from "@radix-ui/themes";
+import { Button, Flex, Text } from "@radix-ui/themes";
+import t from "@src/shared/config";
 import { globalState$ } from "../state";
 
 export default function Settings() {
+  const { data } = t.version.useQuery();
+
   return (
     <Flex
       align="center"
       justify="center"
       className="absolute z-40 w-full h-full"
     >
-      <Box className="w-4/6 h-4/6 bg-white shadow-2xl rounded-lg px-2 py-2">
+      <Flex
+        direction="column"
+        className="w-4/6 h-4/6 bg-white shadow-2xl rounded-lg px-2 py-2"
+      >
         <Flex align="center" justify="end" width="100%" className="px-2 py-1">
           <Button
             onClick={() => globalState$.settingsVisible.set(false)}
@@ -21,7 +27,11 @@ export default function Settings() {
             <X size={15} />
           </Button>
         </Flex>
-      </Box>
+        <Flex grow="1">settings content</Flex>
+        <Flex align="center" justify="center">
+          <Text className="text-gray-400 text-[11px]">{data}</Text>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }

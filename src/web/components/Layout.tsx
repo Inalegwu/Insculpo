@@ -1,11 +1,18 @@
 import { Show, useObservable, useObserveEffect } from "@legendapp/state/react";
-import { CornersOut, GearFine, Minus, Sidebar, X } from "@phosphor-icons/react";
+import {
+  CornersOut,
+  GearFine,
+  Minus,
+  Plus,
+  Sidebar,
+  X,
+} from "@phosphor-icons/react";
 import { Box, Button, Flex, Text, TextFieldInput } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
 import React, { useCallback } from "react";
 import { useWindow } from "../hooks";
-import { globalState$ } from "../state";
+import { globalState$, noteState } from "../state";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -119,16 +126,31 @@ export default function Layout({ children }: LayoutProps) {
                 <X size={13} className="text-red-500/50" />
               </button>
             </Flex>
-            <Flex className="h-full w-full p-2 overflow-y-scroll overflow-x-hidden">
+            <Flex
+              direction="column"
+              className="h-full w-full overflow-y-scroll overflow-x-hidden"
+            >
               {notes?.map((v) => {
                 return (
-                  <Box width="100%" className="mt-2 mb-2  bg-red-100">
-                    {/* @ts-ignore something fishy is happening here... */}
-                    <Text size="1">{v.doc?.name}</Text>
-                  </Box>
+                  <Flex
+                    key={v.doc?._id}
+                    width="100%"
+                    className="px-2 py-1 rounded-md mt-1 mb-1"
+                    direction="column"
+                    align="end"
+                    justify="center"
+                    onClick={() => noteState.activeNoteId.set(v.doc?._id)}
+                  >
+                    <Text size="1" className="text-black">
+                      {v.doc?.name}
+                    </Text>
+                    <Text className="text-[12px] text-gray-300">{`${v.doc?.body.slice(
+                      0,
+                      20,
+                    )}...`}</Text>
+                  </Flex>
                 );
               })}
-              <p className="text-[11px]">{JSON.stringify(notes, null, 1)}</p>
             </Flex>
           </Flex>
           {/* bottom bar */}
@@ -137,6 +159,7 @@ export default function Layout({ children }: LayoutProps) {
             className="py-2 px-3"
             align="center"
             justify="start"
+            gap="5"
           >
             <Button
               onClick={() => globalState$.settingsVisible.set(true)}
@@ -144,6 +167,13 @@ export default function Layout({ children }: LayoutProps) {
               className="rounded-full w-3 h-5"
             >
               <GearFine size={13} className="text-black" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="rounded-full w-3 h-5"
+              onClick={() => noteState.activeNoteId.set(null)}
+            >
+              <Plus size={13} className="text-black" />
             </Button>
           </Flex>
         </Flex>

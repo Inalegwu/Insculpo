@@ -1,6 +1,4 @@
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
-import { configureObservablePersistence } from "@legendapp/state/persist";
-import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage";
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import t, { queryClient, trpcClient } from "@shared/config";
@@ -19,10 +17,6 @@ import { Route as rootRoute } from "./routes/__root";
 
 enableReactTracking({
   auto: true,
-});
-
-configureObservablePersistence({
-  pluginLocal: ObservablePersistLocalStorage,
 });
 
 const notFoundRoute = new NotFoundRoute({

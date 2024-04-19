@@ -5,3 +5,8 @@ export type GlobalState = {
   colorMode: "dark" | "light";
   settingsVisible: boolean;
 };
+
+export type Note = {
+  name: string;
+  body: string;
+};
