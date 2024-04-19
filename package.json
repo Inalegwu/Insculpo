@@ -22,23 +22,33 @@
     "artifactName": "${product_name}-${version}_${platform}_${arch}.${ext}",
     "buildDependenciesFromSource": true,
     "icon": "assets/icon.png",
-    "files": ["out/**/*"],
+    "files": [
+      "out/**/*"
+    ],
     "directories": {
       "output": "release/${version}"
     },
     "mac": {
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
     "linux": {
-      "target": ["AppImage", "deb"]
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -58,6 +68,7 @@
     "better-sqlite3": "^9.2.2",
     "drizzle-orm": "^0.29.1",
     "electron-trpc": "^0.5.2",
+    "framer-motion": "^11.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
