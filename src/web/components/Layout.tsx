@@ -1,9 +1,11 @@
-import { useObservable } from "@legendapp/state/react";
+import { Show, useObservable, useObserveEffect } from "@legendapp/state/react";
 import { CornersOut, GearFine, Minus, Sidebar, X } from "@phosphor-icons/react";
-import { Box, Button, Flex } from "@radix-ui/themes";
+import { Box, Button, Flex, TextFieldInput } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
+import { useWindow } from "../hooks";
+import { globalState$ } from "../state";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -15,24 +17,29 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: close } = t.window.closeWindow.useMutation();
 
   const passedThres = useObservable(false);
+  const finder = useObservable(false);
 
-  useEffect(() => {
+  useObserveEffect(() => {
     const timeout = setTimeout(() => {
-      if (passedThres.get()) {
-        passedThres.set(false);
+      if (finder.get()) {
+        finder.set(false);
       }
     }, 1);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [passedThres]);
+  });
+
+  useWindow("keypress", (e) => {
+    if (e.keyCode === 6 && !finder.get()) {
+      finder.set(true);
+    }
+  });
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const threshold = e.clientX / window.innerWidth;
-
-      console.log(threshold);
 
       if (threshold >= 0.97 && !passedThres.get()) {
         passedThres.set(true);
@@ -49,6 +56,7 @@ export default function Layout({ children }: LayoutProps) {
       className="transition w-full h-screen bg-slate-50 relative p-2"
       onMouseMove={handleMouseMove}
     >
+      {/* sidebar */}
       <motion.div
         animate={{
           opacity: passedThres.get() ? 1 : 0,
@@ -77,6 +85,7 @@ export default function Layout({ children }: LayoutProps) {
             className="p-2"
           >
             <Flex align="center" className="gap-4" justify="end" width="100%">
+              <Flex grow="1" id="drag-region" className="p-2" />
               <button
                 className="w-3 h-5 rounded-full flex items-center justify-center"
                 onClick={() => passedThres.set(false)}
@@ -113,12 +122,37 @@ export default function Layout({ children }: LayoutProps) {
             align="center"
             justify="start"
           >
-            <Button variant="ghost" className="rounded-full w-3 h-5">
+            <Button
+              onClick={() => globalState$.settingsVisible.set(true)}
+              variant="ghost"
+              className="rounded-full w-3 h-5"
+            >
               <GearFine size={13} className="text-black" />
             </Button>
           </Flex>
         </Flex>
       </motion.div>
+      {/* search bar */}
+      <Show if={finder}>
+        <motion.div
+          animate={{
+            opacity: finder.get() ? 1 : 0,
+            scale: finder.get() ? 1 : 0,
+          }}
+          style={{ width: "100%", height: "100%" }}
+          className="absolute z-20"
+          onClick={() => finder.set(false)}
+        >
+          <Flex width="100%" height="100%" align="center" justify="center">
+            <TextFieldInput
+              size="3"
+              width="100%"
+              className="px-2 py-4"
+              placeholder="Find Note..."
+            />
+          </Flex>
+        </motion.div>
+      </Show>
       <motion.div
         animate={{ width: passedThres.get() ? "70%" : "100%" }}
         style={{
