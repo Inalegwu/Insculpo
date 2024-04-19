@@ -19,14 +19,6 @@ function Index() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (noteState.activeNoteId.get() === null) {
-      text.set("");
-    }
-
-    if (noteState.activeNoteId.get()) {
-      inputRef.current?.focus();
-    }
-
     const timeout = setTimeout(() => {
       if (toolbar.get()) {
         toolbar.set(false);
@@ -36,7 +28,7 @@ function Index() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [text, toolbar]);
+  }, [toolbar]);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {

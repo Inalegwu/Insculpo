@@ -1,4 +1,3 @@
-import { Note } from "@shared/types";
 import { publicProcedure, router } from "@src/trpc";
 import * as fs from "fs";
 import { v4 } from "uuid";
@@ -45,7 +44,7 @@ export const notesRouter = router({
             name: input.content.split("\n")[0],
           })
           .then(async (v) => {
-            const note = await ctx.db.get<Note>(v.id);
+            const note = await ctx.db.get(v.id);
             return {
               id: note._id,
               body: note.body,
@@ -55,10 +54,10 @@ export const notesRouter = router({
         return finalized;
       }
 
-      await ctx.db.get<Note>(input.noteId).then((v) => {
+      await ctx.db.get(input.noteId).then((v) => {
         v.body = input.content;
         v.name = input.content;
-        ctx.db.put<Note>(v);
+        ctx.db.put(v);
       });
     }),
   findNote: publicProcedure

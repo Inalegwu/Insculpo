@@ -132,13 +132,19 @@ export default function Layout({ children }: LayoutProps) {
           <Flex
             direction="column"
             align="end"
+            justify="start"
             width="100%"
-            className="p-2 h-[94%]"
+            className="h-[94%]"
             onMouseEnter={() => sideBarFocus.set(true)}
             onMouseLeave={() => sideBarFocus.set(false)}
           >
             {/* window actions */}
-            <Flex align="center" className="gap-4" justify="end" width="100%">
+            <Flex
+              align="center"
+              className="gap-4 mb-2"
+              justify="end"
+              width="100%"
+            >
               <Flex grow="1" id="drag-region" className="p-2" />
               <button
                 className="w-3 h-5 rounded-full flex items-center justify-center"
@@ -180,7 +186,7 @@ export default function Layout({ children }: LayoutProps) {
                       <Flex
                         key={v.doc?._id}
                         width="100%"
-                        className="px-2 py-1 rounded-md mt-1 mb-1"
+                        className="px-1 py-2 rounded-md"
                         direction="column"
                         align="end"
                         justify="center"
