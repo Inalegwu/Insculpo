@@ -1,12 +1,8 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import { app } from "electron";
-import * as schema from "./schema/index";
+import Find from "pouchdb-find";
+import PouchDB from "pouchdb-node";
 
-process.env = {
-  STORAGE_LOCATION: `${app.getPath("appData")}/Insculpo/insculpo.db`,
-};
+PouchDB.plugin(Find);
 
-const sqlite = new Database(process.env.STORAGE_LOCATION!);
+const store = new PouchDB("insculpo_db", {});
 
-export const db = drizzle(sqlite, { schema });
+export default store;

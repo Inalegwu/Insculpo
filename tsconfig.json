@@ -15,7 +15,8 @@
       "@components/*": ["src/web/components/*"],
       "@assets/*": ["src/assets/*"],
       "@pages/*": ["src/web/routes/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src", "src/web/kuma.config.ts"],
   "ts-node": {

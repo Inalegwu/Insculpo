@@ -1,6 +1,6 @@
 import { Show, useObservable, useObserveEffect } from "@legendapp/state/react";
 import { CornersOut, GearFine, Minus, Sidebar, X } from "@phosphor-icons/react";
-import { Box, Button, Flex, TextFieldInput } from "@radix-ui/themes";
+import { Box, Button, Flex, Text, TextFieldInput } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
 import React, { useCallback } from "react";
@@ -17,6 +17,8 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: close } = t.window.closeWindow.useMutation();
 
   const { data: notes } = t.notes.getNotes.useQuery();
+
+  console.log(notes);
 
   const passedThres = useObservable(false);
   const finder = useObservable(false);
@@ -71,20 +73,19 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
           justifyContent: "flex-end",
         }}
-        className="absolute z-20 bg-teal-0 p-2"
+        className="absolute z-0 bg-teal-0 p-2"
       >
         <Flex
-          className="h-full w-[30%]"
+          className="h-full w-[30%] overflow-y-hidden"
           direction="column"
           align="start"
           justify="between"
         >
           <Flex
-            grow="1"
             direction="column"
             align="end"
             width="100%"
-            className="p-2"
+            className="p-2 h-[94%]"
           >
             {/* window actions */}
             <Flex align="center" className="gap-4" justify="end" width="100%">
@@ -118,9 +119,17 @@ export default function Layout({ children }: LayoutProps) {
                 <X size={13} className="text-red-500/50" />
               </button>
             </Flex>
-            {notes?.map((v) => {
-              return v.name;
-            })}
+            <Flex className="h-full w-full p-2 overflow-y-scroll overflow-x-hidden">
+              {notes?.map((v) => {
+                return (
+                  <Box width="100%" className="mt-2 mb-2  bg-red-100">
+                    {/* @ts-ignore something fishy is happening here... */}
+                    <Text size="1">{v.doc?.name}</Text>
+                  </Box>
+                );
+              })}
+              <p className="text-[11px]">{JSON.stringify(notes, null, 1)}</p>
+            </Flex>
           </Flex>
           {/* bottom bar */}
           <Flex
