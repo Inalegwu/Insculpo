@@ -44,16 +44,12 @@ function Index() {
 
   const handleEditorInput = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      if (e.currentTarget.value.length < 25) {
-        text.set(e.currentTarget.value);
-      }
       text.set(e.currentTarget.value);
     },
     [text],
   );
 
   const handleBlur = useCallback(() => {
-    console.log("blurring...");
     saveNote({
       content: text.get(),
       noteId: note.activeNoteId,
@@ -70,7 +66,6 @@ function Index() {
         className="w-full h-full outline-indigo-100"
         onBlur={handleBlur}
       />
-      <Flex className="absolute z-10 bottom-2 rounded-full right-2 px-3 py-3" />
     </Flex>
   );
 }
