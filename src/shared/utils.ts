@@ -19,3 +19,7 @@ export function debounce<A = unknown[], R = void>(
 
   return [debouncedFn, tearDown];
 }
+
+export function formatTextForSidebar(text: string) {
+  return text.replace(/[^a-zA-Z0-9' ]/gi, "");
+}

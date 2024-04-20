@@ -2,6 +2,7 @@ import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye } from "@phosphor-icons/react";
 import { Flex, IconButton, TextArea } from "@radix-ui/themes";
 import t from "@shared/config";
+import { useTimeout } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -9,6 +10,9 @@ import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 
@@ -28,17 +32,13 @@ function Index() {
     if (noteState.activeNoteId.get() !== null) {
       inputRef.current?.focus();
     }
+  }, []);
 
-    const timeout = setTimeout(() => {
-      if (toolbar.get()) {
-        toolbar.set(false);
-      }
-    }, 4000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [toolbar]);
+  useTimeout(() => {
+    if (toolbar.get()) {
+      toolbar.set(false);
+    }
+  }, 4000);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
@@ -118,6 +118,26 @@ function Index() {
           children={text.get()}
           className="bg-white text-base w-full h-full border-1 border-solid border-gray-400/50 px-2 py-2 rounded-md"
           remarkPlugins={[remarkGfm, remarkToc]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            code({ node, inline, className, children, ...props }: any) {
+              const match = /language-(\w+)/.exec(className || "");
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  style={duotoneLight}
+                  PreTag="div"
+                  language={match[1]}
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            },
+          }}
         />
       )}
       {/* change from preview mode to non-preview mode */}

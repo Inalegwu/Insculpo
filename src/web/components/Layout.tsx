@@ -20,12 +20,13 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
+import { formatTextForSidebar } from "@src/shared/utils";
+import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
+import { globalState$, noteState } from "@src/web/state";
 import { motion } from "framer-motion";
 import type React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
-import { useWindow } from "../hooks";
-import { globalState$, noteState } from "../state";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -71,25 +72,17 @@ export default function Layout({ children }: LayoutProps) {
     [search],
   );
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (passedThres.get() && !sideBarFocus.get()) {
-        console.log("here...");
-        passedThres.set(false);
-      }
-    }, 2000);
+  useTimeout(() => {
+    if (finder.get() && !searchInputFocus.get()) {
+      finder.set(false);
+    }
+  }, 3000);
 
-    const finderTimeout = setTimeout(() => {
-      if (finder.get() && !searchInputFocus.get()) {
-        finder.set(false);
-      }
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeout);
-      clearTimeout(finderTimeout);
-    };
-  }, [passedThres, sideBarFocus, finder, searchInputFocus]);
+  useTimeout(() => {
+    if (passedThres.get() && !sideBarFocus.get()) {
+      passedThres.set(false);
+    }
+  }, 3000);
 
   useWindow("keypress", (e) => {
     if (e.ctrlKey && e.key === "/") {
@@ -102,23 +95,22 @@ export default function Layout({ children }: LayoutProps) {
     }
   });
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const threshold = e.clientX / window.innerWidth;
+  const mouseMove = useDebounce((e: MouseEvent) => {
+    const threshold = e.clientX / window.innerWidth;
 
-      if (threshold >= 0.97 && !passedThres.get()) {
-        passedThres.set(true);
-      }
-    },
-    [passedThres],
-  );
+    if (threshold >= 0.97 && !passedThres.get()) {
+      passedThres.set(true);
+    }
+  }, 60);
+
+  useWindow("mousemove", mouseMove);
 
   return (
     <Flex
       width="100%"
       align="center"
       className="transition w-full h-screen  bg-gray-100 relative p-2"
-      onMouseMove={handleMouseMove}
+      // onMouseMove={handleMouseMove}
     >
       {/* sidebar */}
       <motion.div
@@ -135,6 +127,8 @@ export default function Layout({ children }: LayoutProps) {
         }}
         transition={{ duration: 0.3 }}
         className="absolute z-0 bg-teal-0 p-2"
+        onMouseEnter={() => sideBarFocus.set(true)}
+        onMouseLeave={() => sideBarFocus.set(false)}
       >
         <Flex
           className="h-full w-[30%] overflow-y-hidden"
@@ -148,8 +142,6 @@ export default function Layout({ children }: LayoutProps) {
             justify="start"
             width="100%"
             className="h-[94%]"
-            onMouseEnter={() => sideBarFocus.set(true)}
-            onMouseLeave={() => sideBarFocus.set(false)}
           >
             {/* window actions */}
             <Flex
@@ -218,7 +210,9 @@ export default function Layout({ children }: LayoutProps) {
                       <Text
                         className="text-[11px] text-gray-400 font-medium"
                         color="gray"
-                      >{`${v.doc?.body?.slice(0, 37)}`}</Text>
+                      >
+                        {formatTextForSidebar(v.doc?.body?.slice(0, 37) || "")}
+                      </Text>
                     </Flex>
                   </ContextMenu.Trigger>
                   <ContextMenu.Content size="1" variant="soft">
