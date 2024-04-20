@@ -107,6 +107,7 @@ function Index() {
       globalState$.editorState.set("viewing");
       return;
     }
+    inputRef.current?.focus();
     globalState$.editorState.set("writing");
   }, [editorState]);
 

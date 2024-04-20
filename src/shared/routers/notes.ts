@@ -139,8 +139,6 @@ export const notesRouter = router({
 
       const destination = `${ctx.app.getPath("documents")}/Insculpo`;
 
-      console.log(note, input.noteId);
-
       if (!fs.existsSync(destination)) {
         fs.mkdir(`${ctx.app.getPath("documents")}/Insculpo`, undefined, (e) => {
           console.log(e?.errno);
