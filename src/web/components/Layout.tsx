@@ -22,7 +22,8 @@ import {
 import t from "@src/shared/config";
 import { formatTextForSidebar } from "@src/shared/utils";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
-import { globalState$, noteState } from "@src/web/state";
+import { noteState } from "@src/web/state";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useRef } from "react";
@@ -36,6 +37,8 @@ export default function Layout({ children }: LayoutProps) {
   const utils = t.useUtils();
   const { mutate: minimize } = t.window.minimize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
+  const routeState = useRouterState();
+  const nav = useNavigate();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -111,6 +114,27 @@ export default function Layout({ children }: LayoutProps) {
   }, 60);
 
   useWindow("mousemove", mouseMove);
+
+  const handleNoteClick = useCallback(
+    (id: string) => {
+      noteState.activeNoteId.set(id);
+      if (routeState.location.pathname !== "/") {
+        nav({
+          to: "/",
+        });
+      }
+    },
+    [routeState, nav],
+  );
+
+  const handleNewClicked = useCallback(() => {
+    noteState.activeNoteId.set(null);
+    if (routeState.location.pathname !== "/") {
+      nav({
+        to: "/",
+      });
+    }
+  }, [nav, routeState]);
 
   return (
     <Flex
@@ -193,21 +217,17 @@ export default function Layout({ children }: LayoutProps) {
                   <ContextMenu.Trigger className="cursor-pointer">
                     <Flex
                       width="100%"
-                      className="px-2 py-2 rounded-md mt-1"
+                      className="px-2 py-2 rounded-md"
                       direction="column"
                       align="end"
                       justify="center"
-                      onClick={() => noteState.activeNoteId.set(v.doc?._id)}
+                      onClick={() => handleNoteClick(v.doc?._id!)}
                     >
-                      <Text
-                        color="iris"
-                        weight="bold"
-                        className="text-[11.5px]"
-                      >
+                      <Text color="iris" weight="bold" className="text-[11px]">
                         {v.doc?.name?.slice(0, 37)}
                       </Text>
                       <Text
-                        className="text-[11px] text-gray-400 font-medium"
+                        className="text-[10.5px] text-gray-400 font-medium"
                         color="gray"
                       >
                         {formatTextForSidebar(v.doc?.body?.slice(0, 30) || "")}
@@ -248,13 +268,10 @@ export default function Layout({ children }: LayoutProps) {
             gap="4"
           >
             <Tooltip content="Preferences">
-              <IconButton
-                onClick={() => globalState$.settingsVisible.set(true)}
-                variant="ghost"
-                radius="full"
-                size="2"
-              >
-                <GearFine size={13} />
+              <IconButton asChild variant="ghost" radius="full" size="2">
+                <Link to="/settings">
+                  <GearFine size={13} />
+                </Link>
               </IconButton>
             </Tooltip>
             <Tooltip content="New Note">
@@ -262,7 +279,7 @@ export default function Layout({ children }: LayoutProps) {
                 variant="ghost"
                 radius="full"
                 size="2"
-                onClick={() => noteState.activeNoteId.set(null)}
+                onClick={handleNewClicked}
               >
                 <Plus size={13} />
               </IconButton>
@@ -335,7 +352,7 @@ export default function Layout({ children }: LayoutProps) {
         }}
         transition={{ duration: 0.3 }}
       >
-        <Box className="w-full h-full rounded-xxl bg-white">{children}</Box>
+        <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
       </motion.div>
     </Flex>
   );

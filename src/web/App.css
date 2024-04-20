@@ -6,21 +6,41 @@
   font-family: Nunito;
   src: url("../assets/fonts/Nunito-VariableFont_wght.ttf");
 }
+@font-face {
+  font-family: Recursive;
+  src: url("../assets/fonts/RecMonoCasual-Bold-1.085.ttf");
+}
 
+@font-face {
+  font-family: Recursive;
+  src: url("../assets/fonts/RecMonoCasual-BoldItalic-1.085.ttf");
+}
+
+
+@font-face {
+  font-family: Recursive;
+  src: url("../assets/fonts/RecMonoCasual-Italic-1.085.ttf");
+}
+
+
+@font-face {
+  font-family: Recursive;
+  src: url("../assets/fonts/RecMonoCasual-Regular-1.085.ttf");
+}
 .radix-themes {
-  --default-font-family: Nunito 
-  --heading-font-family: Nunito 
-  --code-font-family:  Nunito
-  --strong-font-family: Nunito
-  --em-font-family:   Nunito
-  --quote-font-family: Nunito
+  --default-font-family: Recursive ;
+  --heading-font-family: Recursive; 
+  --code-font-family:  Recursive;
+  --strong-font-family: Recursive;
+  --em-font-family:   Recursive;
+  --quote-font-family: Recursivw;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Nunito;
+  font-family: Recursive;
   text-decoration: none;
 }
 

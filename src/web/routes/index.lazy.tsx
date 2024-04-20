@@ -157,7 +157,8 @@ function Index() {
                   style={oneLight}
                   PreTag="div"
                   customStyle={{
-                    fontSize: 13.6,
+                    fontSize: 13,
+                    fontFamily: "Recursive",
                   }}
                   language={match[1]}
                   {...props}
