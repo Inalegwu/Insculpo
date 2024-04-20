@@ -1,19 +1,16 @@
 import { useObservable } from "@legendapp/state/react";
 import {
-  Download,
   GearFine,
   Info,
   Minus,
   Plus,
   Sidebar,
   Sliders,
-  Trash,
   X,
 } from "@phosphor-icons/react";
 import {
   Box,
   Button,
-  ContextMenu,
   DropdownMenu,
   Flex,
   IconButton,
@@ -21,7 +18,6 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import { formatTextForSidebar } from "@src/shared/utils";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
@@ -29,6 +25,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
+import Document from "./documents";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -44,28 +41,6 @@ export default function Layout({ children }: LayoutProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: notes } = t.notes.getNotes.useQuery();
-
-  const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
-    onSuccess: (_, v) => {
-      utils.notes.invalidate();
-      noteState.activeNoteId.set(null);
-      if (noteState.activeNoteId.get() === v.noteId) {
-        noteState.activeNoteId.set(null);
-      }
-    },
-    onError: (e) => {
-      toast.error(e.message);
-    },
-  });
-
-  const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
-    onSuccess: () => {
-      toast.success("Note exported successfully");
-    },
-    onError: (e) => {
-      toast.error("Couldn't export note");
-    },
-  });
 
   const { mutate: search, data: results } = t.notes.findNote.useMutation({
     onError: (e) => {
@@ -115,18 +90,6 @@ export default function Layout({ children }: LayoutProps) {
   }, 60);
 
   useWindow("mousemove", mouseMove);
-
-  const handleNoteClick = useCallback(
-    (id: string) => {
-      noteState.activeNoteId.set(id);
-      if (routeState.location.pathname !== "/") {
-        nav({
-          to: "/",
-        });
-      }
-    },
-    [routeState, nav],
-  );
 
   const handleNewClicked = useCallback(() => {
     noteState.activeNoteId.set(null);
@@ -214,60 +177,7 @@ export default function Layout({ children }: LayoutProps) {
                     className="h-full w-full overflow-y-scroll overflow-x-hidden"
                   >
                     {notes?.map((v) => (
-                      <ContextMenu.Root key={v.doc?._id}>
-                        <ContextMenu.Trigger className="cursor-pointer">
-                          <Flex
-                            width="100%"
-                            className="px-2 py-2 rounded-md"
-                            direction="column"
-                            align="end"
-                            justify="center"
-                            onClick={() => handleNoteClick(v.doc?._id!)}
-                          >
-                            <Text
-                              color="iris"
-                              weight="bold"
-                              className="text-[11px]"
-                            >
-                              {v.doc?.name?.slice(0, 28)}
-                            </Text>
-                            <Text
-                              className="text-[10.5px] text-gray-400 font-medium"
-                              color="gray"
-                            >
-                              {formatTextForSidebar(
-                                v.doc?.body?.slice(0, 30) || "",
-                              )}
-                            </Text>
-                          </Flex>
-                        </ContextMenu.Trigger>
-                        <ContextMenu.Content size="1" variant="soft">
-                          <ContextMenu.Item
-                            onClick={() =>
-                              dumpNote({ noteId: v.doc?._id || "" })
-                            }
-                          >
-                            <Flex gap="1">
-                              <Download />
-                              <Text size="1">Export Note</Text>
-                            </Flex>
-                          </ContextMenu.Item>
-                          <ContextMenu.Item
-                            color="red"
-                            onClick={() =>
-                              deleteNote({
-                                noteId: v.doc?._id!,
-                                rev: v.doc?._rev!,
-                              })
-                            }
-                          >
-                            <Flex gap="1">
-                              <Trash />
-                              <Text size="1">Delete Note</Text>
-                            </Flex>
-                          </ContextMenu.Item>
-                        </ContextMenu.Content>
-                      </ContextMenu.Root>
+                      <Document doc={v.doc} key={v.doc?._id} />
                     ))}
                   </Flex>
                 </Flex>
