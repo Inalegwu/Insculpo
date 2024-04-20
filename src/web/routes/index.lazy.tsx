@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
@@ -154,7 +154,7 @@ function Index() {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={materialLight}
+                  style={duotoneLight}
                   PreTag="div"
                   language={match[1]}
                   {...props}

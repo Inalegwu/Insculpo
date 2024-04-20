@@ -24,7 +24,6 @@ import { formatTextForSidebar } from "@src/shared/utils";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { motion } from "framer-motion";
-import moment from "moment";
 import type React from "react";
 import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
@@ -195,36 +194,24 @@ export default function Layout({ children }: LayoutProps) {
                     <Flex
                       width="100%"
                       className="px-2 py-2 rounded-md mt-1"
-                      direction="row"
+                      direction="column"
                       align="end"
-                      justify="between"
+                      justify="center"
                       onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                     >
-                      <Text className="text-[10px] text-gray-400">
-                        {moment(v.doc?.createdAt).fromNow()}
-                      </Text>
-                      <Flex
-                        direction="column"
-                        grow="1"
-                        align="end"
-                        justify="center"
+                      <Text
+                        color="iris"
+                        weight="bold"
+                        className="text-[11.5px]"
                       >
-                        <Text
-                          color="iris"
-                          weight="bold"
-                          className="text-[11.5px]"
-                        >
-                          {v.doc?.name?.slice(0, 37)}
-                        </Text>
-                        <Text
-                          className="text-[11px] text-gray-400 font-medium"
-                          color="gray"
-                        >
-                          {formatTextForSidebar(
-                            v.doc?.body?.slice(0, 37) || "",
-                          )}
-                        </Text>
-                      </Flex>
+                        {v.doc?.name?.slice(0, 37)}
+                      </Text>
+                      <Text
+                        className="text-[11px] text-gray-400 font-medium"
+                        color="gray"
+                      >
+                        {formatTextForSidebar(v.doc?.body?.slice(0, 30) || "")}
+                      </Text>
                     </Flex>
                   </ContextMenu.Trigger>
                   <ContextMenu.Content size="1" variant="soft">
