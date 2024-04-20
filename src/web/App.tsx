@@ -41,7 +41,7 @@ if (!rootElement?.innerHTML) {
     <StrictMode>
       <t.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
-          <Theme radius="medium" accentColor="iris" grayColor="slate">
+          <Theme radius="medium" accentColor="plum" grayColor="slate">
             <RouterProvider router={router} />
           </Theme>
         </QueryClientProvider>

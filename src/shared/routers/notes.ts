@@ -1,5 +1,5 @@
-import * as fs from "fs";
 import { publicProcedure, router } from "@src/trpc";
+import * as fs from "node:fs";
 import { v4 } from "uuid";
 import z from "zod";
 
@@ -39,6 +39,9 @@ export const notesRouter = router({
       // empty content
       if (input.content === "") return;
 
+      // ensure markdown charachters aren't in the name
+      const name = input.content.split("\n")[0].replace(/[^A-Z0-9]+/gi, "");
+
       // if the noteId is null , this means
       // it's a new note
       if (input.noteId === null) {
@@ -46,7 +49,7 @@ export const notesRouter = router({
           .put({
             _id: v4(),
             body: input.content,
-            name: input.content.split("\n")[0],
+            name: name,
           })
           .then(async (v) => {
             const note = await ctx.db.get(v.id);
@@ -62,7 +65,7 @@ export const notesRouter = router({
       // otherwise , just update the note
       await ctx.db.get(input.noteId).then((v) => {
         v.body = input.content;
-        v.name = input.content.split("\n")[0];
+        v.name = name;
         ctx.db.put(v);
       });
     }),

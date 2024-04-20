@@ -117,7 +117,7 @@ export default function Layout({ children }: LayoutProps) {
     <Flex
       width="100%"
       align="center"
-      className="transition w-full h-screen bg-slate-50 relative p-2"
+      className="transition w-full h-screen  bg-gray-100 relative p-2"
       onMouseMove={handleMouseMove}
     >
       {/* sidebar */}
@@ -208,10 +208,10 @@ export default function Layout({ children }: LayoutProps) {
                       justify="center"
                       onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                     >
-                      <Text size="1" className="text-black">
+                      <Text size="1" className="text-black font-bold">
                         {v.doc?.name?.slice(0, 20)}
                       </Text>
-                      <Text className="text-[12px] text-gray-400">{`${v.doc?.body?.slice(
+                      <Text className="text-[12px] text-gray-400 font-medium">{`${v.doc?.body?.slice(
                         0,
                         37,
                       )}`}</Text>

@@ -109,14 +109,14 @@ function Index() {
           value={text.get()}
           onChange={handleEditorInput}
           ref={inputRef}
-          className="w-full h-full outline-indigo-100"
+          className="w-full h-full text-sm bg-gray-50 outline-indigo-100"
           onBlur={handleBlur}
         />
       ) : (
         <Markdown
           // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
           children={text.get()}
-          className="bg-white w-full h-full border-[1px] border-indigo-5 px-2 py-2"
+          className="bg-gray-50 text-base w-full h-full border-[1px] border-indigo-5 px-2 py-2 rounded-md"
           remarkPlugins={[remarkGfm, remarkToc]}
         />
       )}
@@ -124,19 +124,19 @@ function Index() {
       <motion.div
         animate={{ opacity: toolbar.get() ? 1 : 0 }}
         style={{ position: "absolute" }}
-        className="absolute bottom-4 left-3"
+        className="absolute bottom-2 left-0"
       >
-        <Flex align="center" gap="3">
+        <Flex align="center" gap="2" className="px-4 py-2 rounded-md">
           <IconButton
             onClick={switchEditorState}
-            variant="ghost"
+            variant="outline"
             radius="full"
             size="2"
           >
-            <Eye size={13} />
+            <Eye size={15} />
           </IconButton>
-          <IconButton variant="ghost" radius="full" size="2">
-            <DownloadSimple size={13} />
+          <IconButton variant="outline" radius="full" size="2">
+            <DownloadSimple size={15} />
           </IconButton>
         </Flex>
       </motion.div>
