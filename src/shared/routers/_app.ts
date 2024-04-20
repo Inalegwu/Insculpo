@@ -5,21 +5,14 @@ import pkg from "../../../package.json";
 import { notebooksRouter } from "./notebooks";
 import { notesRouter } from "./notes";
 import { windowRouter } from "./window";
+import { linksRouter } from "./links";
 
 export const appRouter = router({
   window: windowRouter,
   version: publicProcedure.query(async () => {
     return pkg.version;
   }),
-  openExternal: publicProcedure
-    .input(
-      z.object({
-        link: z.string().url(),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      await shell.openExternal(input.link);
-    }),
+  links:linksRouter,
   notes: notesRouter,
   notebooks: notebooksRouter,
 });

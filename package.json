@@ -68,6 +68,7 @@
     "@trpc/client": "^10.44.1",
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
+    "cheerio": "1.0.0-rc.12",
     "electron-trpc": "^0.5.2",
     "framer-motion": "^11.1.7",
     "moment": "^2.30.1",

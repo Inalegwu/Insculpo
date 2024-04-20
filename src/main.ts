@@ -22,11 +22,11 @@ const createWindow = () => {
     createContext,
   });
 
-  mainWindow.hide();
+  // mainWindow.hide();
 
-  mainWindow.webContents.on("dom-ready", () => {
-    mainWindow.show();
-  });
+  // mainWindow.webContents.on("dom-ready", () => {
+  //   mainWindow.show();
+  // });
 
   if (import.meta.env.DEV) {
     mainWindow.loadURL("http://localhost:5173");

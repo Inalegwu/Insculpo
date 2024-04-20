@@ -1,6 +1,14 @@
 import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
-import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
+import {
+  Dialog,
+  Flex,
+  HoverCard,
+  IconButton,
+  Link,
+  TextArea,
+  Tooltip,
+} from "@radix-ui/themes";
 import t from "@shared/config";
 import { useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
@@ -66,6 +74,12 @@ function Index() {
       });
     },
   });
+
+  const {
+    mutate: openLink,
+    data,
+    isLoading,
+  } = t.links.openExternal.useMutation();
 
   t.notes.getNote.useQuery(
     {
@@ -163,6 +177,20 @@ function Index() {
                 <code className={className} {...props}>
                   {children}
                 </code>
+              );
+            },
+            a(props) {
+              return (
+                <HoverCard.Root>
+                  <HoverCard.Trigger>
+                    <Link onClick={() => openLink({ link: props.href! })}>
+                      {props.children}
+                    </Link>
+                  </HoverCard.Trigger>
+                  <HoverCard.Content size="1">
+                    {JSON.stringify(data)}
+                  </HoverCard.Content>
+                </HoverCard.Root>
               );
             },
           }}

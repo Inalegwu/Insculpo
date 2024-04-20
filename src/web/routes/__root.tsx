@@ -7,7 +7,7 @@ export const Route = createRootRoute({
     <Layout>
       <Outlet />
       <Toaster
-        position="bottom-left"
+        position="bottom-right"
         containerStyle={{ fontSize: 12 }}
         reverseOrder
       />
