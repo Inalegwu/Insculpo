@@ -109,14 +109,14 @@ function Index() {
           value={text.get()}
           onChange={handleEditorInput}
           ref={inputRef}
-          className="w-full h-full text-sm bg-gray-50 outline-indigo-100"
+          className="w-full h-full text-sm outline-indigo-100 rounded-md"
           onBlur={handleBlur}
         />
       ) : (
         <Markdown
           // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
           children={text.get()}
-          className="bg-gray-50 text-base w-full h-full border-[1px] border-indigo-5 px-2 py-2 rounded-md"
+          className="bg-white text-base w-full h-full border-1 border-solid border-gray-400/50 px-2 py-2 rounded-md"
           remarkPlugins={[remarkGfm, remarkToc]}
         />
       )}

@@ -40,7 +40,7 @@ export const notesRouter = router({
       if (input.content === "") return;
 
       // ensure markdown charachters aren't in the name
-      const name = input.content.split("\n")[0].replace(/[^A-Z0-9]+/gi, "");
+      const name = input.content.split("\n")[0].replace(/[^a-zA-Z0-9 ]/gi, "");
 
       // if the noteId is null , this means
       // it's a new note
