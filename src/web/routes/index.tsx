@@ -196,7 +196,12 @@ function Index() {
                         alt={data?.title?.slice(0, 10)}
                         className="w-3/6 rounded-tl-md rounded-bl-md"
                       />
-                      <Flex direction="column" align="start" justify="between">
+                      <Flex
+                        direction="column"
+                        height="100%"
+                        align="start"
+                        justify="between"
+                      >
                         <Flex direction="column" align="start" justify="start">
                           <Text className="text-[11.5px]" color="iris">
                             {data?.site_name}
@@ -205,7 +210,7 @@ function Index() {
                             {data?.description}
                           </Text>
                         </Flex>
-                        <Text className="text-[10px] text-gray-400">
+                        <Text className="text-[10px] text-gray-400 mt-2">
                           {moment(Date.now()).fromNow()}
                         </Text>
                       </Flex>
