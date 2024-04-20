@@ -202,22 +202,23 @@ export default function Layout({ children }: LayoutProps) {
                   <ContextMenu.Trigger>
                     <Flex
                       width="100%"
-                      className="px-1 py-2 rounded-md"
+                      className="px-2 py-2 rounded-md"
                       direction="column"
                       align="end"
                       justify="center"
                       onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                     >
                       <Text
-                        size="1"
-                        className="text-black font-bold text-[11.5px]"
+                        color="iris"
+                        weight="bold"
+                        className="text-[11.5px]"
                       >
                         {v.doc?.name?.slice(0, 37)}
                       </Text>
-                      <Text className="text-[11px] text-gray-400 font-medium">{`${v.doc?.body?.slice(
-                        0,
-                        37,
-                      )}`}</Text>
+                      <Text
+                        className="text-[11px] text-gray-400 font-medium"
+                        color="gray"
+                      >{`${v.doc?.body?.slice(0, 37)}`}</Text>
                     </Flex>
                   </ContextMenu.Trigger>
                   <ContextMenu.Content size="1" variant="soft">

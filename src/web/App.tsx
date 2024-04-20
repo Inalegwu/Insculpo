@@ -43,7 +43,7 @@ if (!rootElement?.innerHTML) {
         <QueryClientProvider client={queryClient}>
           <Theme
             radius="medium"
-            accentColor="plum"
+            accentColor="iris"
             panelBackground="translucent"
             grayColor="slate"
           >
