@@ -21,38 +21,28 @@
     "postinstall": "electron-rebuild"
   },
   "build": {
-    "appId": "com.electrostatic.app",
-    "productName": "ElectroStatic",
-    "artifactName": "${product_name}-${version}_${platform}_${arch}.${ext}",
+    "appId": "com.insculpo.app",
+    "productName": "Insculpo",
+    "artifactName": "${productName}-${version}_${platform}_${arch}.${ext}",
     "buildDependenciesFromSource": true,
     "icon": "assets/icon.png",
-    "files": [
-      "out/**/*"
-    ],
+    "files": ["out/**/*"],
     "directories": {
       "output": "release/${version}"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
+      "target": ["dmg", "zip"]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ]
     },
     "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
+      "target": ["AppImage", "deb"]
     },
     "nsis": {
       "oneClick": false,
@@ -71,6 +61,8 @@
     "electron-trpc": "^0.5.2",
     "framer-motion": "^11.1.7",
     "moment": "^2.30.1",
+    "pouchdb-errors": "8.0.1",
+    "pouchdb-fetch": "^8.0.1",
     "pouchdb-find": "^8.0.1",
     "pouchdb-node": "^8.0.1",
     "prismjs": "^1.29.0",
