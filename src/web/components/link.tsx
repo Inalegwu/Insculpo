@@ -6,7 +6,7 @@ import type React from "react";
 type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export default function Link({ href, children }: LinkProps) {
+function Link({ href, children }: LinkProps) {
   const { data, isLoading } = t.links.fetchLinkData.useQuery({
     url: href!,
   });
@@ -18,7 +18,7 @@ export default function Link({ href, children }: LinkProps) {
       <HoverCard.Trigger onClick={() => openLink({ link: href! })}>
         <RadixLink underline="always">{children}</RadixLink>
       </HoverCard.Trigger>
-      <HoverCard.Content size="1" className="max-w-md">
+      <HoverCard.Content size="1" className="max-w-md max-h-md">
         <Flex align="center" gap="2">
           <img
             src={data?.image}
