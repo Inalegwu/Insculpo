@@ -152,11 +152,10 @@ export default function Layout({ children }: LayoutProps) {
         style={{
           width: "99%",
           height: "100%",
-          display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
         }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.05 }}
         className="absolute z-0 bg-teal-0 p-2"
         onMouseEnter={() => sideBarFocus.set(true)}
         onMouseLeave={() => sideBarFocus.set(false)}
@@ -224,7 +223,7 @@ export default function Layout({ children }: LayoutProps) {
                       onClick={() => handleNoteClick(v.doc?._id!)}
                     >
                       <Text color="iris" weight="bold" className="text-[11px]">
-                        {v.doc?.name?.slice(0, 37)}
+                        {v.doc?.name?.slice(0, 28)}
                       </Text>
                       <Text
                         className="text-[10.5px] text-gray-400 font-medium"
@@ -350,7 +349,7 @@ export default function Layout({ children }: LayoutProps) {
           flexDirection: "row",
           alignItems: "center",
         }}
-        transition={{ duration: 0.3 }}
+        layout
       >
         <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
       </motion.div>
