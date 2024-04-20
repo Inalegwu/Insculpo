@@ -13,18 +13,6 @@ export const linksRouter = router({
     )
     .mutation(async ({ input }) => {
       await shell.openExternal(input.link);
-
-      const body = await fetch(input.link)
-        .then((res) => res.text())
-        .then((v) => v);
-
-      const html = cheerio.load(body);
-
-      const tags = extractOGTag(html);
-
-      console.log(tags);
-
-      return tags;
     }),
   fetchLinkData: publicProcedure
     .input(
@@ -32,7 +20,7 @@ export const linksRouter = router({
         url: z.string().url(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .query(async ({ input }) => {
       const body = await fetch(input.url)
         .then((res) => res.text())
         .then((v) => v);
@@ -41,7 +29,6 @@ export const linksRouter = router({
 
       const tags = extractOGTag(html);
 
-      console.log(tags);
       return tags;
     }),
 });

@@ -1,21 +1,12 @@
 import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
-import {
-  Dialog,
-  Flex,
-  HoverCard,
-  IconButton,
-  Link,
-  Text,
-  TextArea,
-  Tooltip,
-} from "@radix-ui/themes";
+import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
+import { Link } from "@src/web/components";
 import { useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import moment from "moment";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
@@ -77,11 +68,12 @@ function Index() {
     },
   });
 
+  const { mutate: openLink } = t.links.openExternal.useMutation();
   const {
-    mutate: openLink,
-    isLoading,
+    mutate: prefetchLinkData,
     data,
-  } = t.links.openExternal.useMutation();
+    isLoading,
+  } = t.links.fetchLinkData.useMutation();
 
   t.notes.getNote.useQuery(
     {
@@ -182,42 +174,7 @@ function Index() {
               );
             },
             a(props) {
-              return (
-                <HoverCard.Root>
-                  <HoverCard.Trigger>
-                    <Link onClick={() => openLink({ link: props.href! })}>
-                      {props.children}
-                    </Link>
-                  </HoverCard.Trigger>
-                  <HoverCard.Content size="1" className="max-w-md">
-                    <Flex align="center" gap="2">
-                      <img
-                        src={data?.image}
-                        alt={data?.title?.slice(0, 10)}
-                        className="w-3/6 rounded-tl-md rounded-bl-md"
-                      />
-                      <Flex
-                        direction="column"
-                        height="100%"
-                        align="start"
-                        justify="between"
-                      >
-                        <Flex direction="column" align="start" justify="start">
-                          <Text className="text-[11.5px]" color="iris">
-                            {data?.site_name}
-                          </Text>
-                          <Text className="text-[11px] text-gray-400">
-                            {data?.description}
-                          </Text>
-                        </Flex>
-                        <Text className="text-[10px] text-gray-400 mt-2">
-                          {moment(Date.now()).fromNow()}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </HoverCard.Content>
-                </HoverCard.Root>
-              );
+              return <Link {...props} />;
             },
           }}
         />
