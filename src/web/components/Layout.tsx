@@ -16,6 +16,8 @@ import {
   DropdownMenu,
   Flex,
   Text,
+  Tooltip,
+  IconButton
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
@@ -37,6 +39,7 @@ export default function Layout({ children }: LayoutProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: notes } = t.notes.getNotes.useQuery();
+
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
     onSuccess: () => {
       utils.notes.invalidate();
@@ -46,6 +49,7 @@ export default function Layout({ children }: LayoutProps) {
       toast.error(e.message);
     },
   });
+
   const { mutate: search, data: results } = t.notes.findNote.useMutation({
     onError: (e) => {
       toast.error(e.message);
@@ -235,25 +239,33 @@ export default function Layout({ children }: LayoutProps) {
             className="py-2 px-3"
             align="center"
             justify="start"
-            gap="5"
+            gap="4"
           >
-            <Button
+            <Tooltip content="Preferences">
+              <IconButton
               onClick={() => globalState$.settingsVisible.set(true)}
               variant="ghost"
-              className="rounded-full w-3 h-5"
+             radius="full"
+             size="2"
             >
-              <GearFine size={13} className="text-black" />
-            </Button>
-            <Button
+              <GearFine size={13} />
+            </IconButton>
+            </Tooltip>
+           <Tooltip content="New Note">
+             <IconButton
               variant="ghost"
-              className="rounded-full w-3 h-5"
+              radius="full"
+              size="2"
               onClick={() => noteState.activeNoteId.set(null)}
             >
-              <Plus size={13} className="text-black" />
-            </Button>
+              <Plus size={13} />
+            </IconButton>
+            </Tooltip>
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
-                <Sliders />
+                <IconButton variant="ghost" size="2" radius="full">
+                  <Sliders />
+                  </IconButton>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content defaultValue="dateCreated" size="1">
                 <DropdownMenu.Label>Sort By</DropdownMenu.Label>

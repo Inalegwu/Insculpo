@@ -1,5 +1,5 @@
-import { publicProcedure, router } from "@src/trpc";
 import * as fs from "fs";
+import { publicProcedure, router } from "@src/trpc";
 import { v4 } from "uuid";
 import z from "zod";
 
@@ -35,7 +35,12 @@ export const notesRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      // make sure not to store
+      // empty content
       if (input.content === "") return;
+
+      // if the noteId is null , this means
+      // it's a new note
       if (input.noteId === null) {
         const finalized = await ctx.db
           .put({
@@ -54,9 +59,10 @@ export const notesRouter = router({
         return finalized;
       }
 
+      // otherwise , just update the note
       await ctx.db.get(input.noteId).then((v) => {
         v.body = input.content;
-        v.name = input.content;
+        v.name = input.content.split("\n")[0];
         ctx.db.put(v);
       });
     }),

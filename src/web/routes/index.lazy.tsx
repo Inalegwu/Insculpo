@@ -1,12 +1,13 @@
 import { useObservable } from "@legendapp/state/react";
 import { Eye } from "@phosphor-icons/react";
 import { Button, Flex, TextArea } from "@radix-ui/themes";
-import t from "@src/shared/config";
+import t from "@shared/config";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import React, { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { noteState } from "../state";
+import { noteState } from "@src/web/state";
+import {useDebounce} from "@src/web/hooks"
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -28,12 +29,12 @@ function Index() {
       if (toolbar.get()) {
         toolbar.set(false);
       }
-    }, 2000);
+    }, 4000);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [toolbar,noteState]);
+  }, [toolbar]);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
@@ -70,9 +71,10 @@ function Index() {
     [text],
   );
 
-  const handleMouseMove = useCallback(() => {
-    toolbar.set(true);
-  }, [toolbar]);
+  const handleMouseMove=useDebounce(()=>{
+    toolbar.set(true)
+  },4000)
+
 
   const handleBlur = useCallback(() => {
     saveNote({
@@ -81,8 +83,6 @@ function Index() {
     });
     noteState.activeNoteId.set(null);
     text.set("");
-    // console.log(noteState.get());
-    // console.log(text.get());
   }, [saveNote, text]);
 
   return (
