@@ -112,7 +112,6 @@ function Index() {
   }, [text]);
 
   const switchEditorState = useCallback(() => {
-    console.log(editorState);
     if (editorState === "writing") {
       globalState$.editorState.set("viewing");
       return;

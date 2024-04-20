@@ -73,7 +73,6 @@ export default function Layout({ children }: LayoutProps) {
   });
 
   const passedThres = useObservable(false);
-  const passedThreshVal = passedThres.get();
   const finder = useObservable(false);
   const sideBarFocus = useObservable(false);
   const searchInputFocus = useObservable(false);

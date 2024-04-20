@@ -1,12 +1,18 @@
-import { Flex, HoverCard, Link as RadixLink, Text } from "@radix-ui/themes";
+import { ArrowRight } from "@phosphor-icons/react";
+import {
+  Button,
+  Flex,
+  HoverCard,
+  Link as RadixLink,
+  Text,
+} from "@radix-ui/themes";
 import t from "@src/shared/config";
-import moment from "moment";
 import type React from "react";
 
 type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-function Link({ href, children }: LinkProps) {
+export default function Link({ href, children }: LinkProps) {
   const { data, isLoading } = t.links.fetchLinkData.useQuery({
     url: href!,
   });
@@ -23,7 +29,7 @@ function Link({ href, children }: LinkProps) {
           <img
             src={data?.image}
             alt={data?.title?.slice(0, 10)}
-            className="w-3/6 rounded-tl-md rounded-bl-md"
+            className="w-3/6 rounded-md"
           />
           <Flex
             direction="column"
@@ -31,7 +37,7 @@ function Link({ href, children }: LinkProps) {
             align="start"
             justify="between"
           >
-            <Flex direction="column" align="start" justify="start">
+            <Flex direction="column" grow="1" align="start" justify="start">
               <Text className="text-[11.5px]" color="iris">
                 {data?.site_name}
               </Text>
@@ -39,9 +45,23 @@ function Link({ href, children }: LinkProps) {
                 {data?.description}
               </Text>
             </Flex>
-            <Text className="text-[10px] text-gray-400 mt-2">
-              {moment(Date.now()).fromNow()}
-            </Text>
+            <Flex
+              direction="row"
+              grow="1"
+              align="center"
+              justify="end"
+              gap="2"
+              className="mt-2"
+            >
+              <Button
+                onClick={() => openLink({ link: href! })}
+                variant="soft"
+                size="1"
+              >
+                <Text size="1">Visit</Text>
+                <ArrowRight size={13} />
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       </HoverCard.Content>
