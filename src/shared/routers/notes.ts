@@ -50,6 +50,7 @@ export const notesRouter = router({
             _id: v4(),
             body: input.content,
             name: name,
+            createdAt: Date.now(),
           })
           .then(async (v) => {
             const note = await ctx.db.get(v.id);
@@ -57,6 +58,7 @@ export const notesRouter = router({
               id: note._id,
               body: note.body,
               name: note.name,
+              createdAt: note.createdAt,
             };
           });
         return finalized;
@@ -66,6 +68,7 @@ export const notesRouter = router({
       await ctx.db.get(input.noteId).then((v) => {
         v.body = input.content;
         v.name = name;
+        v.updatedAt = Date.now();
         ctx.db.put(v);
       });
     }),

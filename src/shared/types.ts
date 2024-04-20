@@ -11,4 +11,6 @@ export type GlobalState = {
 export type Note = {
   name: string;
   body: string;
+  createdAt?: number;
+  updatedAt?: number;
 };

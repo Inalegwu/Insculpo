@@ -9,6 +9,7 @@ app.setName("Insculpo");
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     frame: false,
+    resizable: false,
     webPreferences: {
       sandbox: false,
       preload: join(__dirname, "../preload/preload.js"),

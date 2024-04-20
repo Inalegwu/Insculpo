@@ -1,5 +1,6 @@
 import { useObservable } from "@legendapp/state/react";
 import {
+  Download,
   GearFine,
   Minus,
   Plus,
@@ -41,12 +42,24 @@ export default function Layout({ children }: LayoutProps) {
   const { data: notes } = t.notes.getNotes.useQuery();
 
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
-    onSuccess: () => {
+    onSuccess: (_, v) => {
       utils.notes.invalidate();
       noteState.activeNoteId.set(null);
+      if (noteState.activeNoteId.get() === v.noteId) {
+        noteState.activeNoteId.set(null);
+      }
     },
     onError: (e) => {
       toast.error(e.message);
+    },
+  });
+
+  const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
+    onSuccess: () => {
+      toast.success("Note exported successfully");
+    },
+    onError: (e) => {
+      toast.error("Couldn't export note");
     },
   });
 
@@ -83,10 +96,6 @@ export default function Layout({ children }: LayoutProps) {
   }, 3000);
 
   useWindow("keypress", (e) => {
-    if (e.ctrlKey && e.key === "/") {
-      console.log("hot-key pressed");
-      passedThres.set(false);
-    }
     if (e.keyCode === 6 && !finder.get()) {
       finder.set(true);
       inputRef.current?.focus();
@@ -181,10 +190,10 @@ export default function Layout({ children }: LayoutProps) {
             >
               {notes?.map((v) => (
                 <ContextMenu.Root key={v.doc?._id}>
-                  <ContextMenu.Trigger>
+                  <ContextMenu.Trigger className="cursor-pointer">
                     <Flex
                       width="100%"
-                      className="px-2 py-2 rounded-md"
+                      className="px-2 py-2 rounded-md mt-1"
                       direction="column"
                       align="end"
                       justify="center"
@@ -207,13 +216,23 @@ export default function Layout({ children }: LayoutProps) {
                   </ContextMenu.Trigger>
                   <ContextMenu.Content size="1" variant="soft">
                     <ContextMenu.Item
+                      onClick={() => dumpNote({ noteId: v.doc?._id || "" })}
+                    >
+                      <Flex gap="1">
+                        <Download />
+                        <Text size="1">Export Note</Text>
+                      </Flex>
+                    </ContextMenu.Item>
+                    <ContextMenu.Item
                       color="red"
                       onClick={() =>
                         deleteNote({ noteId: v.doc?._id!, rev: v.doc?._rev! })
                       }
                     >
-                      <Trash />
-                      <Text size="1">Delete Note</Text>
+                      <Flex gap="1">
+                        <Trash />
+                        <Text size="1">Delete Note</Text>
+                      </Flex>
                     </ContextMenu.Item>
                   </ContextMenu.Content>
                 </ContextMenu.Root>

@@ -14,7 +14,7 @@ export const globalState$ = observable<GlobalState>({
   colorMode: "dark",
   settingsVisible: false,
   firstLaunch: true,
-  editorState: "writing",
+  editorState: "viewing",
 });
 
 persistObservable(globalState$, {
