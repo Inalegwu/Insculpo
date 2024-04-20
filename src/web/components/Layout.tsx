@@ -87,6 +87,10 @@ export default function Layout({ children }: LayoutProps) {
   }, [passedThres, sideBarFocus, finder, searchInputFocus]);
 
   useWindow("keypress", (e) => {
+    if (e.ctrlKey && e.key === "/") {
+      console.log("hot-key pressed");
+      passedThres.set(false);
+    }
     if (e.keyCode === 6 && !finder.get()) {
       finder.set(true);
       inputRef.current?.focus();
@@ -144,39 +148,44 @@ export default function Layout({ children }: LayoutProps) {
             {/* window actions */}
             <Flex
               align="center"
-              className="gap-4 mb-2"
+              className="gap-5 mb-2 mt-1 px-2"
               justify="end"
               width="100%"
             >
               <Flex grow="1" id="drag-region" className="p-2" />
-              <button
+              <Button
+                variant="ghost"
+                color="gray"
                 className="w-3 h-5 rounded-full flex items-center justify-center"
                 onClick={() => passedThres.set(false)}
-                type="button"
               >
                 <Sidebar size={13} className="text-black/30" />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                color="gray"
                 className="w-3 h-5 rounded-full flex items-center justify-center"
-                type="button"
                 onClick={() => minimize()}
               >
                 <Minus size={13} className="text-black/20" />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 className="w-3 h-5 rounded-full flex items-center justify-center"
-                type="button"
+                color="gray"
                 onClick={() => maximize()}
               >
                 <CornersOut size={13} className="text-black/20" />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                color="gray"
                 className="w-3 h-5 rounded-full flex items-center justify-center"
                 type="button"
                 onClick={() => close()}
               >
-                <X size={13} className="text-red-500/50" />
-              </button>
+                <X size={13} />
+              </Button>
             </Flex>
             <Flex
               direction="column"
@@ -198,13 +207,13 @@ export default function Layout({ children }: LayoutProps) {
                         <Text size="1" className="text-black">
                           {v.doc?.name?.slice(0, 20)}
                         </Text>
-                        <Text className="text-[12px] text-gray-300">{`${v.doc?.body?.slice(
+                        <Text className="text-[12px] text-gray-400">{`${v.doc?.body?.slice(
                           0,
                           37,
                         )}`}</Text>
                       </Flex>
                     </ContextMenu.Trigger>
-                    <ContextMenu.Content size="1">
+                    <ContextMenu.Content size="1" variant="soft">
                       <ContextMenu.Item
                         color="red"
                         onClick={() =>
@@ -306,7 +315,7 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
         }}
       >
-        <Box className="w-full h-full rounded-xl bg-white">{children}</Box>
+        <Box className="w-full h-full rounded-xxl bg-white">{children}</Box>
       </motion.div>
     </Flex>
   );
