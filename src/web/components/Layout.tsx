@@ -208,10 +208,13 @@ export default function Layout({ children }: LayoutProps) {
                       justify="center"
                       onClick={() => noteState.activeNoteId.set(v.doc?._id)}
                     >
-                      <Text size="1" className="text-black font-bold">
-                        {v.doc?.name?.slice(0, 20)}
+                      <Text
+                        size="1"
+                        className="text-black font-bold text-[11.5px]"
+                      >
+                        {v.doc?.name?.slice(0, 37)}
                       </Text>
-                      <Text className="text-[12px] text-gray-400 font-medium">{`${v.doc?.body?.slice(
+                      <Text className="text-[11px] text-gray-400 font-medium">{`${v.doc?.body?.slice(
                         0,
                         37,
                       )}`}</Text>
