@@ -96,7 +96,7 @@ export default function Layout({ children }: LayoutProps) {
     if (passedThres.get() && !sideBarFocus.get()) {
       passedThres.set(false);
     }
-  }, 3000);
+  }, 2300);
 
   useWindow("keypress", (e) => {
     if (e.keyCode === 6 && !finder.get()) {
