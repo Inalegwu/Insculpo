@@ -22,6 +22,8 @@ export const linksRouter = router({
 
       const tags = extractOGTag(html);
 
+      console.log(tags);
+
       return tags;
     }),
   fetchLinkData: publicProcedure
