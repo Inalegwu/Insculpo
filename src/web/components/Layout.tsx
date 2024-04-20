@@ -1,6 +1,5 @@
 import { useObservable } from "@legendapp/state/react";
 import {
-  CornersOut,
   GearFine,
   Minus,
   Plus,
@@ -35,7 +34,6 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   const utils = t.useUtils();
   const { mutate: minimize } = t.window.minimize.useMutation();
-  const { mutate: maximize } = t.window.maximize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -166,14 +164,6 @@ export default function Layout({ children }: LayoutProps) {
                 onClick={() => minimize()}
               >
                 <Minus size={13} className="text-black/20" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-3 h-5 rounded-full flex items-center justify-center"
-                color="gray"
-                onClick={() => maximize()}
-              >
-                <CornersOut size={13} className="text-black/20" />
               </Button>
               <Button
                 variant="ghost"

@@ -103,17 +103,26 @@ export const notesRouter = router({
       include_docs: true,
     });
 
+    const destination = `${ctx.app.getPath("documents")}/Insculpo`;
+
+    if (!fs.existsSync(destination)) {
+      fs.mkdir(`${ctx.app.getPath("documents")}/Insculpo`, undefined, (e) => {
+        console.log(e?.errno);
+      });
+    }
+
     for (const note of notes.rows) {
       if (!note.doc) {
         continue;
       }
-      fs.writeFileSync(
-        `${ctx.app.getPath("documents")}/Insculpo/${note.doc._id}-${
-          note.doc.name
-        }`,
+      fs.writeFile(
+        `${destination}/${note.doc.name}`,
         note.doc.body,
         {
           encoding: "utf8",
+        },
+        (e) => {
+          console.log(e);
         },
       );
     }
@@ -121,17 +130,31 @@ export const notesRouter = router({
   dumpNote: publicProcedure
     .input(
       z.object({
-        noteId: z.string(),
+        noteId: z.string().nullable(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.noteId === null) return;
       const note = await ctx.db.get(input.noteId);
 
-      fs.writeFileSync(
-        `${ctx.app.getPath("documents")}/Insculpo/${note._id}-${note.name}.md`,
+      const destination = `${ctx.app.getPath("documents")}/Insculpo`;
+
+      console.log(note, input.noteId);
+
+      if (!fs.existsSync(destination)) {
+        fs.mkdir(`${ctx.app.getPath("documents")}/Insculpo`, undefined, (e) => {
+          console.log(e?.errno);
+        });
+      }
+
+      fs.writeFile(
+        `${destination}/${note.name}.md`,
         note.body,
         {
           encoding: "utf8",
+        },
+        (e) => {
+          console.log(e);
         },
       );
     }),

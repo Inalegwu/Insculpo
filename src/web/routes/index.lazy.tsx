@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
@@ -51,6 +51,19 @@ function Index() {
     onError: (e) => {
       toast.error(e.message, {
         duration: 2000,
+      });
+    },
+  });
+
+  const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
+    onSuccess: () => {
+      toast.success("Note exported successfully", {
+        duration: 3500,
+      });
+    },
+    onError: () => {
+      toast.error("Couldn't export note at this time", {
+        duration: 3500,
       });
     },
   });
@@ -117,14 +130,14 @@ function Index() {
           // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
           children={text.get()}
           className="bg-white text-base w-full h-full border-1 border-solid border-gray-400/50 px-2 py-2 rounded-md"
-          remarkPlugins={[remarkGfm, remarkToc]}
+          remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkToc]}
           rehypePlugins={[rehypeRaw]}
           components={{
             code({ node, inline, className, children, ...props }: any) {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={duotoneLight}
+                  style={materialLight}
                   PreTag="div"
                   language={match[1]}
                   {...props}
@@ -155,7 +168,12 @@ function Index() {
           >
             <Eye size={15} />
           </IconButton>
-          <IconButton variant="outline" radius="full" size="2">
+          <IconButton
+            onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
+            variant="outline"
+            radius="full"
+            size="2"
+          >
             <DownloadSimple size={15} />
           </IconButton>
         </Flex>
