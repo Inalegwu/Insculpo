@@ -132,7 +132,7 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
           justifyContent: "flex-end",
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
         className="absolute z-0 bg-teal-0 p-2"
         onMouseEnter={() => sideBarFocus.set(true)}
         onMouseLeave={() => sideBarFocus.set(false)}
@@ -153,7 +153,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* window actions */}
             <Flex
               align="center"
-              className="gap-5 mb-2 mt-1 px-2"
+              className="gap-5 mb-2 mt-2 px-2"
               justify="end"
               width="100%"
             >

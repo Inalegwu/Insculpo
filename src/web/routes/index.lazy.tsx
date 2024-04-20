@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
@@ -154,8 +154,11 @@ function Index() {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={duotoneLight}
+                  style={oneLight}
                   PreTag="div"
+                  customStyle={{
+                    fontSize: 13.6,
+                  }}
                   language={match[1]}
                   {...props}
                 >
