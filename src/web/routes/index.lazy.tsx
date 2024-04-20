@@ -1,6 +1,6 @@
 import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye } from "@phosphor-icons/react";
-import { Dialog, Flex, IconButton, TextArea } from "@radix-ui/themes";
+import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { useTimeout } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
@@ -177,22 +177,32 @@ function Index() {
         className="absolute bottom-2 left-0"
       >
         <Flex align="center" gap="2" className="px-4 py-2 rounded-md">
-          <IconButton
-            onClick={switchEditorState}
-            variant="outline"
-            radius="full"
-            size="2"
+          <Tooltip
+            content={
+              globalState$.editorState.get() === "writing"
+                ? "Switch to preview"
+                : "Switch to Editor"
+            }
           >
-            <Eye size={15} />
-          </IconButton>
-          <IconButton
-            onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
-            variant="outline"
-            radius="full"
-            size="2"
-          >
-            <DownloadSimple size={15} />
-          </IconButton>
+            <IconButton
+              onClick={switchEditorState}
+              variant="outline"
+              radius="full"
+              size="2"
+            >
+              <Eye size={15} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip content="Export note">
+            <IconButton
+              onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
+              variant="outline"
+              radius="full"
+              size="2"
+            >
+              <DownloadSimple size={15} />
+            </IconButton>
+          </Tooltip>
         </Flex>
       </motion.div>
     </Flex>
