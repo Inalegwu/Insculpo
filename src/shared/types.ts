@@ -5,6 +5,7 @@ export type GlobalState = {
   colorMode: "dark" | "light";
   settingsVisible: boolean;
   firstLaunch: boolean;
+  editorState: "writing" | "viewing";
 };
 
 export type Note = {

@@ -1,13 +1,16 @@
 import { useObservable } from "@legendapp/state/react";
-import { Eye } from "@phosphor-icons/react";
-import { Button, Flex, TextArea } from "@radix-ui/themes";
+import { DownloadSimple, Eye } from "@phosphor-icons/react";
+import { Flex, IconButton, TextArea } from "@radix-ui/themes";
 import t from "@shared/config";
+import { globalState$, noteState } from "@src/web/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import React, { useCallback, useEffect, useRef } from "react";
+import type React from "react";
+import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { noteState } from "@src/web/state";
-import {useDebounce} from "@src/web/hooks"
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -19,9 +22,10 @@ function Index() {
   const toolbar = useObservable(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
+  const editorState = globalState$.editorState.get();
 
-    if(noteState.activeNoteId.get()!==null){
+  useEffect(() => {
+    if (noteState.activeNoteId.get() !== null) {
       inputRef.current?.focus();
     }
 
@@ -71,10 +75,9 @@ function Index() {
     [text],
   );
 
-  const handleMouseMove=useDebounce(()=>{
-    toolbar.set(true)
-  },4000)
-
+  const handleMouseMove = useCallback(() => {
+    toolbar.set(true);
+  }, [toolbar]);
 
   const handleBlur = useCallback(() => {
     saveNote({
@@ -85,25 +88,57 @@ function Index() {
     text.set("");
   }, [saveNote, text]);
 
+  const switchEditorState = useCallback(() => {
+    console.log(editorState);
+    if (editorState === "writing") {
+      globalState$.editorState.set("viewing");
+      return;
+    }
+    globalState$.editorState.set("writing");
+  }, [editorState]);
+
   return (
-    <Flex direction="column" gap="2" className="w-full h-full bg-slate-50">
-      <TextArea
-        value={text.get()}
-        onChange={handleEditorInput}
-        ref={inputRef}
-        className="w-full h-full outline-indigo-100"
-        onBlur={handleBlur}
-        onMouseMove={handleMouseMove}
-      />
+    <Flex
+      onMouseMove={handleMouseMove}
+      direction="column"
+      gap="2"
+      className="w-full h-full bg-slate-50"
+    >
+      {editorState === "writing" ? (
+        <TextArea
+          value={text.get()}
+          onChange={handleEditorInput}
+          ref={inputRef}
+          className="w-full h-full outline-indigo-100"
+          onBlur={handleBlur}
+        />
+      ) : (
+        <Markdown
+          // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
+          children={text.get()}
+          className="bg-white w-full h-full border-[1px] border-indigo-5 px-2 py-2"
+          remarkPlugins={[remarkGfm, remarkToc]}
+        />
+      )}
       {/* change from preview mode to non-preview mode */}
       <motion.div
         animate={{ opacity: toolbar.get() ? 1 : 0 }}
         style={{ position: "absolute" }}
         className="absolute bottom-4 left-3"
       >
-        <Button variant="soft" radius="full">
-          <Eye size={14} />
-        </Button>
+        <Flex align="center" gap="3">
+          <IconButton
+            onClick={switchEditorState}
+            variant="ghost"
+            radius="full"
+            size="2"
+          >
+            <Eye size={13} />
+          </IconButton>
+          <IconButton variant="ghost" radius="full" size="2">
+            <DownloadSimple size={13} />
+          </IconButton>
+        </Flex>
       </motion.div>
     </Flex>
   );

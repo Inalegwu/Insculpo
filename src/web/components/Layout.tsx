@@ -15,13 +15,14 @@ import {
   ContextMenu,
   DropdownMenu,
   Flex,
+  IconButton,
   Text,
   Tooltip,
-  IconButton
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
-import React, { useCallback, useEffect, useRef } from "react";
+import type React from "react";
+import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { useWindow } from "../hooks";
 import { globalState$, noteState } from "../state";
@@ -132,6 +133,7 @@ export default function Layout({ children }: LayoutProps) {
           alignItems: "center",
           justifyContent: "flex-end",
         }}
+        transition={{ duration: 0.3 }}
         className="absolute z-0 bg-teal-0 p-2"
       >
         <Flex
@@ -195,42 +197,39 @@ export default function Layout({ children }: LayoutProps) {
               direction="column"
               className="h-full w-full overflow-y-scroll overflow-x-hidden"
             >
-              {notes?.map((v) => {
-                return (
-                  <ContextMenu.Root>
-                    <ContextMenu.Trigger>
-                      <Flex
-                        key={v.doc?._id}
-                        width="100%"
-                        className="px-1 py-2 rounded-md"
-                        direction="column"
-                        align="end"
-                        justify="center"
-                        onClick={() => noteState.activeNoteId.set(v.doc?._id)}
-                      >
-                        <Text size="1" className="text-black">
-                          {v.doc?.name?.slice(0, 20)}
-                        </Text>
-                        <Text className="text-[12px] text-gray-400">{`${v.doc?.body?.slice(
-                          0,
-                          37,
-                        )}`}</Text>
-                      </Flex>
-                    </ContextMenu.Trigger>
-                    <ContextMenu.Content size="1" variant="soft">
-                      <ContextMenu.Item
-                        color="red"
-                        onClick={() =>
-                          deleteNote({ noteId: v.doc?._id!, rev: v.doc?._rev! })
-                        }
-                      >
-                        <Trash />
-                        <Text size="1">Delete Note</Text>
-                      </ContextMenu.Item>
-                    </ContextMenu.Content>
-                  </ContextMenu.Root>
-                );
-              })}
+              {notes?.map((v) => (
+                <ContextMenu.Root key={v.doc?._id}>
+                  <ContextMenu.Trigger>
+                    <Flex
+                      width="100%"
+                      className="px-1 py-2 rounded-md"
+                      direction="column"
+                      align="end"
+                      justify="center"
+                      onClick={() => noteState.activeNoteId.set(v.doc?._id)}
+                    >
+                      <Text size="1" className="text-black">
+                        {v.doc?.name?.slice(0, 20)}
+                      </Text>
+                      <Text className="text-[12px] text-gray-400">{`${v.doc?.body?.slice(
+                        0,
+                        37,
+                      )}`}</Text>
+                    </Flex>
+                  </ContextMenu.Trigger>
+                  <ContextMenu.Content size="1" variant="soft">
+                    <ContextMenu.Item
+                      color="red"
+                      onClick={() =>
+                        deleteNote({ noteId: v.doc?._id!, rev: v.doc?._rev! })
+                      }
+                    >
+                      <Trash />
+                      <Text size="1">Delete Note</Text>
+                    </ContextMenu.Item>
+                  </ContextMenu.Content>
+                </ContextMenu.Root>
+              ))}
             </Flex>
           </Flex>
           {/* bottom bar */}
@@ -243,29 +242,29 @@ export default function Layout({ children }: LayoutProps) {
           >
             <Tooltip content="Preferences">
               <IconButton
-              onClick={() => globalState$.settingsVisible.set(true)}
-              variant="ghost"
-             radius="full"
-             size="2"
-            >
-              <GearFine size={13} />
-            </IconButton>
+                onClick={() => globalState$.settingsVisible.set(true)}
+                variant="ghost"
+                radius="full"
+                size="2"
+              >
+                <GearFine size={13} />
+              </IconButton>
             </Tooltip>
-           <Tooltip content="New Note">
-             <IconButton
-              variant="ghost"
-              radius="full"
-              size="2"
-              onClick={() => noteState.activeNoteId.set(null)}
-            >
-              <Plus size={13} />
-            </IconButton>
+            <Tooltip content="New Note">
+              <IconButton
+                variant="ghost"
+                radius="full"
+                size="2"
+                onClick={() => noteState.activeNoteId.set(null)}
+              >
+                <Plus size={13} />
+              </IconButton>
             </Tooltip>
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
                 <IconButton variant="ghost" size="2" radius="full">
                   <Sliders />
-                  </IconButton>
+                </IconButton>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content defaultValue="dateCreated" size="1">
                 <DropdownMenu.Label>Sort By</DropdownMenu.Label>
@@ -300,7 +299,7 @@ export default function Layout({ children }: LayoutProps) {
         >
           <input
             type="text"
-            className="px-4 text-lg py-4 w-4/6 outline-none rounded-md shadow-lg border-none"
+            className="px-4 text-lg py-4 w-3/6 outline-none rounded-md shadow-lg border-none"
             placeholder="Find Note..."
             ref={inputRef}
             onChange={findNote}
@@ -317,6 +316,7 @@ export default function Layout({ children }: LayoutProps) {
           )}
         </Flex>
       </motion.div>
+      {/* actual body */}
       <motion.div
         animate={{ width: passedThres.get() ? "70%" : "100%" }}
         style={{
@@ -326,6 +326,7 @@ export default function Layout({ children }: LayoutProps) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        transition={{ duration: 0.3 }}
       >
         <Box className="w-full h-full rounded-xxl bg-white">{children}</Box>
       </motion.div>
