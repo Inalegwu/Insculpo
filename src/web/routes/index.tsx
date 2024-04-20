@@ -1,10 +1,10 @@
 import { useObservable } from "@legendapp/state/react";
-import { DownloadSimple, Eye } from "@phosphor-icons/react";
+import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
-import { useTimeout } from "@src/web/hooks";
+import { useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
@@ -16,7 +16,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 
-export const Route = createLazyFileRoute("/")({
+export const Route = createFileRoute("/")({
   component: Index,
 });
 
@@ -89,18 +89,21 @@ function Index() {
     [text],
   );
 
-  const handleMouseMove = useCallback(() => {
+  useWindow("mousemove", (e) => {
     toolbar.set(true);
-  }, [toolbar]);
+  });
 
   const handleBlur = useCallback(() => {
     saveNote({
       content: text.get(),
       noteId: noteState.activeNoteId.get(),
     });
+  }, [saveNote, text]);
+
+  const handleNewNoteClick = useCallback(() => {
     noteState.activeNoteId.set(null);
     text.set("");
-  }, [saveNote, text]);
+  }, [text]);
 
   const switchEditorState = useCallback(() => {
     console.log(editorState);
@@ -122,19 +125,14 @@ function Index() {
   );
 
   return (
-    <Flex
-      onMouseMove={handleMouseMove}
-      direction="column"
-      gap="2"
-      className="w-full h-full bg-slate-50"
-    >
+    <>
       {editorState === "writing" ? (
         <TextArea
           onChange={handleEditorInput}
           onKeyDown={handleKeyDown}
           ref={inputRef}
           value={text.get()}
-          className="w-full h-full text-sm outline-indigo-100 rounded-md"
+          className="w-full h-full text-sm bg-slate-50 rounded-md"
           onBlur={handleBlur}
         >
           <Dialog.Root>
@@ -146,8 +144,8 @@ function Index() {
         <Markdown
           // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
           children={text.get()}
-          className="bg-white text-base w-full h-full border-1 border-solid border-gray-400/50 px-2 py-2 rounded-md"
-          remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkToc]}
+          className="bg-white text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md"
+          remarkPlugins={[remarkGfm, remarkToc]}
           rehypePlugins={[rehypeRaw]}
           components={{
             code({ node, inline, className, children, ...props }: any) {
@@ -207,8 +205,18 @@ function Index() {
               <DownloadSimple size={15} />
             </IconButton>
           </Tooltip>
+          <Tooltip content="New note">
+            <IconButton
+              radius="full"
+              onClick={handleNewNoteClick}
+              variant="outline"
+              size="2"
+            >
+              <Plus size={15} />
+            </IconButton>
+          </Tooltip>
         </Flex>
       </motion.div>
-    </Flex>
+    </>
   );
 }
