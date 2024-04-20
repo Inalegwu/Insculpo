@@ -2,6 +2,7 @@ import { useObservable } from "@legendapp/state/react";
 import {
   Download,
   GearFine,
+  Info,
   Minus,
   Plus,
   Sidebar,
@@ -278,6 +279,16 @@ export default function Layout({ children }: LayoutProps) {
                   justify="start"
                   gap="4"
                 >
+                  <Tooltip content="About">
+                    <IconButton
+                      onClick={() => nav({ to: "/about" })}
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                    >
+                      <Info size={13} />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip content="Preferences">
                     <IconButton asChild variant="ghost" radius="full" size="2">
                       <Link to="/settings">
