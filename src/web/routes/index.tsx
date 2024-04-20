@@ -12,9 +12,7 @@ import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import remarkToc from "remark-toc";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -142,11 +140,9 @@ function Index() {
         </TextArea>
       ) : (
         <Markdown
-          // biome-ignore lint/correctness/noChildrenProp: I kind of prefer this way for this
           children={text.get()}
           className="bg-white text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md"
-          remarkPlugins={[remarkGfm, remarkToc]}
-          rehypePlugins={[rehypeRaw]}
+          remarkPlugins={[remarkGfm]}
           components={{
             code({ node, inline, className, children, ...props }: any) {
               const match = /language-(\w+)/.exec(className || "");

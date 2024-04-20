@@ -24,7 +24,7 @@ import { formatTextForSidebar } from "@src/shared/utils";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
@@ -73,6 +73,7 @@ export default function Layout({ children }: LayoutProps) {
   });
 
   const passedThres = useObservable(false);
+  const passedThreshVal = passedThres.get();
   const finder = useObservable(false);
   const sideBarFocus = useObservable(false);
   const searchInputFocus = useObservable(false);
@@ -144,164 +145,179 @@ export default function Layout({ children }: LayoutProps) {
       // onMouseMove={handleMouseMove}
     >
       {/* sidebar */}
-      <motion.div
-        animate={{
-          opacity: passedThres.get() ? 1 : 0,
-          display: passedThres.get() ? "flex" : "none",
-        }}
-        style={{
-          width: "99%",
-          height: "100%",
-          alignItems: "center",
-          justifyContent: "flex-end",
-        }}
-        transition={{ duration: 0.05 }}
-        className="absolute z-0 bg-teal-0 p-2"
-        onMouseEnter={() => sideBarFocus.set(true)}
-        onMouseLeave={() => sideBarFocus.set(false)}
-      >
-        <Flex
-          className="h-full w-[30%] overflow-y-hidden"
-          direction="column"
-          align="start"
-          justify="between"
-        >
-          <Flex
-            direction="column"
-            align="end"
-            justify="start"
-            width="100%"
-            className="h-[94%]"
-          >
-            {/* window actions */}
-            <Flex
-              align="center"
-              className="gap-5 mb-2 mt-2 px-2"
-              justify="end"
-              width="100%"
+      <AnimatePresence>
+        {passedThres.get() && (
+          <>
+            <motion.div
+              initial={{ display: "none" }}
+              animate={{ display: "flex" }}
+              style={{
+                width: "99%",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+              transition={{ duration: 1, bounce: 10 }}
+              className="absolute z-0 bg-teal-0 p-2"
+              onMouseEnter={() => sideBarFocus.set(true)}
+              onMouseLeave={() => sideBarFocus.set(false)}
             >
-              <Flex grow="1" id="drag-region" className="p-2" />
-              <Button
-                variant="ghost"
-                color="gray"
-                className="w-3 h-5 rounded-full flex items-center justify-center"
-                onClick={() => passedThres.set(false)}
+              <Flex
+                className="h-full w-[30%] overflow-y-hidden"
+                direction="column"
+                align="start"
+                justify="between"
               >
-                <Sidebar size={13} className="text-black/30" />
-              </Button>
-              <Button
-                variant="ghost"
-                color="gray"
-                className="w-3 h-5 rounded-full flex items-center justify-center"
-                onClick={() => minimize()}
-              >
-                <Minus size={13} className="text-black/20" />
-              </Button>
-              <Button
-                variant="ghost"
-                color="gray"
-                className="w-3 h-5 rounded-full flex items-center justify-center"
-                type="button"
-                onClick={() => close()}
-              >
-                <X size={13} />
-              </Button>
-            </Flex>
-            <Flex
-              direction="column"
-              className="h-full w-full overflow-y-scroll overflow-x-hidden"
-            >
-              {notes?.map((v) => (
-                <ContextMenu.Root key={v.doc?._id}>
-                  <ContextMenu.Trigger className="cursor-pointer">
-                    <Flex
-                      width="100%"
-                      className="px-2 py-2 rounded-md"
-                      direction="column"
-                      align="end"
-                      justify="center"
-                      onClick={() => handleNoteClick(v.doc?._id!)}
+                <Flex
+                  direction="column"
+                  align="end"
+                  justify="start"
+                  width="100%"
+                  className="h-[94%]"
+                >
+                  {/* window actions */}
+                  <Flex
+                    align="center"
+                    className="gap-5 mb-2 mt-2 px-2"
+                    justify="end"
+                    width="100%"
+                  >
+                    <Flex grow="1" id="drag-region" className="p-2" />
+                    <Button
+                      variant="ghost"
+                      color="gray"
+                      className="w-3 h-5 rounded-full flex items-center justify-center"
+                      onClick={() => passedThres.set(false)}
                     >
-                      <Text color="iris" weight="bold" className="text-[11px]">
-                        {v.doc?.name?.slice(0, 28)}
-                      </Text>
-                      <Text
-                        className="text-[10.5px] text-gray-400 font-medium"
-                        color="gray"
-                      >
-                        {formatTextForSidebar(v.doc?.body?.slice(0, 30) || "")}
-                      </Text>
-                    </Flex>
-                  </ContextMenu.Trigger>
-                  <ContextMenu.Content size="1" variant="soft">
-                    <ContextMenu.Item
-                      onClick={() => dumpNote({ noteId: v.doc?._id || "" })}
+                      <Sidebar size={13} className="text-black/30" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      color="gray"
+                      className="w-3 h-5 rounded-full flex items-center justify-center"
+                      onClick={() => minimize()}
                     >
-                      <Flex gap="1">
-                        <Download />
-                        <Text size="1">Export Note</Text>
-                      </Flex>
-                    </ContextMenu.Item>
-                    <ContextMenu.Item
-                      color="red"
-                      onClick={() =>
-                        deleteNote({ noteId: v.doc?._id!, rev: v.doc?._rev! })
-                      }
+                      <Minus size={13} className="text-black/20" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      color="gray"
+                      className="w-3 h-5 rounded-full flex items-center justify-center"
+                      type="button"
+                      onClick={() => close()}
                     >
-                      <Flex gap="1">
-                        <Trash />
-                        <Text size="1">Delete Note</Text>
-                      </Flex>
-                    </ContextMenu.Item>
-                  </ContextMenu.Content>
-                </ContextMenu.Root>
-              ))}
-            </Flex>
-          </Flex>
-          {/* bottom bar */}
-          <Flex
-            width="100%"
-            className="py-2 px-3"
-            align="center"
-            justify="start"
-            gap="4"
-          >
-            <Tooltip content="Preferences">
-              <IconButton asChild variant="ghost" radius="full" size="2">
-                <Link to="/settings">
-                  <GearFine size={13} />
-                </Link>
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="New Note">
-              <IconButton
-                variant="ghost"
-                radius="full"
-                size="2"
-                onClick={handleNewClicked}
-              >
-                <Plus size={13} />
-              </IconButton>
-            </Tooltip>
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>
-                <IconButton variant="ghost" size="2" radius="full">
-                  <Sliders />
-                </IconButton>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content defaultValue="dateCreated" size="1">
-                <DropdownMenu.Label>Sort By</DropdownMenu.Label>
-                <DropdownMenu.CheckboxItem textValue="dateCreated">
-                  <Text>Date Created</Text>
-                </DropdownMenu.CheckboxItem>
-                <DropdownMenu.CheckboxItem textValue="dateUpdated">
-                  <Text>Recently Updated</Text>
-                </DropdownMenu.CheckboxItem>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          </Flex>
-        </Flex>
-      </motion.div>
+                      <X size={13} />
+                    </Button>
+                  </Flex>
+                  <Flex
+                    direction="column"
+                    className="h-full w-full overflow-y-scroll overflow-x-hidden"
+                  >
+                    {notes?.map((v) => (
+                      <ContextMenu.Root key={v.doc?._id}>
+                        <ContextMenu.Trigger className="cursor-pointer">
+                          <Flex
+                            width="100%"
+                            className="px-2 py-2 rounded-md"
+                            direction="column"
+                            align="end"
+                            justify="center"
+                            onClick={() => handleNoteClick(v.doc?._id!)}
+                          >
+                            <Text
+                              color="iris"
+                              weight="bold"
+                              className="text-[11px]"
+                            >
+                              {v.doc?.name?.slice(0, 28)}
+                            </Text>
+                            <Text
+                              className="text-[10.5px] text-gray-400 font-medium"
+                              color="gray"
+                            >
+                              {formatTextForSidebar(
+                                v.doc?.body?.slice(0, 30) || "",
+                              )}
+                            </Text>
+                          </Flex>
+                        </ContextMenu.Trigger>
+                        <ContextMenu.Content size="1" variant="soft">
+                          <ContextMenu.Item
+                            onClick={() =>
+                              dumpNote({ noteId: v.doc?._id || "" })
+                            }
+                          >
+                            <Flex gap="1">
+                              <Download />
+                              <Text size="1">Export Note</Text>
+                            </Flex>
+                          </ContextMenu.Item>
+                          <ContextMenu.Item
+                            color="red"
+                            onClick={() =>
+                              deleteNote({
+                                noteId: v.doc?._id!,
+                                rev: v.doc?._rev!,
+                              })
+                            }
+                          >
+                            <Flex gap="1">
+                              <Trash />
+                              <Text size="1">Delete Note</Text>
+                            </Flex>
+                          </ContextMenu.Item>
+                        </ContextMenu.Content>
+                      </ContextMenu.Root>
+                    ))}
+                  </Flex>
+                </Flex>
+                {/* bottom bar */}
+                <Flex
+                  width="100%"
+                  className="py-2 px-3"
+                  align="center"
+                  justify="start"
+                  gap="4"
+                >
+                  <Tooltip content="Preferences">
+                    <IconButton asChild variant="ghost" radius="full" size="2">
+                      <Link to="/settings">
+                        <GearFine size={13} />
+                      </Link>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip content="New Note">
+                    <IconButton
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                      onClick={handleNewClicked}
+                    >
+                      <Plus size={13} />
+                    </IconButton>
+                  </Tooltip>
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger>
+                      <IconButton variant="ghost" size="2" radius="full">
+                        <Sliders />
+                      </IconButton>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content defaultValue="dateCreated" size="1">
+                      <DropdownMenu.Label>Sort By</DropdownMenu.Label>
+                      <DropdownMenu.CheckboxItem textValue="dateCreated">
+                        <Text>Date Created</Text>
+                      </DropdownMenu.CheckboxItem>
+                      <DropdownMenu.CheckboxItem textValue="dateUpdated">
+                        <Text>Recently Updated</Text>
+                      </DropdownMenu.CheckboxItem>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </Flex>
+              </Flex>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
       {/* search bar */}
       <motion.div
         animate={{

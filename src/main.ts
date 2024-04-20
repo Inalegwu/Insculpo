@@ -22,8 +22,10 @@ const createWindow = () => {
     createContext,
   });
 
+  mainWindow.hide();
+
   mainWindow.webContents.on("dom-ready", () => {
-    mainWindow.show;
+    mainWindow.show();
   });
 
   if (import.meta.env.DEV) {

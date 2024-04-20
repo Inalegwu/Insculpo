@@ -13,6 +13,9 @@
       },
       "a11y": {
         "noAutofocus": "warn"
+      },
+      "correctness": {
+        "noChildrenProp": "warn"
       }
     },
     "ignore": ["./kuma.config.ts"]
