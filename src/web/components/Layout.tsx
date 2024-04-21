@@ -146,6 +146,7 @@ export default function Layout({ children }: LayoutProps) {
       </motion.div>
       {/* actual body */}
       <Flex width="100%" height="100%">
+        {/* page content */}
         <motion.div
           animate={{ width: passedThres.get() ? "70%" : "100%" }}
           style={{
@@ -155,19 +156,22 @@ export default function Layout({ children }: LayoutProps) {
             flexDirection: "row",
             alignItems: "center",
           }}
+          transition={{ duration: 0.2 }}
           layout
         >
           <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
         </motion.div>
+        {/* sidebar */}
         <motion.div
           initial={{ width: "0%", opacity: 0 }}
           animate={{
-            width: passedThres.get() ? "30%" : "0%",
             opacity: passedThres.get() ? 1 : 0,
+            width: passedThres.get() ? "30%" : "0%",
           }}
-          transition={{ duration: 0.01 }}
+          transition={{ duration: 0.2 }}
           onMouseOver={() => sideBarFocus.set(true)}
           onMouseLeave={() => sideBarFocus.set(false)}
+          layout
         >
           <Flex
             width="100%"
