@@ -75,19 +75,34 @@ export const notesRouter = router({
   findNote: publicProcedure
     .input(z.object({ query: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      console.log(input);
-      const results = await ctx.db.find({
-        selector: {
-          name: input.query,
-          body: input.query,
-        },
-        fields: ["name", "body", "_id", "createdAt", "updatedAt"],
-        sort: ["name"],
-        limit: 5,
-        use_index: "name",
+      const docs = await ctx.db.allDocs({
+        include_docs: true,
       });
 
-      return results.docs;
+      const results = docs.rows.map((row) => {
+        if (
+          row.doc?.body?.includes(input.query) ||
+          row.doc?.name?.includes(input.query) ||
+          row.doc?.name
+            ?.toLocaleLowerCase()
+            .includes(input.query.toLocaleLowerCase()) ||
+          row.doc?.body
+            ?.toLocaleLowerCase()
+            .includes(input.query.toLocaleLowerCase()) ||
+          row.doc?.body
+            ?.toLocaleUpperCase()
+            .includes(input.query.toLocaleUpperCase()) ||
+          row.doc?.name
+            ?.toLocaleUpperCase()
+            .includes(input.query.toLocaleUpperCase())
+        ) {
+          return row;
+        }
+      });
+
+      console.log(results);
+
+      return results;
     }),
   deleteNote: publicProcedure
     .input(

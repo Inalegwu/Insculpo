@@ -11,7 +11,7 @@ configureObservablePersistence({
 });
 
 export const globalState$ = observable<GlobalState>({
-  colorMode: "dark",
+  colorMode: "light",
   settingsVisible: false,
   firstLaunch: true,
   editorState: "viewing",

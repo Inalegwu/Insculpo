@@ -2,21 +2,24 @@ import { Checkbox, Flex, Heading } from "@radix-ui/themes";
 import { Link } from "@src/web/components";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { nord, oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
+import { globalState$ } from "../state";
 
 export default function MarkdownView({ content }: { content: string }) {
+  const colorMode = globalState$.colorMode.get();
+
   return (
     <Markdown
       children={content}
-      className="bg-white text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md overflow-y-scroll"
+      className="bg-slate-50 text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md overflow-y-scroll dark:bg-slate-700 dark:border-gray-500/30"
       remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
       components={{
         code({ node, inline, className, children, ...props }: any) {
           const match = /language-(\w+)/.exec(className || "");
           return !inline && match ? (
             <SyntaxHighlighter
-              style={duotoneLight}
+              style={colorMode === "light" ? oneLight : nord}
               PreTag="div"
               customStyle={{
                 fontSize: 13,

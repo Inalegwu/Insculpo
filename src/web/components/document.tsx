@@ -6,6 +6,7 @@ import { formatTextForSidebar } from "@src/shared/utils";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
+import { useEditor } from "../hooks";
 import { noteState } from "../state";
 
 type DocumentProps = {
@@ -16,6 +17,7 @@ export default function Document({ doc }: DocumentProps) {
   const utils = t.useUtils();
   const routeState = useRouterState();
   const nav = useNavigate();
+  const [editorRef] = useEditor();
 
   const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
     onSuccess: () => {
@@ -42,13 +44,14 @@ export default function Document({ doc }: DocumentProps) {
   const handleNoteClick = useCallback(
     (id: string) => {
       noteState.activeNoteId.set(id);
+      editorRef.current?.focus();
       if (routeState.location.pathname !== "/") {
         nav({
           to: "/",
         });
       }
     },
-    [routeState, nav],
+    [routeState, nav, editorRef],
   );
 
   return (

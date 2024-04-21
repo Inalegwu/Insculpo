@@ -20,12 +20,11 @@ import {
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
-import { noteState } from "@src/web/state";
+import { globalState$, noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
-import { useCallback, useRef } from "react";
-import toast from "react-hot-toast";
+import { useCallback, useEffect, useRef } from "react";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -42,25 +41,16 @@ export default function Layout({ children }: LayoutProps) {
 
   const { data: notes } = t.notes.getNotes.useQuery();
 
-  const { mutate: search, data: results } = t.notes.findNote.useMutation({
-    onError: (e) => {
-      toast.error(e.message);
-    },
-  });
-
   const passedThres = useObservable(false);
   const finder = useObservable(false);
   const sideBarFocus = useObservable(false);
   const searchInputFocus = useObservable(false);
 
-  const findNote = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.currentTarget.value.length < 3) return;
-
-      search({ query: e.currentTarget.value });
-    },
-    [search],
-  );
+  useEffect(() => {
+    if (globalState$.colorMode.get() === "dark") {
+      document.body.classList.add("dark");
+    }
+  }, []);
 
   useTimeout(() => {
     if (finder.get() && !searchInputFocus.get()) {
@@ -104,46 +94,8 @@ export default function Layout({ children }: LayoutProps) {
     <Flex
       width="100%"
       align="center"
-      className="transition w-full h-screen  bg-gray-100 relative p-2"
+      className="transition w-full h-screen  bg-gray-100 relative p-2 dark:bg-gray-800"
     >
-      {/* search bar */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{
-          opacity: finder.get() ? 1 : 0,
-          scale: finder.get() ? 1 : 0,
-        }}
-        style={{ width: "100%", height: "100%" }}
-        className="absolute z-20"
-        onClick={() => finder.set(false)}
-      >
-        <Flex
-          direction="column"
-          gap="2"
-          width="100%"
-          height="100%"
-          align="center"
-          justify="center"
-        >
-          <input
-            type="text"
-            className="px-4 text-lg py-4 w-3/6 outline-none rounded-md shadow-lg border-1 border-solid border-gray-200"
-            placeholder="Find Note..."
-            ref={inputRef}
-            onChange={findNote}
-            onFocus={() => searchInputFocus.set(true)}
-            onBlur={() => searchInputFocus.set(false)}
-          />
-          {results?.length === 0 && <Text>No Results</Text>}
-          {results && (
-            <Flex direction="column" className="w-4/6 bg-white rounded-md">
-              {results.map((v) => (
-                <Text key={v._id}>{v.name}</Text>
-              ))}
-            </Flex>
-          )}
-        </Flex>
-      </motion.div>
       {/* actual body */}
       <Flex width="100%" height="100%">
         {/* page content */}
@@ -159,7 +111,9 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.2 }}
           layout="size"
         >
-          <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
+          <Box className="w-full h-full rounded-lg bg-white dark:bg-slate-700">
+            {children}
+          </Box>
         </motion.div>
         {/* sidebar */}
         <motion.div
@@ -199,23 +153,23 @@ export default function Layout({ children }: LayoutProps) {
                 <Button
                   variant="ghost"
                   color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                   onClick={() => passedThres.set(false)}
                 >
-                  <Sidebar size={13} className="text-black/30" />
+                  <Sidebar size={13} />
                 </Button>
                 <Button
                   variant="ghost"
                   color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                   onClick={() => minimize()}
                 >
-                  <Minus size={13} className="text-black/20" />
+                  <Minus size={13} />
                 </Button>
                 <Button
                   variant="ghost"
                   color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                   type="button"
                   onClick={() => close()}
                 >

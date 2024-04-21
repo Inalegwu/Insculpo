@@ -3,12 +3,12 @@ import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
-import { useInterval, useTimeout, useWindow } from "@src/web/hooks";
+import { useEditor, useInterval, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/")({
@@ -19,16 +19,10 @@ function Index() {
   const utils = t.useUtils();
   const text = useObservable<string>("");
   const toolbar = useObservable(false);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   const editorState = globalState$.editorState.get();
-
-  useEffect(() => {
-    if (noteState.activeNoteId.get() !== null) {
-      inputRef.current?.focus();
-    }
-  }, []);
+  const [editorRef] = useEditor();
 
   useTimeout(() => {
     if (toolbar.get()) {
@@ -40,8 +34,6 @@ function Index() {
     // don't save if text is empty
     if (text.get() === "") return;
 
-    // we can save if the active note id is null ,
-    // 'cause thats a new note.
     saveNote({ noteId: noteState.activeNoteId.get(), content: text.get() });
   }, 2000);
 
@@ -99,7 +91,6 @@ function Index() {
 
   const handleNewNoteClick = useCallback(() => {
     globalState$.editorState.set("writing");
-    inputRef.current?.focus();
     noteState.activeNoteId.set(null);
     text.set("");
   }, [text]);
@@ -109,7 +100,6 @@ function Index() {
       globalState$.editorState.set("viewing");
       return;
     }
-    inputRef.current?.focus();
     globalState$.editorState.set("writing");
   }, [editorState]);
 
@@ -128,9 +118,9 @@ function Index() {
         <TextArea
           onChange={handleEditorInput}
           onKeyDown={handleKeyDown}
-          ref={inputRef}
           value={text.get()!}
-          className="w-full h-full text-sm bg-slate-50 rounded-md"
+          ref={editorRef}
+          className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-gray-700"
         >
           <Dialog.Root>
             <Dialog.Trigger ref={triggerRef} />
