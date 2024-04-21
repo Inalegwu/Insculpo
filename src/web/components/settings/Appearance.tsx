@@ -23,7 +23,9 @@ export default function Appearance() {
     <Flex width="100%" height="100%" className="py-2">
       <Flex align="center" width="100%" justify="between" className="py-3">
         <Flex direction="column" align="start">
-          <Text className="text-[11.5px]">Dark Mode</Text>
+          <Text className="text-[11.5px]" color="iris">
+            Dark Mode
+          </Text>
           <Text className="text-gray-400 text-[11px]">
             join the dark side,or stay in the light,we don't judge
           </Text>

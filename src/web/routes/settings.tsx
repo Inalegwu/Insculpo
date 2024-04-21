@@ -13,9 +13,13 @@ export const Route = createFileRoute("/settings")({
 
 function Settings() {
   return (
-    <Flex width="100%" height="100%" className="px-2 py-2">
-      <Tabs.Root className="w-full h-full">
-        <Tabs.List defaultValue="sync">
+    <Flex
+      width="100%"
+      height="100%"
+      className="px-2 py-2 border-gray-400/20 border-1 border-solid rounded-md"
+    >
+      <Tabs.Root defaultValue="appearance" className="w-full h-full">
+        <Tabs.List size="2">
           <Tabs.Trigger value="sync">
             <Flex align="center" gap="2">
               <ArrowsCounterClockwise />

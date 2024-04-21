@@ -25,7 +25,10 @@ export default function Link({ href, children }: LinkProps) {
       <HoverCard.Trigger onClick={() => openLink({ link: href! })}>
         <RadixLink underline="always">{children}</RadixLink>
       </HoverCard.Trigger>
-      <HoverCard.Content size="1" className="max-w-md max-h-md">
+      <HoverCard.Content
+        size="1"
+        className="max-w-md max-h-md dark:bg-slate-700"
+      >
         {data && (
           <Flex align="center" gap="2">
             <img

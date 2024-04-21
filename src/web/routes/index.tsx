@@ -140,7 +140,7 @@ function Index() {
           <Tooltip
             content={
               globalState$.editorState.get() === "writing"
-                ? "Switch to preview"
+                ? "Switch to Preview"
                 : "Switch to Editor"
             }
           >

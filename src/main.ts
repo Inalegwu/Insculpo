@@ -10,6 +10,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     frame: false,
     resizable: false,
+    show: false,
     webPreferences: {
       sandbox: false,
       preload: join(__dirname, "../preload/preload.js"),
@@ -22,11 +23,9 @@ const createWindow = () => {
     createContext,
   });
 
-  // mainWindow.hide();
-
-  // mainWindow.webContents.on("dom-ready", () => {
-  //   mainWindow.show();
-  // });
+  mainWindow.webContents.on("dom-ready", () => {
+    mainWindow.show();
+  });
 
   if (import.meta.env.DEV) {
     mainWindow.loadURL("http://localhost:5173");
@@ -34,7 +33,7 @@ const createWindow = () => {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
 
-  mainWindow.webContents.openDevTools({ mode: "detach" });
+  // mainWindow.webContents.openDevTools({ mode: "detach" });
 };
 
 app.whenReady().then(() => {
