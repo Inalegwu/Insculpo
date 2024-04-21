@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import { Document } from "@src/web/components";
+import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
@@ -222,14 +222,12 @@ export default function Layout({ children }: LayoutProps) {
                   <X size={13} />
                 </Button>
               </Flex>
-              <Flex
-                direction="column"
-                className="h-full w-full overflow-y-scroll overflow-x-hidden"
-              >
-                {notes?.map((v) => (
-                  <Document doc={v.doc} key={v.doc?._id} />
-                ))}
-              </Flex>
+              <FlatList
+                data={notes || []}
+                renderItem={({ item, index }) => (
+                  <Document doc={item.doc} key={index} />
+                )}
+              />
             </Flex>
             {/* bottom bar */}
             <Flex

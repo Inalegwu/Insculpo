@@ -91,6 +91,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.0",
+    "@electron/rebuild": "^3.6.0",
     "@tanstack/router-devtools": "^1.12.13",
     "@tanstack/router-vite-plugin": "^1.12.8",
     "@types/better-sqlite3": "^7.6.8",

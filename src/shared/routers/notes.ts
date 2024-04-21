@@ -81,6 +81,7 @@ export const notesRouter = router({
           name: input.query,
           body: input.query,
         },
+        fields: ["name", "body", "_id", "createdAt", "updatedAt"],
         sort: ["name"],
         limit: 5,
         use_index: "name",
