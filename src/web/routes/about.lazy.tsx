@@ -19,10 +19,10 @@ function About() {
       align="start"
       justify="center"
       gap="3"
-      className="px-15 py-15 overflow-y-scroll overflow-x-hidden"
+      className="px-20 py-20 overflow-y-scroll"
     >
       <Flex direction="column" align="start">
-        <Heading size="7">Insculpto</Heading>
+        <Heading size="7">Insculpo</Heading>
         <Text size="1" className="text-gray-400">
           Focus on taking notes , not organizing them
         </Text>
@@ -33,24 +33,24 @@ function About() {
       </Text>
       <Text size="2">
         Many note-taking apps today feature very complex UI's and data strucures
-        and how to organize every little note you write.This works for a lot of
-        people , but I'm not one of them , I don't exactly take notes , I
-        scribble on any piece of paper or writing materials I have in front of
-        me , I've even scribbled on a leaf.So the structure and organization of
-        many of these notes apps , hinder me from getting to the point of my
-        note and instead thinking of which folder it fits into and which tags
-        will help me find it the fastest.
+        and ways to organize every little note you write.This works for a lot of
+        people,but I'm not one of them,I don't exactly take notes, I scribble on
+        any piece of paper or writing materials I have in front of me,I've even
+        scribbled on a leaf.So the structure and organization of many of these
+        notes apps,hinder me from getting to the point of my note and instead
+        thinking of which folder it fits into and which tags will help me find
+        it the fastest.
       </Text>
       <Text size="2">
         Insculpo is designed to rid me of that and instead allow me to focus on
         getting the note down first and only think of organzing it when the
-        thoughts have been solidified.
+        thoughts have been crystallized.Much like an advanced notepad
       </Text>
       <Text size="2">
-        It features a centralized and full-screen text area.This,is where the
-        writing will take place.Then when you're done and finally ready to
-        arrange things , you can open up the sidebar and do the arranging you
-        need to,but only when you're sure everything is solid.
+        It features a centralized and full-screen text area.This,is where you'll
+        write.Then when you're done and finally ready to arrange things,you can
+        open up the sidebar and do the arranging you need to,but only when
+        you're sure everything is crystal clear.
       </Text>
       <Text size="2">
         If you find the project interesting,please star the project , it would

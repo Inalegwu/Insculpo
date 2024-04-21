@@ -2,7 +2,7 @@ import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
-import { Link } from "@src/web/components";
+import { MarkdownView } from "@src/web/components";
 import { useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
@@ -10,10 +10,6 @@ import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import Markdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import remarkGfm from "remark-gfm";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -67,13 +63,6 @@ function Index() {
       });
     },
   });
-
-  const { mutate: openLink } = t.links.openExternal.useMutation();
-  const {
-    mutate: prefetchLinkData,
-    data,
-    isLoading,
-  } = t.links.fetchLinkData.useMutation();
 
   t.notes.getNote.useQuery(
     {
@@ -146,37 +135,7 @@ function Index() {
           </Dialog.Root>
         </TextArea>
       ) : (
-        <Markdown
-          children={text.get()}
-          className="bg-white text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md"
-          remarkPlugins={[remarkGfm]}
-          components={{
-            code({ node, inline, className, children, ...props }: any) {
-              const match = /language-(\w+)/.exec(className || "");
-              return !inline && match ? (
-                <SyntaxHighlighter
-                  style={oneLight}
-                  PreTag="div"
-                  customStyle={{
-                    fontSize: 13,
-                    fontFamily: "Recursive",
-                  }}
-                  language={match[1]}
-                  {...props}
-                >
-                  {String(children).replace(/\n$/, "")}
-                </SyntaxHighlighter>
-              ) : (
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            },
-            a(props) {
-              return <Link {...props} />;
-            },
-          }}
-        />
+        <MarkdownView content={text.get()} />
       )}
       {/* change from preview mode to non-preview mode */}
       <motion.div

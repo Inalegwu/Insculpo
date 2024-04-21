@@ -75,7 +75,7 @@ export default function Document({ doc }: DocumentProps) {
       </ContextMenu.Trigger>
       <ContextMenu.Content size="1" variant="soft">
         <ContextMenu.Item onClick={() => dumpNote({ noteId: doc?._id || "" })}>
-          <Flex gap="1">
+          <Flex gap="1" align="center">
             <Download />
             <Text size="1">Export Note</Text>
           </Flex>
@@ -89,7 +89,7 @@ export default function Document({ doc }: DocumentProps) {
             })
           }
         >
-          <Flex gap="1">
+          <Flex gap="1" align="center">
             <Trash />
             <Text size="1">Delete Note</Text>
           </Flex>

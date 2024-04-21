@@ -72,7 +72,7 @@ export default function Layout({ children }: LayoutProps) {
     if (passedThres.get() && !sideBarFocus.get()) {
       passedThres.set(false);
     }
-  }, 2300);
+  }, 3000);
 
   useWindow("keypress", (e) => {
     if (e.keyCode === 6 && !finder.get()) {
@@ -87,7 +87,7 @@ export default function Layout({ children }: LayoutProps) {
     if (threshold >= 0.97 && !passedThres.get()) {
       passedThres.set(true);
     }
-  }, 60);
+  }, 90);
 
   useWindow("mousemove", mouseMove);
 
@@ -157,7 +157,7 @@ export default function Layout({ children }: LayoutProps) {
             alignItems: "center",
           }}
           transition={{ duration: 0.2 }}
-          layout
+          layout="size"
         >
           <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
         </motion.div>
@@ -171,7 +171,7 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.2 }}
           onMouseOver={() => sideBarFocus.set(true)}
           onMouseLeave={() => sideBarFocus.set(false)}
-          layout
+          layout="size"
         >
           <Flex
             width="100%"
@@ -231,58 +231,58 @@ export default function Layout({ children }: LayoutProps) {
                 ))}
               </Flex>
             </Flex>
-          </Flex>
-          {/* bottom bar */}
-          <Flex
-            width="100%"
-            className="py-2 px-3"
-            align="center"
-            justify="start"
-            gap="4"
-          >
-            <Tooltip content="About">
-              <IconButton
-                onClick={() => nav({ to: "/about" })}
-                variant="ghost"
-                radius="full"
-                size="2"
-              >
-                <Info size={13} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="Preferences">
-              <IconButton asChild variant="ghost" radius="full" size="2">
-                <Link to="/settings">
-                  <GearFine size={13} />
-                </Link>
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="New Note">
-              <IconButton
-                variant="ghost"
-                radius="full"
-                size="2"
-                onClick={handleNewClicked}
-              >
-                <Plus size={13} />
-              </IconButton>
-            </Tooltip>
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>
-                <IconButton variant="ghost" size="2" radius="full">
-                  <Sliders />
+            {/* bottom bar */}
+            <Flex
+              width="100%"
+              className="py-2 px-3"
+              align="center"
+              justify="start"
+              gap="4"
+            >
+              <Tooltip content="About">
+                <IconButton
+                  onClick={() => nav({ to: "/about" })}
+                  variant="ghost"
+                  radius="full"
+                  size="2"
+                >
+                  <Info size={13} />
                 </IconButton>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content defaultValue="dateCreated" size="1">
-                <DropdownMenu.Label>Sort By</DropdownMenu.Label>
-                <DropdownMenu.CheckboxItem textValue="dateCreated">
-                  <Text>Date Created</Text>
-                </DropdownMenu.CheckboxItem>
-                <DropdownMenu.CheckboxItem textValue="dateUpdated">
-                  <Text>Recently Updated</Text>
-                </DropdownMenu.CheckboxItem>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
+              </Tooltip>
+              <Tooltip content="Preferences">
+                <IconButton asChild variant="ghost" radius="full" size="2">
+                  <Link to="/settings">
+                    <GearFine size={13} />
+                  </Link>
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="New Note">
+                <IconButton
+                  variant="ghost"
+                  radius="full"
+                  size="2"
+                  onClick={handleNewClicked}
+                >
+                  <Plus size={13} />
+                </IconButton>
+              </Tooltip>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <IconButton variant="ghost" size="2" radius="full">
+                    <Sliders />
+                  </IconButton>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content defaultValue="dateCreated" size="1">
+                  <DropdownMenu.Label>Sort By</DropdownMenu.Label>
+                  <DropdownMenu.CheckboxItem textValue="dateCreated">
+                    <Text>Date Created</Text>
+                  </DropdownMenu.CheckboxItem>
+                  <DropdownMenu.CheckboxItem textValue="dateUpdated">
+                    <Text>Recently Updated</Text>
+                  </DropdownMenu.CheckboxItem>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            </Flex>
           </Flex>
         </motion.div>
       </Flex>
