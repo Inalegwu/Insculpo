@@ -2,7 +2,7 @@ import { Checkbox, Flex, Heading } from "@radix-ui/themes";
 import { Link } from "@src/web/components";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 
 export default function MarkdownView({ content }: { content: string }) {
@@ -16,7 +16,7 @@ export default function MarkdownView({ content }: { content: string }) {
           const match = /language-(\w+)/.exec(className || "");
           return !inline && match ? (
             <SyntaxHighlighter
-              style={oneLight}
+              style={duotoneLight}
               PreTag="div"
               customStyle={{
                 fontSize: 13,
