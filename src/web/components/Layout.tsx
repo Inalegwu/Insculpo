@@ -18,14 +18,14 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
+import { Document } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
-import Document from "./documents";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -105,141 +105,10 @@ export default function Layout({ children }: LayoutProps) {
       width="100%"
       align="center"
       className="transition w-full h-screen  bg-gray-100 relative p-2"
-      // onMouseMove={handleMouseMove}
     >
-      {/* sidebar */}
-      <AnimatePresence>
-        {passedThres.get() && (
-          <>
-            <motion.div
-              initial={{ display: "none" }}
-              animate={{ display: "flex" }}
-              style={{
-                width: "99%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "flex-end",
-              }}
-              transition={{ duration: 1, bounce: 10 }}
-              className="absolute z-0 bg-teal-0 p-2"
-              onMouseEnter={() => sideBarFocus.set(true)}
-              onMouseLeave={() => sideBarFocus.set(false)}
-            >
-              <Flex
-                className="h-full w-[30%] overflow-y-hidden"
-                direction="column"
-                align="start"
-                justify="between"
-              >
-                <Flex
-                  direction="column"
-                  align="end"
-                  justify="start"
-                  width="100%"
-                  className="h-[94%]"
-                >
-                  {/* window actions */}
-                  <Flex
-                    align="center"
-                    className="gap-5 mb-2 mt-2 px-2"
-                    justify="end"
-                    width="100%"
-                  >
-                    <Flex grow="1" id="drag-region" className="p-2" />
-                    <Button
-                      variant="ghost"
-                      color="gray"
-                      className="w-3 h-5 rounded-full flex items-center justify-center"
-                      onClick={() => passedThres.set(false)}
-                    >
-                      <Sidebar size={13} className="text-black/30" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      color="gray"
-                      className="w-3 h-5 rounded-full flex items-center justify-center"
-                      onClick={() => minimize()}
-                    >
-                      <Minus size={13} className="text-black/20" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      color="gray"
-                      className="w-3 h-5 rounded-full flex items-center justify-center"
-                      type="button"
-                      onClick={() => close()}
-                    >
-                      <X size={13} />
-                    </Button>
-                  </Flex>
-                  <Flex
-                    direction="column"
-                    className="h-full w-full overflow-y-scroll overflow-x-hidden"
-                  >
-                    {notes?.map((v) => (
-                      <Document doc={v.doc} key={v.doc?._id} />
-                    ))}
-                  </Flex>
-                </Flex>
-                {/* bottom bar */}
-                <Flex
-                  width="100%"
-                  className="py-2 px-3"
-                  align="center"
-                  justify="start"
-                  gap="4"
-                >
-                  <Tooltip content="About">
-                    <IconButton
-                      onClick={() => nav({ to: "/about" })}
-                      variant="ghost"
-                      radius="full"
-                      size="2"
-                    >
-                      <Info size={13} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip content="Preferences">
-                    <IconButton asChild variant="ghost" radius="full" size="2">
-                      <Link to="/settings">
-                        <GearFine size={13} />
-                      </Link>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip content="New Note">
-                    <IconButton
-                      variant="ghost"
-                      radius="full"
-                      size="2"
-                      onClick={handleNewClicked}
-                    >
-                      <Plus size={13} />
-                    </IconButton>
-                  </Tooltip>
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <IconButton variant="ghost" size="2" radius="full">
-                        <Sliders />
-                      </IconButton>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content defaultValue="dateCreated" size="1">
-                      <DropdownMenu.Label>Sort By</DropdownMenu.Label>
-                      <DropdownMenu.CheckboxItem textValue="dateCreated">
-                        <Text>Date Created</Text>
-                      </DropdownMenu.CheckboxItem>
-                      <DropdownMenu.CheckboxItem textValue="dateUpdated">
-                        <Text>Recently Updated</Text>
-                      </DropdownMenu.CheckboxItem>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </Flex>
-              </Flex>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
       {/* search bar */}
       <motion.div
+        initial={{ opacity: 0, scale: 0 }}
         animate={{
           opacity: finder.get() ? 1 : 0,
           scale: finder.get() ? 1 : 0,
@@ -258,7 +127,7 @@ export default function Layout({ children }: LayoutProps) {
         >
           <input
             type="text"
-            className="px-4 text-lg py-4 w-3/6 outline-none rounded-md shadow-lg border-none"
+            className="px-4 text-lg py-4 w-3/6 outline-none rounded-md shadow-lg border-1 border-solid border-gray-200"
             placeholder="Find Note..."
             ref={inputRef}
             onChange={findNote}
@@ -276,19 +145,143 @@ export default function Layout({ children }: LayoutProps) {
         </Flex>
       </motion.div>
       {/* actual body */}
-      <motion.div
-        animate={{ width: passedThres.get() ? "70%" : "100%" }}
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-        layout
-      >
-        <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
-      </motion.div>
+      <Flex width="100%" height="100%">
+        <motion.div
+          animate={{ width: passedThres.get() ? "70%" : "100%" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+          layout
+        >
+          <Box className="w-full h-full rounded-lg bg-white">{children}</Box>
+        </motion.div>
+        <motion.div
+          initial={{ width: "0%", opacity: 0 }}
+          animate={{
+            width: passedThres.get() ? "30%" : "0%",
+            opacity: passedThres.get() ? 1 : 0,
+          }}
+          transition={{ duration: 0.01 }}
+          onMouseOver={() => sideBarFocus.set(true)}
+          onMouseLeave={() => sideBarFocus.set(false)}
+        >
+          <Flex
+            width="100%"
+            direction="column"
+            align="start"
+            justify="between"
+            height="100%"
+          >
+            {/* main sidebar */}
+            <Flex
+              direction="column"
+              align="end"
+              justify="start"
+              width="100%"
+              className="h-[94%]"
+            >
+              {/* window actions */}
+              <Flex
+                align="center"
+                className="gap-5 mb-2 mt-2 px-2"
+                justify="end"
+                width="100%"
+              >
+                <Flex grow="1" id="drag-region" className="p-2" />
+                <Button
+                  variant="ghost"
+                  color="gray"
+                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  onClick={() => passedThres.set(false)}
+                >
+                  <Sidebar size={13} className="text-black/30" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  color="gray"
+                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  onClick={() => minimize()}
+                >
+                  <Minus size={13} className="text-black/20" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  color="gray"
+                  className="w-3 h-5 rounded-full flex items-center justify-center"
+                  type="button"
+                  onClick={() => close()}
+                >
+                  <X size={13} />
+                </Button>
+              </Flex>
+              <Flex
+                direction="column"
+                className="h-full w-full overflow-y-scroll overflow-x-hidden"
+              >
+                {notes?.map((v) => (
+                  <Document doc={v.doc} key={v.doc?._id} />
+                ))}
+              </Flex>
+            </Flex>
+          </Flex>
+          {/* bottom bar */}
+          <Flex
+            width="100%"
+            className="py-2 px-3"
+            align="center"
+            justify="start"
+            gap="4"
+          >
+            <Tooltip content="About">
+              <IconButton
+                onClick={() => nav({ to: "/about" })}
+                variant="ghost"
+                radius="full"
+                size="2"
+              >
+                <Info size={13} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Preferences">
+              <IconButton asChild variant="ghost" radius="full" size="2">
+                <Link to="/settings">
+                  <GearFine size={13} />
+                </Link>
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="New Note">
+              <IconButton
+                variant="ghost"
+                radius="full"
+                size="2"
+                onClick={handleNewClicked}
+              >
+                <Plus size={13} />
+              </IconButton>
+            </Tooltip>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <IconButton variant="ghost" size="2" radius="full">
+                  <Sliders />
+                </IconButton>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content defaultValue="dateCreated" size="1">
+                <DropdownMenu.Label>Sort By</DropdownMenu.Label>
+                <DropdownMenu.CheckboxItem textValue="dateCreated">
+                  <Text>Date Created</Text>
+                </DropdownMenu.CheckboxItem>
+                <DropdownMenu.CheckboxItem textValue="dateUpdated">
+                  <Text>Recently Updated</Text>
+                </DropdownMenu.CheckboxItem>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </Flex>
+        </motion.div>
+      </Flex>
     </Flex>
   );
 }

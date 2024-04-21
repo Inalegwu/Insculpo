@@ -14,3 +14,13 @@ export type Note = {
   createdAt?: number;
   updatedAt?: number;
 };
+
+export type Tag = {
+  title?: string;
+  description?: string;
+  url?: string;
+  site_name?: string;
+  image?: string;
+  icon?: string;
+  keywords?: string;
+};
