@@ -6,14 +6,13 @@ import UnoCSS from "unocss/vite";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: ["node-fetch"] })],
+    plugins: [externalizeDepsPlugin()],
     build: {
       lib: {
         entry: "src/main.ts",
       },
     },
     resolve: {
-      // path aliases
       alias: {
         "@src": resolve(__dirname, "src/"),
         "@shared": resolve(__dirname, "src/shared/"),
@@ -24,19 +23,16 @@ export default defineConfig({
     },
   },
   preload: {
-    plugins: [externalizeDepsPlugin({exclude:["node-fetch"]})],
+    plugins: [externalizeDepsPlugin()],
     build: {
-      // tell electron-vite where to look for your preload file
       lib: {
         entry: "src/preload.ts",
       },
     },
   },
   renderer: {
-    // tell electron-vite where your web entry point is
     root: "src/web/",
     resolve: {
-      // path aliases
       alias: {
         "@src": resolve(__dirname, "src/"),
         "@shared": resolve(__dirname, "src/shared/"),
@@ -53,7 +49,6 @@ export default defineConfig({
         generatedRouteTree: "./src/web/routeTree.gen.ts",
       }),
     ],
-    // where to output your web files
     build: {
       outDir: "out/renderer",
       rollupOptions: {

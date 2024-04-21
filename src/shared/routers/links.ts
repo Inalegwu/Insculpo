@@ -1,8 +1,9 @@
 import { publicProcedure, router } from "@src/trpc";
-import cheerio from "cheerio";
+import {load} from "cheerio";
 import { shell } from "electron";
 import { z } from "zod";
 import { extractOGTag } from "../utils";
+import axios from "axios";
 
 export const linksRouter = router({
   openExternal: publicProcedure
@@ -21,11 +22,9 @@ export const linksRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      const body = await fetch(input.url)
-        .then((res) => res.text())
-        .then((v) => v);
-
-      const html = cheerio.load(body);
+      const body = await axios.get(input.url)
+        
+      const html = load(body.data);
 
       const tags = extractOGTag(html);
 
