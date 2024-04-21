@@ -3,7 +3,7 @@ import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
-import { useTimeout, useWindow } from "@src/web/hooks";
+import { useInterval, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const utils = t.useUtils();
-  const text = useObservable("");
+  const text = useObservable<string>("");
   const toolbar = useObservable(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -35,6 +35,15 @@ function Index() {
       toolbar.set(false);
     }
   }, 4000);
+
+  useInterval(() => {
+    // don't save if text is empty
+    if (text.get() === "") return;
+
+    // we can save if the active note id is null ,
+    // 'cause thats a new note.
+    saveNote({ noteId: noteState.activeNoteId.get(), content: text.get() });
+  }, 2000);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
@@ -88,14 +97,9 @@ function Index() {
     toolbar.set(true);
   });
 
-  const handleBlur = useCallback(() => {
-    saveNote({
-      content: text.get(),
-      noteId: noteState.activeNoteId.get(),
-    });
-  }, [saveNote, text]);
-
   const handleNewNoteClick = useCallback(() => {
+    globalState$.editorState.set("writing");
+    inputRef.current?.focus();
     noteState.activeNoteId.set(null);
     text.set("");
   }, [text]);
@@ -125,9 +129,8 @@ function Index() {
           onChange={handleEditorInput}
           onKeyDown={handleKeyDown}
           ref={inputRef}
-          value={text.get()}
+          value={text.get()!}
           className="w-full h-full text-sm bg-slate-50 rounded-md"
-          onBlur={handleBlur}
         >
           <Dialog.Root>
             <Dialog.Trigger ref={triggerRef} />
@@ -135,7 +138,7 @@ function Index() {
           </Dialog.Root>
         </TextArea>
       ) : (
-        <MarkdownView content={text.get()} />
+        <MarkdownView content={text.get()!} />
       )}
       {/* change from preview mode to non-preview mode */}
       <motion.div
@@ -156,6 +159,7 @@ function Index() {
               variant="outline"
               radius="full"
               size="2"
+              className="cursor-pointer"
             >
               <Eye size={15} />
             </IconButton>
@@ -166,6 +170,7 @@ function Index() {
               variant="outline"
               radius="full"
               size="2"
+              className="cursor-pointer"
             >
               <DownloadSimple size={15} />
             </IconButton>
@@ -175,6 +180,7 @@ function Index() {
               radius="full"
               onClick={handleNewNoteClick}
               variant="outline"
+              className="cursor-pointer"
               size="2"
             >
               <Plus size={15} />
