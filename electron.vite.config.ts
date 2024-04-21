@@ -1,12 +1,12 @@
-import { resolve } from "path";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import react from "@vitejs/plugin-react";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import { resolve } from "node:path";
 import UnoCSS from "unocss/vite";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [externalizeDepsPlugin({ exclude: ["node-fetch"] })],
     build: {
       lib: {
         entry: "src/main.ts",
