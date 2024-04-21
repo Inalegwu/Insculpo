@@ -13,7 +13,7 @@
   "main": "out/main/main.js",
   "scripts": {
     "start": "electron-vite preview",
-    "dev": "electron-vite dev",
+    "dev": "electron-vite dev --watch",
     "prebuild": "electron-vite build",
     "build": "pnpm exec electron-builder",
     "db:generate": "drizzle-kit generate:sqlite",
