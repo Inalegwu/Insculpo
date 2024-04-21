@@ -15,7 +15,11 @@
         "noAutofocus": "warn"
       },
       "correctness": {
-        "noChildrenProp": "warn"
+        "noChildrenProp": "warn",
+        "noUnreachable": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn"
       }
     },
     "ignore": ["./kuma.config.ts"]
