@@ -24,7 +24,7 @@ export default defineConfig({
     },
   },
   preload: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [externalizeDepsPlugin({exclude:["node-fetch"]})],
     build: {
       // tell electron-vite where to look for your preload file
       lib: {
