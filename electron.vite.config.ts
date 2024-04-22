@@ -6,7 +6,7 @@ import UnoCSS from "unocss/vite";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [externalizeDepsPlugin({ exclude: ["node-fetch"] })],
     build: {
       lib: {
         entry: "src/main.ts",

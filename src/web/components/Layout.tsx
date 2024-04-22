@@ -1,22 +1,6 @@
 import { useObservable } from "@legendapp/state/react";
-import {
-  GearFine,
-  Info,
-  Minus,
-  Plus,
-  Sidebar,
-  Sliders,
-  X,
-} from "@phosphor-icons/react";
-import {
-  Box,
-  Button,
-  DropdownMenu,
-  Flex,
-  IconButton,
-  Text,
-  Tooltip,
-} from "@radix-ui/themes";
+import { GearFine, Info, Minus, Plus, Sidebar, X } from "@phosphor-icons/react";
+import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
@@ -31,7 +15,6 @@ type LayoutProps = {
 };
 
 export default function Layout({ children }: LayoutProps) {
-  const utils = t.useUtils();
   const { mutate: minimize } = t.window.minimize.useMutation();
   const { mutate: close } = t.window.closeWindow.useMutation();
   const routeState = useRouterState();
@@ -40,6 +23,7 @@ export default function Layout({ children }: LayoutProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: notes } = t.notes.getNotes.useQuery();
+  const { data: ver } = t.version.useQuery();
 
   const passedThres = useObservable(false);
   const finder = useObservable(false);
@@ -94,7 +78,7 @@ export default function Layout({ children }: LayoutProps) {
     <Flex
       width="100%"
       align="center"
-      className="transition w-full h-screen  bg-gray-100 relative p-2 dark:bg-gray-800"
+      className="transition w-full h-screen  bg-gray-100 relative p-2 dark:bg-gray-800 font-light"
     >
       {/* actual body */}
       <Flex width="100%" height="100%">
@@ -109,9 +93,9 @@ export default function Layout({ children }: LayoutProps) {
             alignItems: "center",
           }}
           transition={{ duration: 0.2 }}
-          layout="size"
+          layout
         >
-          <Box className="w-full h-full rounded-md bg-white dark:bg-slate-700">
+          <Box className="w-full h-full rounded-md bg-white dark:bg-slate-700 font-light">
             {children}
           </Box>
         </motion.div>
@@ -125,7 +109,7 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.2 }}
           onMouseOver={() => sideBarFocus.set(true)}
           onMouseLeave={() => sideBarFocus.set(false)}
-          layout="size"
+          layout
         >
           <Flex
             width="100%"
@@ -187,53 +171,43 @@ export default function Layout({ children }: LayoutProps) {
             <Flex
               width="100%"
               className="py-2 px-3"
-              align="center"
-              justify="start"
-              gap="4"
+              align="end"
+              justify="between"
             >
-              <Tooltip content="About">
-                <IconButton
-                  onClick={() => nav({ to: "/about" })}
-                  variant="ghost"
-                  radius="full"
-                  size="2"
-                >
-                  <Info size={13} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip content="Preferences">
-                <IconButton asChild variant="ghost" radius="full" size="2">
-                  <Link to="/settings">
-                    <GearFine size={13} />
-                  </Link>
-                </IconButton>
-              </Tooltip>
-              <Tooltip content="New Note">
-                <IconButton
-                  variant="ghost"
-                  radius="full"
-                  size="2"
-                  onClick={handleNewClicked}
-                >
-                  <Plus size={13} />
-                </IconButton>
-              </Tooltip>
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <IconButton variant="ghost" size="2" radius="full">
-                    <Sliders />
+              <Flex align="center" gap="4" grow="1">
+                <Tooltip content="About">
+                  <IconButton
+                    onClick={() => nav({ to: "/about" })}
+                    variant="ghost"
+                    radius="full"
+                    size="2"
+                  >
+                    <Info size={13} />
                   </IconButton>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content defaultValue="dateCreated" size="1">
-                  <DropdownMenu.Label>Sort By</DropdownMenu.Label>
-                  <DropdownMenu.CheckboxItem textValue="dateCreated">
-                    <Text>Date Created</Text>
-                  </DropdownMenu.CheckboxItem>
-                  <DropdownMenu.CheckboxItem textValue="dateUpdated">
-                    <Text>Recently Updated</Text>
-                  </DropdownMenu.CheckboxItem>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
+                </Tooltip>
+                <Tooltip content="Preferences">
+                  <IconButton asChild variant="ghost" radius="full" size="2">
+                    <Link to="/settings">
+                      <GearFine size={13} />
+                    </Link>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip content="New Note">
+                  <IconButton
+                    variant="ghost"
+                    radius="full"
+                    size="2"
+                    onClick={handleNewClicked}
+                  >
+                    <Plus size={13} />
+                  </IconButton>
+                </Tooltip>
+              </Flex>
+              <Flex align="end" justify="end">
+                <Text className="text-[8px] text-gray-400 text-right">
+                  Build Version {ver}
+                </Text>
+              </Flex>
             </Flex>
           </Flex>
         </motion.div>
@@ -241,3 +215,25 @@ export default function Layout({ children }: LayoutProps) {
     </Flex>
   );
 }
+
+// not useful for now...
+//  <DropdownMenu.Root>
+//   <DropdownMenu.Trigger>
+//     <IconButton variant="ghost" size="2" radius="full">
+//       <Sliders />
+//     </IconButton>
+//   </DropdownMenu.Trigger>
+//   <DropdownMenu.Content
+//     defaultValue="dateCreated"
+//     size="1"
+//     className="dark:bg-slate-700"
+//   >
+//     <DropdownMenu.Label>Sort By</DropdownMenu.Label>
+//     <DropdownMenu.CheckboxItem textValue="dateCreated">
+//       <Text>Date Created</Text>
+//     </DropdownMenu.CheckboxItem>
+//     <DropdownMenu.CheckboxItem textValue="dateUpdated">
+//       <Text>Recently Updated</Text>
+//     </DropdownMenu.CheckboxItem>
+//   </DropdownMenu.Content>
+// </DropdownMenu.Root>;

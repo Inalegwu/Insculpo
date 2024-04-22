@@ -120,7 +120,7 @@ function Index() {
           onKeyDown={handleKeyDown}
           value={text.get()!}
           ref={editorRef}
-          className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-gray-700"
+          className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-slate-700"
         >
           <Dialog.Root>
             <Dialog.Trigger ref={triggerRef} />

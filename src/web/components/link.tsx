@@ -14,9 +14,14 @@ type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export default function Link({ href, children }: LinkProps) {
-  const { data, isLoading } = t.links.fetchLinkData.useQuery({
-    url: href!,
-  });
+  const { data } = t.links.fetchLinkData.useQuery(
+    {
+      url: href!,
+    },
+    {
+      retry: 2,
+    },
+  );
 
   const { mutate: openLink } = t.links.openExternal.useMutation();
 
@@ -74,9 +79,10 @@ export default function Link({ href, children }: LinkProps) {
           <motion.div
             style={{ display: "flex" }}
             animate={{ rotateZ: "360deg" }}
-            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.3 }}
+            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.9 }}
+            className="text-indigo-500 dark:text-white"
           >
-            <Spinner size={20} className="text-indigo-500" />
+            <Spinner size={20} />
           </motion.div>
         )}
       </HoverCard.Content>

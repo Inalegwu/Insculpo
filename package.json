@@ -8,7 +8,7 @@
     "email": "disgruntleddev@outlook.com"
   },
   "repository": {
-    "url": "https://github.com/Inalegwu/ElectroStatic.git"
+    "url": "https://github.com/Inalegwu/Insculpo.git"
   },
   "main": "out/main/main.js",
   "scripts": {
@@ -26,33 +26,23 @@
     "artifactName": "${productName}-${version}_${platform}_${arch}.${ext}",
     "buildDependenciesFromSource": true,
     "icon": "assets/icon.png",
-    "files": [
-      "out/**/*"
-    ],
+    "files": ["out/**/*"],
     "directories": {
       "output": "release/${version}"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
+      "target": ["dmg", "zip"]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ]
     },
     "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
+      "target": ["AppImage", "deb"]
     },
     "nsis": {
       "oneClick": false,
@@ -88,6 +78,7 @@
     "remark-toc": "^9.0.0",
     "sort-by": "^1.2.0",
     "uuid": "^9.0.1",
+    "whatwg-url": "^14.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

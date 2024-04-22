@@ -1,8 +1,11 @@
-import { Checkbox, Flex, Heading } from "@radix-ui/themes";
+import { Box, Checkbox, Flex, Heading, Text } from "@radix-ui/themes";
 import { Link } from "@src/web/components";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { nord, oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import {
+  nord,
+  solarizedlight,
+} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import { globalState$ } from "../state";
 
@@ -19,7 +22,7 @@ export default function MarkdownView({ content }: { content: string }) {
           const match = /language-(\w+)/.exec(className || "");
           return !inline && match ? (
             <SyntaxHighlighter
-              style={colorMode === "light" ? oneLight : nord}
+              style={colorMode === "light" ? solarizedlight : nord}
               PreTag="div"
               customStyle={{
                 fontSize: 13,
@@ -65,14 +68,17 @@ export default function MarkdownView({ content }: { content: string }) {
               align="center"
               justify="start"
               gap="3"
-              className="px-5 py-5 mt-3 mb-4 font-bold h-[20vh]"
+              className="px-5 py-5 mt-3 mb-4 font-medium max-h-lg bg-indigo-500/5 rounded-md"
             >
-              <Flex className="h-full border-1 border-solid border-indigo-500 border-opacity-[0.4] rounded-md" />
-              {props.children}
+              <Flex className="h-[15vh] border-1 border-solid border-indigo-500/30 border-opacity-[0.4] rounded-full" />
+              <Text className="text-indigo-600 dark:text-gray-200" size="2">
+                {props.children}
+              </Text>
             </Flex>
           );
         },
         li(props) {
+          console.log(props.role);
           return props.role === "checkbox" ? (
             <Flex align="center" gap="1">
               <Checkbox defaultChecked={false} />
@@ -91,10 +97,13 @@ export default function MarkdownView({ content }: { content: string }) {
         },
         ul(props) {
           return (
-            <Flex className="px-10" direction="column">
+            <Flex direction="column">
               <ul>{props.children}</ul>
             </Flex>
           );
+        },
+        br() {
+          return <Box className="px-1 py-1" />;
         },
       }}
     />

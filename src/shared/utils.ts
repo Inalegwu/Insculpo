@@ -57,3 +57,17 @@ export function extractOGTag(html: CheerioAPI) {
     keywords,
   };
 }
+
+
+export function throttle(fn: (args: unknown[]) => unknown, wait: number) {
+  let shouldWait = false;
+
+  return function() {
+    if (!shouldWait) {
+      fn([arguments]);
+      shouldWait = true;
+      setTimeout(() => shouldWait = false, wait)
+    }
+  }
+
+}
