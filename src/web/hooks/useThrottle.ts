@@ -1,6 +1,16 @@
-import React from "react";
+import { throttle } from "@src/shared/utils";
+import { useEffect, useMemo } from "react";
 
+export function useThrottle<A = unknown[], R = void>(
+  fn: (args: A) => R,
+  interval = 500,
+) {
+  const [throttleFn, tearDown] = useMemo(
+    () => throttle<A, R>(fn, interval),
+    [fn, interval],
+  );
 
-export function useThrottle(val:unknown,interval=500){
-	// TODO actually implement throttling
+  useEffect(() => () => tearDown(), [tearDown]);
+
+  return throttleFn;
 }

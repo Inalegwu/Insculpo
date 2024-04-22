@@ -58,16 +58,30 @@ export function extractOGTag(html: CheerioAPI) {
   };
 }
 
-
-export function throttle(fn: (args: unknown[]) => unknown, wait: number) {
+export function throttle<A = unknown[], R = void>(
+  fn: (args: A) => R,
+  wait: number,
+): [(args: A) => Promise<R>, () => void] {
   let shouldWait = false;
+  let timeout: NodeJS.Timeout;
+  const throttledFn = (args: A): Promise<R> =>
+    new Promise((resolve) => {
+      // don't do anything if we should still
+      // be waiting
+      if (shouldWait) {
+        return;
+      }
 
-  return function() {
-    if (!shouldWait) {
-      fn([arguments]);
       shouldWait = true;
-      setTimeout(() => shouldWait = false, wait)
-    }
-  }
+      timeout = setTimeout(() => {
+        resolve(fn(args));
+      }, wait);
+    });
 
+  const tearDown = () => {
+    clearTimeout(timeout);
+    shouldWait = false;
+  };
+
+  return [throttledFn, tearDown];
 }
