@@ -162,6 +162,7 @@ export default function Layout({ children }: LayoutProps) {
               </Flex>
               <FlatList
                 data={notes || []}
+                className="px-2"
                 renderItem={({ item, index }) => (
                   <Document doc={item.doc} key={index} />
                 )}

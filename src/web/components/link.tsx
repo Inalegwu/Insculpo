@@ -9,11 +9,14 @@ import {
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
 import type React from "react";
+import { z } from "zod";
 
 type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
     underline?: "auto" | "always" | "hover";
   };
+
+const linkValidator = z.string().url();
 
 export default function Link({
   href,

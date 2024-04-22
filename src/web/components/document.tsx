@@ -59,7 +59,7 @@ export default function Document({ doc }: DocumentProps) {
       <ContextMenu.Trigger className="cursor-pointer">
         <Flex
           width="100%"
-          className="px-2 py-3 rounded-md"
+          className="px-2 py-3 rounded-md hover:bg-indigo-500/5 dark:hover:bg-indigo-500/8"
           direction="column"
           align="end"
           justify="center"
