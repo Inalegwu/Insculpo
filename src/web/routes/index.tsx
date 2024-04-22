@@ -3,7 +3,7 @@ import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
-import { useEditor, useInterval, useTimeout, useWindow } from "@src/web/hooks";
+import { useDebounce, useEditor, useInterval, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -19,7 +19,6 @@ function Index() {
   const utils = t.useUtils();
   const text = useObservable<string>("");
   const toolbar = useObservable(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const editorState = globalState$.editorState.get();
   const [editorRef] = useEditor();
@@ -28,7 +27,7 @@ function Index() {
     if (toolbar.get()) {
       toolbar.set(false);
     }
-  }, 4000);
+  }, 1000);
 
   useInterval(() => {
     // don't save if text is empty
@@ -85,9 +84,13 @@ function Index() {
     [text],
   );
 
-  useWindow("mousemove", (e) => {
-    toolbar.set(true);
-  });
+  // debounce showing the mouse so the user doesn't 
+  // see it all the time
+  const handleMouseMove = useDebounce((_e: MouseEvent) => {
+    toolbar.set(true)
+  }, 50)
+
+  useWindow("mousemove", handleMouseMove)
 
   const handleNewNoteClick = useCallback(() => {
     globalState$.editorState.set("writing");
@@ -103,30 +106,16 @@ function Index() {
     globalState$.editorState.set("writing");
   }, [editorState]);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.keyCode === 47) {
-        triggerRef.current?.click();
-      }
-    },
-    [],
-  );
 
   return (
     <>
       {editorState === "writing" ? (
         <TextArea
           onChange={handleEditorInput}
-          onKeyDown={handleKeyDown}
           value={text.get()!}
           ref={editorRef}
           className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-slate-700"
-        >
-          <Dialog.Root>
-            <Dialog.Trigger ref={triggerRef} />
-            <Dialog.Content>content</Dialog.Content>
-          </Dialog.Root>
-        </TextArea>
+        />
       ) : (
         <MarkdownView content={text.get()!} />
       )}

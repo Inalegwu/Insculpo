@@ -19,7 +19,7 @@ export default function MarkdownView({ content }: { content: string }) {
       className="bg-slate-50 text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md overflow-y-scroll dark:bg-slate-700 dark:border-gray-500/30"
       remarkPlugins={[
         [remarkGfm, { singleTilde: false }],
-        [remarkToc, { heading: "Contents" }],
+        [remarkToc, { heading: "Contents", ordered: true }],
       ]}
       components={{
         code({ node, inline, className, children, ...props }: any) {

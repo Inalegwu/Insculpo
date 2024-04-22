@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 function useDebounce<A = unknown[], R = void>(
   fn: (args: A) => R,
   ms: number,
-): (args: A) => Promise<R> {
+): ((args: A) => Promise<R>) {
   const [debouncedFn, tearDown] = useMemo(
     () => debounce<A, R>(fn, ms),
     [fn, ms],
