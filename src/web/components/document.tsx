@@ -61,6 +61,7 @@ export default function Document({ doc }: DocumentProps) {
           width="100%"
           align="end"
           justify="between"
+          onClick={() => handleNoteClick(doc?._id!)}
           className="px-2 py-3 rounded-md hover:bg-indigo-500/5 dark:hover:bg-indigo-500/8"
         >
           {noteState.activeNoteId.get() === doc?._id ? (
@@ -68,12 +69,7 @@ export default function Document({ doc }: DocumentProps) {
           ) : (
             <Flex grow="1" />
           )}
-          <Flex
-            direction="column"
-            align="end"
-            justify="center"
-            onClick={() => handleNoteClick(doc?._id!)}
-          >
+          <Flex direction="column" align="end" justify="center">
             <Text color="iris" weight="bold" className="text-[11px]">
               {doc?.name?.slice(0, 28)}
             </Text>
