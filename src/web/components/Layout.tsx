@@ -78,7 +78,7 @@ export default function Layout({ children }: LayoutProps) {
     <Flex
       width="100%"
       align="center"
-      className="transition w-full h-screen  bg-gray-100 relative p-2 dark:bg-gray-800 font-light"
+      className="transition w-full h-screen bg-gray-100 relative p-2 dark:bg-gray-800 font-light"
     >
       {/* actual body */}
       <Flex width="100%" height="100%">

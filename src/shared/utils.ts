@@ -1,4 +1,5 @@
 import type { CheerioAPI } from "cheerio";
+import { Tag } from "./types";
 
 export function debounce<A = unknown[], R = void>(
   fn: (args: A) => R,
@@ -26,7 +27,7 @@ export function formatTextForSidebar(text: string) {
   return text.replace(/[^a-zA-Z0-9' ]/gi, "");
 }
 
-export function extractOGTag(html: CheerioAPI) {
+export function extractOGTag(html: CheerioAPI) :Tag{
   const title =
     html('meta[property="og:title"]').attr("content") ||
     html("title").text() ||
