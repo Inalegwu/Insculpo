@@ -6,7 +6,7 @@ import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -99,119 +99,124 @@ export default function Layout({ children }: LayoutProps) {
             {children}
           </Box>
         </motion.div>
-        {/* sidebar */}
-        <motion.div
-          initial={{ width: "0%", opacity: 0 }}
-          animate={{
-            opacity: passedThres.get() ? 1 : 0,
-            width: passedThres.get() ? "30%" : "0%",
-          }}
-          transition={{ width: { duration: 0.5 }, opacity: { duration: 0.7 } }}
-          onMouseOver={() => sideBarFocus.set(true)}
-          onMouseLeave={() => sideBarFocus.set(false)}
-          layout
-        >
-          <Flex
-            width="100%"
-            direction="column"
-            align="start"
-            justify="between"
-            height="100%"
+        <AnimatePresence mode="wait">
+          {/* sidebar */}
+          <motion.div
+            initial={{ width: "0%", opacity: 0 }}
+            animate={{
+              opacity: passedThres.get() ? 1 : 0,
+              width: passedThres.get() ? "30%" : "0%",
+            }}
+            transition={{
+              width: { duration: 0.5 },
+              opacity: { duration: 0.7 },
+            }}
+            onMouseOver={() => sideBarFocus.set(true)}
+            onMouseLeave={() => sideBarFocus.set(false)}
+            layout
           >
-            {/* main sidebar */}
             <Flex
+              width="100%"
               direction="column"
-              align="end"
-              justify="start"
-              width="100%"
-              className="h-[94%]"
-            >
-              {/* window actions */}
-              <Flex
-                align="center"
-                className="gap-5 mb-2 py-2 px-2"
-                justify="end"
-                width="100%"
-              >
-                <Flex grow="1" id="drag-region" className="p-2" />
-                <Button
-                  variant="ghost"
-                  color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
-                  onClick={() => passedThres.set(false)}
-                >
-                  <Sidebar size={13} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
-                  onClick={() => minimize()}
-                >
-                  <Minus size={13} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  color="gray"
-                  className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
-                  type="button"
-                  onClick={() => close()}
-                >
-                  <X size={13} />
-                </Button>
-              </Flex>
-              <FlatList
-                data={notes || []}
-                className="px-2"
-                renderItem={({ item, index }) => (
-                  <Document doc={item.doc} key={index} />
-                )}
-              />
-            </Flex>
-            {/* bottom bar */}
-            <Flex
-              width="100%"
-              className="py-2 px-3"
-              align="end"
+              align="start"
               justify="between"
+              height="100%"
             >
-              <Flex align="center" gap="4" grow="1">
-                <Tooltip content="About">
-                  <IconButton
-                    onClick={() => nav({ to: "/about" })}
+              {/* main sidebar */}
+              <Flex
+                direction="column"
+                align="end"
+                justify="start"
+                width="100%"
+                className="h-[94%]"
+              >
+                {/* window actions */}
+                <Flex
+                  align="center"
+                  className="gap-5 mb-2 py-2 px-2"
+                  justify="end"
+                  width="100%"
+                >
+                  <Flex grow="1" id="drag-region" className="p-2" />
+                  <Button
                     variant="ghost"
-                    radius="full"
-                    size="2"
+                    color="gray"
+                    className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
+                    onClick={() => passedThres.set(false)}
                   >
-                    <Info size={13} />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip content="Preferences">
-                  <IconButton asChild variant="ghost" radius="full" size="2">
-                    <Link to="/settings">
-                      <GearFine size={13} />
-                    </Link>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip content="New Note">
-                  <IconButton
+                    <Sidebar size={13} />
+                  </Button>
+                  <Button
                     variant="ghost"
-                    radius="full"
-                    size="2"
-                    onClick={handleNewClicked}
+                    color="gray"
+                    className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
+                    onClick={() => minimize()}
                   >
-                    <Plus size={13} />
-                  </IconButton>
-                </Tooltip>
+                    <Minus size={13} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    color="gray"
+                    className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
+                    type="button"
+                    onClick={() => close()}
+                  >
+                    <X size={13} />
+                  </Button>
+                </Flex>
+                <FlatList
+                  data={notes || []}
+                  className="px-2"
+                  renderItem={({ item, index }) => (
+                    <Document doc={item.doc} key={index} />
+                  )}
+                />
               </Flex>
-              <Flex align="end" justify="end">
-                <Text className="text-[8px] text-gray-400 text-right">
-                  Build Version {ver}
-                </Text>
+              {/* bottom bar */}
+              <Flex
+                width="100%"
+                className="py-2 px-3"
+                align="end"
+                justify="between"
+              >
+                <Flex align="center" gap="4" grow="1">
+                  <Tooltip content="About">
+                    <IconButton
+                      onClick={() => nav({ to: "/about" })}
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                    >
+                      <Info size={13} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip content="Preferences">
+                    <IconButton asChild variant="ghost" radius="full" size="2">
+                      <Link to="/settings">
+                        <GearFine size={13} />
+                      </Link>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip content="New Note">
+                    <IconButton
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                      onClick={handleNewClicked}
+                    >
+                      <Plus size={13} />
+                    </IconButton>
+                  </Tooltip>
+                </Flex>
+                <Flex align="end" justify="end">
+                  <Text className="text-[8px] text-gray-400 text-right">
+                    Build Version {ver}
+                  </Text>
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </Flex>
     </Flex>
   );

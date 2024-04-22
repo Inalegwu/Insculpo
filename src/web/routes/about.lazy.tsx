@@ -16,6 +16,8 @@ function About() {
   return (
     <ScrollArea
       type="always"
+      scrollbars="vertical"
+      size="1"
       className="px-10 py-10 overflow-y-scroll w-full h-full flex flex-col items-start justify-center gap-4  rounded-lg"
     >
       <Flex direction="column" align="start" className="mt-4 mb-4">
@@ -55,9 +57,11 @@ function About() {
             onClick={() =>
               openLink({ link: "https://github.com/Inalegwu/Insculpo" })
             }
+            size="4"
             className="cursor-pointer"
             variant="soft"
-          >
+            radius="full"
+            >
             <GithubLogo size={13} />
           </IconButton>
         </Tooltip>
