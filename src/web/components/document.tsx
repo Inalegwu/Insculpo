@@ -59,18 +59,28 @@ export default function Document({ doc }: DocumentProps) {
       <ContextMenu.Trigger className="cursor-pointer">
         <Flex
           width="100%"
-          className="px-2 py-3 rounded-md hover:bg-indigo-500/5 dark:hover:bg-indigo-500/8"
-          direction="column"
           align="end"
-          justify="center"
-          onClick={() => handleNoteClick(doc?._id!)}
+          justify="between"
+          className="px-2 py-3 rounded-md hover:bg-indigo-500/5 dark:hover:bg-indigo-500/8"
         >
-          <Text color="iris" weight="bold" className="text-[11px]">
-            {doc?.name?.slice(0, 28)}
-          </Text>
-          <Text className="text-[9.7px] text-gray-400 font-medium">
-            {formatTextForSidebar(doc?.body?.slice(0, 30) || "")}
-          </Text>
+          {noteState.activeNoteId.get() === doc?._id ? (
+            <Flex className="h-[1vh] w-[1vh] bg-indigo-500/30 rounded-full transition transition-duration-[10]" />
+          ) : (
+            <Flex grow="1" />
+          )}
+          <Flex
+            direction="column"
+            align="end"
+            justify="center"
+            onClick={() => handleNoteClick(doc?._id!)}
+          >
+            <Text color="iris" weight="bold" className="text-[11px]">
+              {doc?.name?.slice(0, 28)}
+            </Text>
+            <Text className="text-[9.7px] text-gray-400 font-medium">
+              {formatTextForSidebar(doc?.body?.slice(0, 30) || "")}
+            </Text>
+          </Flex>
         </Flex>
       </ContextMenu.Trigger>
       <ContextMenu.Content
