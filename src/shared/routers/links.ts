@@ -18,14 +18,10 @@ export const linksRouter = router({
   fetchLinkData: publicProcedure
     .input(
       z.object({
-        url: z.string().url().nullable(),
+        url: z.string().url(),
       }),
     )
     .query(async ({ input }) => {
-      if (input.url === null) {
-        return;
-      }
-
       const body = await axios.get(input.url);
 
       const html = load(body.data);

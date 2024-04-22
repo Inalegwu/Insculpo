@@ -92,7 +92,7 @@ export default function Layout({ children }: LayoutProps) {
             flexDirection: "row",
             alignItems: "center",
           }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.4 }}
           layout
         >
           <Box className="w-full h-full rounded-md bg-white dark:bg-slate-700 font-light">
@@ -106,7 +106,7 @@ export default function Layout({ children }: LayoutProps) {
             opacity: passedThres.get() ? 1 : 0,
             width: passedThres.get() ? "30%" : "0%",
           }}
-          transition={{ duration: 0.2 }}
+          transition={{ width: { duration: 0.5 }, opacity: { duration: 0.7 } }}
           onMouseOver={() => sideBarFocus.set(true)}
           onMouseLeave={() => sideBarFocus.set(false)}
           layout

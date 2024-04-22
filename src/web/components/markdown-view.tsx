@@ -1,5 +1,6 @@
 import { Box, Checkbox, Flex, Heading, Text } from "@radix-ui/themes";
 import { Link } from "@src/web/components";
+import { globalState$ } from "@src/web/state";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
@@ -8,7 +9,6 @@ import {
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
-import { globalState$ } from "../state";
 
 export default function MarkdownView({ content }: { content: string }) {
   const colorMode = globalState$.colorMode.get();
@@ -72,10 +72,13 @@ export default function MarkdownView({ content }: { content: string }) {
               align="center"
               justify="start"
               gap="3"
-              className="px-5 py-5 mt-3 mb-4 font-medium max-h-lg bg-indigo-500/5 rounded-md"
+              className="px-5 py-5 mt-3 mb-4 font-medium max-h-lg bg-slate-400/10 rounded-xl text-wrap"
             >
-              <Flex className="h-[15vh] border-1 border-solid border-indigo-500/30 border-opacity-[0.4] rounded-full" />
-              <Text className="text-indigo-600 dark:text-gray-200" size="2">
+              <Flex className="h-[18vh] border-1 border-solid border-indigo-500/30 border-opacity-[0.4] rounded-full" />
+              <Text
+                className="text-indigo-600 dark:text-gray-200 w-full"
+                size="2"
+              >
                 {props.children}
               </Text>
             </Flex>

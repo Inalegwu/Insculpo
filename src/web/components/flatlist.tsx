@@ -1,27 +1,33 @@
 import { ScrollArea } from "@radix-ui/themes";
 
-type RenderItemInfo<T> = {
+export type RenderItemInfo<T> = {
   item: T;
   index: number;
 };
 
-type Props<T> = {
+export type Props<T> = {
   data: T[];
   renderItem: (info: RenderItemInfo<T>) => React.JSX.Element;
   className?: string;
+  scrollbars?: "vertical" | "horizontal" | "both";
+  type?: "scroll" | "always" | "auto" | "hover";
+  size?: "1" | "2" | "3";
 };
 
 export default function FlatList<T extends Record<string, unknown>>({
   data,
   renderItem,
   className,
+  scrollbars = "vertical",
+  size = "1",
+  type = "scroll",
 }: Props<T>) {
   return (
     <ScrollArea
-      size="1"
+      size={size}
       className={className}
-      type="scroll"
-      scrollbars="vertical"
+      type={type}
+      scrollbars={scrollbars}
     >
       {data.map((v, idx) => renderItem({ item: v, index: idx }))}
     </ScrollArea>

@@ -11,9 +11,15 @@ import { motion } from "framer-motion";
 import type React from "react";
 
 type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
-  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+    underline?: "auto" | "always" | "hover";
+  };
 
-export default function Link({ href, children }: LinkProps) {
+export default function Link({
+  href,
+  children,
+  underline = "always",
+}: LinkProps) {
   const { data } = t.links.fetchLinkData.useQuery(
     {
       url: href!,
@@ -28,7 +34,7 @@ export default function Link({ href, children }: LinkProps) {
   return (
     <HoverCard.Root>
       <HoverCard.Trigger onClick={() => openLink({ link: href! })}>
-        <RadixLink underline="always">{children}</RadixLink>
+        <RadixLink underline={underline}>{children}</RadixLink>
       </HoverCard.Trigger>
       <HoverCard.Content
         size="1"
