@@ -7,6 +7,7 @@ import {
   solarizedlight,
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
 import { globalState$ } from "../state";
 
 export default function MarkdownView({ content }: { content: string }) {
@@ -16,7 +17,10 @@ export default function MarkdownView({ content }: { content: string }) {
     <Markdown
       children={content}
       className="bg-slate-50 text-sm w-full h-full border-1 border-solid border-gray-400/50 px-15 py-15 rounded-md overflow-y-scroll dark:bg-slate-700 dark:border-gray-500/30"
-      remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+      remarkPlugins={[
+        [remarkGfm, { singleTilde: false }],
+        [remarkToc, { heading: "Contents" }],
+      ]}
       components={{
         code({ node, inline, className, children, ...props }: any) {
           const match = /language-(\w+)/.exec(className || "");
@@ -78,7 +82,6 @@ export default function MarkdownView({ content }: { content: string }) {
           );
         },
         li(props) {
-          console.log(props.role);
           return props.role === "checkbox" ? (
             <Flex align="center" gap="1">
               <Checkbox defaultChecked={false} />
