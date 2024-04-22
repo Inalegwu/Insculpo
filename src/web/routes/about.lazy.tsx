@@ -1,8 +1,10 @@
 import { GithubLogo } from "@phosphor-icons/react";
-import { Flex, Heading, IconButton, Text, Tooltip } from "@radix-ui/themes";
+import { Flex, Heading, IconButton, ScrollArea, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Link } from "../components";
+import image from "@src/assets/images/Screenshot (3).png";
+import image1 from "@src/assets/images/Screenshot (2).png";
 
 export const Route = createLazyFileRoute("/about")({
   component: About,
@@ -12,53 +14,42 @@ function About() {
   const { mutate: openLink } = t.links.openExternal.useMutation();
 
   return (
-    <Flex
-      width="100%"
-      height="100%"
-      direction="column"
-      align="start"
-      justify="center"
-      gap="3"
-      className="px-20 py-20 overflow-y-scroll"
+    <ScrollArea
+      type="always"
+      className="px-10 py-10 overflow-y-scroll w-full h-full flex flex-col items-start justify-center gap-4  rounded-lg"
     >
-      <Flex direction="column" align="start">
+      <Flex direction="column" align="start" className="mt-4 mb-4">
         <Heading size="7">Insculpo</Heading>
         <Text size="1" className="text-gray-400">
           Focus on taking notes , not organizing them
         </Text>
       </Flex>
-      <Text align="left" size="2">
-        Insculpo is a simplified note-taking app , focused on the note-taking
-        experience and working backward from there.
-      </Text>
-      <Text size="2">
-        Many note-taking apps today feature very complex UI's and data strucures
-        and ways to organize every little note you write.This works for a lot of
-        people,but I'm not one of them,I don't exactly take notes, I scribble on
-        any piece of paper or writing materials I have in front of me,I've even
-        scribbled on a leaf.So the structure and organization of many of these
-        notes apps,hinder me from getting to the point of my note and instead
-        thinking of which folder it fits into and which tags will help me find
-        it the fastest.
-      </Text>
-      <Text size="2">
-        Insculpo is designed to rid me of that and instead allow me to focus on
-        getting the note down first and only think of organzing it when the
-        thoughts have been crystallized.Much like an advanced notepad
-      </Text>
-      <Text size="2">
-        It features a centralized and full-screen text area.This,is where you'll
-        write.Then when you're done and finally ready to arrange things,you can
-        open up the sidebar and do the arranging you need to,but only when
-        you're sure everything is crystal clear.
-      </Text>
-      <Text size="2">
-        If you find the project interesting,please star the project , it would
-        mean a lot to me and if you want to use it , it would be nice if you{" "}
+      <Flex className="mb-4 mt-4">
+        <Text size="2">Insculpo is a markdown based note-taking app focused on taking notes first
+          and organizing them later by allowing you to get to the point of the note first
+          and only organizing when your thoughts are crystal clear by removing the fatigue
+          of the inital note taking process and simply giving you a blank notepad at the start.
+        </Text> </Flex>
+      <img src={image} className="w-full shadow-lg rounded-lg mt-4 mb-4 resize-cover" alt="notepad preview" />
+      <Flex className="mb-4 mt-4">
+        <Text size="2">When you're done writing , you can open your sidebar to view all your notes in one place
+          like one giant notebook,with all your thoughts close together.By not trying to be a second brain that does all
+          all the things,Insculpo focuses on letting you do one thing,and doing that one thing very well and consistently
+          every single time.
+        </Text>
+      </Flex>
+      <img src={image1} className="w-full shadow-lg rounded-lg mt-4 mb-4 resize-cover" alt="sidebar preview" />
+      <Flex className="mb-4 mt-4">
+        <Text size="2" className="italic">'Cause sometimes you just want to write y'know</Text>
+      </Flex>
+      <Text size="2" className="mb-4 mt-4">
+        If you find Insculpo interesting,kindly star it on github ,it would
+        mean a lot to me and if you want to use it,you could clone the repo
+        and build it yourself although it would be nice if you{" "}
         <Link href="https://discord.gg/JSbC7EammN">contacted me</Link> first
         before going ahead,but it's fine regardless
       </Text>
-      <Flex width="100%" className="mt-2" align="center" justify="center">
+      <Flex width="100%" className="mt-4 mb-4" align="center" justify="center">
         <Tooltip content="See Insculpo on Github">
           <IconButton
             onClick={() =>
@@ -71,6 +62,6 @@ function About() {
           </IconButton>
         </Tooltip>
       </Flex>
-    </Flex>
+    </ScrollArea>
   );
 }

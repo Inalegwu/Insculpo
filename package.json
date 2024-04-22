@@ -1,6 +1,6 @@
 {
   "name": "Insculpo",
-  "description": "The note taking app focused on simplicity",
+  "description": "Take notes first,organize later",
   "version": "0.0.1",
   "license": "MIT",
   "author": {
@@ -18,7 +18,7 @@
     "build": "pnpm exec electron-builder",
     "db:generate": "drizzle-kit generate:sqlite",
     "db:push": "drizzle-kit push:sqlite",
-    "postinstall": "electron-rebuild"
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "com.insculpo.app",
