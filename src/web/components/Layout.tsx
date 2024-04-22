@@ -129,7 +129,7 @@ export default function Layout({ children }: LayoutProps) {
               {/* window actions */}
               <Flex
                 align="center"
-                className="gap-5 mb-2 mt-2 px-2"
+                className="gap-5 mb-2 py-2 px-2"
                 justify="end"
                 width="100%"
               >

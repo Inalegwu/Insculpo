@@ -8,7 +8,10 @@ export const Route = createRootRoute({
       <Outlet />
       <Toaster
         position="bottom-right"
-        containerStyle={{ fontSize: 12 }}
+        toastOptions={{
+          className:
+            "bg-indigo-500/30 text-indigo-500 text-[11px] shadow-lg dark:bg-slate-700 dark:text-gray-300",
+        }}
         reverseOrder
       />
     </Layout>

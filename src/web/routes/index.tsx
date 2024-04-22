@@ -1,14 +1,19 @@
 import { useObservable } from "@legendapp/state/react";
 import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
-import { Dialog, Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
+import { Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
-import { useDebounce, useEditor, useInterval, useTimeout, useWindow } from "@src/web/hooks";
+import {
+  useDebounce,
+  useInterval,
+  useTimeout,
+  useWindow,
+} from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/")({
@@ -21,13 +26,12 @@ function Index() {
   const toolbar = useObservable(false);
 
   const editorState = globalState$.editorState.get();
-  const [editorRef] = useEditor();
 
   useTimeout(() => {
     if (toolbar.get()) {
       toolbar.set(false);
     }
-  }, 1000);
+  }, 3000);
 
   useInterval(() => {
     // don't save if text is empty
@@ -84,13 +88,13 @@ function Index() {
     [text],
   );
 
-  // debounce showing the mouse so the user doesn't 
+  // debounce showing the mouse so the user doesn't
   // see it all the time
   const handleMouseMove = useDebounce((_e: MouseEvent) => {
-    toolbar.set(true)
-  }, 50)
+    toolbar.set(true);
+  }, 50);
 
-  useWindow("mousemove", handleMouseMove)
+  useWindow("mousemove", handleMouseMove);
 
   const handleNewNoteClick = useCallback(() => {
     globalState$.editorState.set("writing");
@@ -106,15 +110,13 @@ function Index() {
     globalState$.editorState.set("writing");
   }, [editorState]);
 
-
   return (
     <>
       {editorState === "writing" ? (
         <TextArea
           onChange={handleEditorInput}
           value={text.get()!}
-          ref={editorRef}
-          className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-slate-700"
+          className="w-full h-full text-sm bg-slate-50 rounded-md dark:bg-slate-700 line-height-loose"
         />
       ) : (
         <MarkdownView content={text.get()!} />

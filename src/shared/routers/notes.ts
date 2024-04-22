@@ -35,15 +35,10 @@ export const notesRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // make sure not to store
-      // empty content
       if (input.content === "") return;
 
-      // ensure markdown charachters aren't in the name
       const name = input.content.split("\n")[0].replace(/[^a-zA-Z0-9' ]/gi, "");
 
-      // if the noteId is null , this means
-      // it's a new note
       if (input.noteId === null) {
         const finalized = await ctx.db
           .put({
@@ -64,7 +59,6 @@ export const notesRouter = router({
         return finalized;
       }
 
-      // otherwise , just update the note
       await ctx.db.get(input.noteId).then((v) => {
         v.body = input.content;
         v.name = name;
