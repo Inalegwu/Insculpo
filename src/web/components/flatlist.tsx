@@ -8,6 +8,8 @@ export type RenderItemInfo<T> = {
 export type Props<T> = {
   data: T[];
   renderItem: (info: RenderItemInfo<T>) => React.JSX.Element;
+  listHeaderComponent?: () => React.JSX.Element;
+  listFooterComponent?: () => React.JSX.Element;
   className?: string;
   scrollbars?: "vertical" | "horizontal" | "both";
   type?: "scroll" | "always" | "auto" | "hover";
@@ -21,6 +23,8 @@ export default function FlatList<T extends Record<string, unknown>>({
   scrollbars = "vertical",
   size = "1",
   type = "scroll",
+  listFooterComponent: ListFooterComponent,
+  listHeaderComponent: ListHeaderComponent,
 }: Props<T>) {
   return (
     <ScrollArea
@@ -29,7 +33,9 @@ export default function FlatList<T extends Record<string, unknown>>({
       type={type}
       scrollbars={scrollbars}
     >
+      {ListHeaderComponent && <ListHeaderComponent />}
       {data.map((v, idx) => renderItem({ item: v, index: idx }))}
+      {ListFooterComponent && <ListFooterComponent />}
     </ScrollArea>
   );
 }

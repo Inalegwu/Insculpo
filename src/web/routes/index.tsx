@@ -34,7 +34,6 @@ function Index() {
   }, 3000);
 
   useInterval(() => {
-    // don't save if text is empty
     if (text.get() === "") return;
 
     saveNote({ noteId: noteState.activeNoteId.get(), content: text.get() });
@@ -92,7 +91,7 @@ function Index() {
   // see it all the time
   const handleMouseMove = useDebounce((_e: MouseEvent) => {
     toolbar.set(true);
-  }, 50);
+  }, 1000);
 
   useWindow("mousemove", handleMouseMove);
 
