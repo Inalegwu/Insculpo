@@ -1,4 +1,4 @@
-import { ScrollArea } from "@radix-ui/themes";
+import { Flex, ScrollArea } from "@radix-ui/themes";
 
 export type RenderItemInfo<T> = {
   item: T;
@@ -10,6 +10,7 @@ export type Props<T> = {
   renderItem: (info: RenderItemInfo<T>) => React.JSX.Element;
   listHeaderComponent?: () => React.JSX.Element;
   listFooterComponent?: () => React.JSX.Element;
+  contentContainerClass?: string;
   className?: string;
   scrollbars?: "vertical" | "horizontal" | "both";
   type?: "scroll" | "always" | "auto" | "hover";
@@ -23,6 +24,7 @@ export default function FlatList<T extends Record<string, unknown>>({
   scrollbars = "vertical",
   size = "1",
   type = "scroll",
+  contentContainerClass,
   listFooterComponent: ListFooterComponent,
   listHeaderComponent: ListHeaderComponent,
 }: Props<T>) {
@@ -34,7 +36,12 @@ export default function FlatList<T extends Record<string, unknown>>({
       scrollbars={scrollbars}
     >
       {ListHeaderComponent && <ListHeaderComponent />}
-      {data.map((v, idx) => renderItem({ item: v, index: idx }))}
+      <Flex
+        direction={scrollbars === "vertical" ? "column" : "row"}
+        className={contentContainerClass}
+      >
+        {data.map((v, idx) => renderItem({ item: v, index: idx }))}
+      </Flex>
       {ListFooterComponent && <ListFooterComponent />}
     </ScrollArea>
   );

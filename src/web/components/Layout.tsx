@@ -30,11 +30,23 @@ export default function Layout({ children }: LayoutProps) {
   const sideBarFocus = useObservable(false);
   const searchInputFocus = useObservable(false);
 
+  const { mutate: findNote, data: results } = t.notes.findNote.useMutation();
+
   useEffect(() => {
     if (globalState$.colorMode.get() === "dark") {
       document.body.classList.add("dark");
     }
-  }, []);
+
+    if (
+      globalState$.appId === null &&
+      globalState$.firstLaunch &&
+      routeState.location.pathname === "/"
+    ) {
+      nav({
+        to: "/firstlaunch",
+      });
+    }
+  }, [nav, routeState]);
 
   useTimeout(() => {
     if (finder.get() && !searchInputFocus.get()) {
@@ -80,6 +92,54 @@ export default function Layout({ children }: LayoutProps) {
       align="center"
       className="transition w-full h-screen bg-gray-100 relative p-2 dark:bg-gray-800 font-light"
     >
+      <AnimatePresence initial={false}>
+        <motion.div
+          animate={{
+            opacity: finder.get() ? 1 : 0,
+            scale: finder.get() ? 1 : 0,
+            display: finder.get() ? "flex" : "none",
+          }}
+          className="absolute z-20 flex items-center justify-center"
+          style={{ width: "97%", height: "100%" }}
+          onClick={() => finder.set(false)}
+        >
+          <Flex
+            direction="column"
+            gap="2"
+            className="px-2 py-2 bg-white rounded-md w-4/6 shadow-lg rounded-md"
+          >
+            <input
+              onFocus={() => {
+                searchInputFocus.set(true);
+                inputRef.current?.focus();
+              }}
+              onBlur={() => {
+                searchInputFocus.set(false);
+                inputRef.current?.blur();
+              }}
+              placeholder="Search Notes..."
+              ref={inputRef}
+              onChange={(e) => findNote({ query: e.currentTarget.value })}
+              className="px-3 py-3 w-full text-[14px] border-none bg-slate-50 outline-none"
+            />
+            <FlatList
+              data={results || []}
+              listHeaderComponent={() => (
+                <Flex align="center" justify="start">
+                  <Text className="text-gray-400 text-[11px]">
+                    Search Results
+                  </Text>
+                </Flex>
+              )}
+              renderItem={({ item }) => (
+                <Flex align="center" justify="between">
+                  <Text>{item.updatedAt}</Text>
+                </Flex>
+              )}
+            />
+          </Flex>
+        </motion.div>
+      </AnimatePresence>
       {/* actual body */}
       <Flex width="100%" height="100%">
         {/* page content */}
@@ -128,7 +188,7 @@ export default function Layout({ children }: LayoutProps) {
                 align="end"
                 justify="start"
                 width="100%"
-                className="h-[94%]"
+                className="h-[94%] px-0"
               >
                 {/* window actions */}
                 <Flex
@@ -172,10 +232,10 @@ export default function Layout({ children }: LayoutProps) {
                       align="center"
                       direction="row"
                       justify="end"
-                      className="py-1"
+                      className="py-1 px-0"
                     >
                       <Text
-                        className="text-[10px] text-gray-300 font-light"
+                        className="text-[10px] text-gray-400 font-light"
                         color="gray"
                       >
                         All Notes
@@ -224,7 +284,7 @@ export default function Layout({ children }: LayoutProps) {
                   </Tooltip>
                 </Flex>
                 <Flex align="end" justify="end">
-                  <Text className="text-[8px] text-gray-400 text-right">
+                  <Text className="text-[9px] text-gray-400 text-right">
                     Build Version {ver}
                   </Text>
                 </Flex>

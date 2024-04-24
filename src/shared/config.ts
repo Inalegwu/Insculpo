@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCReact } from "@trpc/react-query";
 import { ipcLink } from "electron-trpc/renderer";
-import { AppRouter } from "./routers/_app";
+import type { AppRouter } from "./routers/_app";
 
 const t = createTRPCReact<AppRouter>();
 
@@ -10,11 +10,11 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       networkMode: "always",
-      cacheTime: Infinity,
+      cacheTime: Number.POSITIVE_INFINITY,
     },
     mutations: {
       networkMode: "always",
-      cacheTime: Infinity,
+      cacheTime: Number.POSITIVE_INFINITY,
     },
   },
 });

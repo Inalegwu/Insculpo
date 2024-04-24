@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
-import { FallbackProps } from "react-error-boundary";
+import type { FallbackProps } from "react-error-boundary";
 
 function ErrorBoundaryFallBack(props: FallbackProps) {
   return (

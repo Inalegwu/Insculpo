@@ -1,9 +1,10 @@
-import ErrorBoundaryFallBack from "./ErrorBoundaryFallBack";
-import Layout from "./Layout";
 import Document from "./document";
+import ErrorBoundaryFallBack from "./error-boundary";
 import FlatList from "./flatlist";
+import Layout from "./layout";
 import Link from "./link";
 import MarkdownView from "./markdown-view";
+import NotFoundRoute from "./not-found";
 
 export {
   Document,
@@ -12,4 +13,5 @@ export {
   Layout,
   Link,
   MarkdownView,
+  NotFoundRoute,
 };

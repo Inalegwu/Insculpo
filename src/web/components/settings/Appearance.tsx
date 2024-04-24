@@ -12,9 +12,6 @@ export default function Appearance() {
       return;
     }
 
-    console.log(document.body.classList);
-    console.log(colorMode);
-
     globalState$.colorMode.set("light");
     document.body.classList.remove("dark");
   }, [colorMode]);

@@ -3,7 +3,6 @@ import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import type { Note } from "@src/shared/types";
 import { formatTextForSidebar } from "@src/shared/utils";
-import { useEditor } from "@src/web/hooks";
 import { noteState } from "@src/web/state";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCallback } from "react";
@@ -17,7 +16,6 @@ export default function Document({ doc }: DocumentProps) {
   const utils = t.useUtils();
   const routeState = useRouterState();
   const nav = useNavigate();
-  const [editorRef] = useEditor();
 
   const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
     onSuccess: () => {
@@ -44,14 +42,13 @@ export default function Document({ doc }: DocumentProps) {
   const handleNoteClick = useCallback(
     (id: string) => {
       noteState.activeNoteId.set(id);
-      editorRef.current?.focus();
       if (routeState.location.pathname !== "/") {
         nav({
           to: "/",
         });
       }
     },
-    [routeState, nav, editorRef],
+    [routeState, nav],
   );
 
   return (
@@ -62,7 +59,7 @@ export default function Document({ doc }: DocumentProps) {
           align="end"
           justify="between"
           onClick={() => handleNoteClick(doc?._id!)}
-          className="px-2 py-3 rounded-md hover:bg-indigo-500/5 dark:hover:bg-indigo-500/8"
+          className="py-3 rounded-md"
         >
           {noteState.activeNoteId.get() === doc?._id ? (
             <Flex className="h-[1vh] w-[1vh] bg-indigo-500/30 rounded-full transition transition-duration-[10]" />

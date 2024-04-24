@@ -34,8 +34,6 @@ export default function Link({
 
   const { mutate: openLink } = t.links.openExternal.useMutation();
 
-  console.log(data);
-
   return (
     <HoverCard.Root>
       <HoverCard.Trigger onClick={() => openLink({ link: href! })}>

@@ -91,7 +91,7 @@ function Index() {
   // see it all the time
   const handleMouseMove = useDebounce((_e: MouseEvent) => {
     toolbar.set(true);
-  }, 1000);
+  }, 50);
 
   useWindow("mousemove", handleMouseMove);
 
@@ -122,7 +122,11 @@ function Index() {
       )}
       {/* editor actions */}
       <motion.div
-        animate={{ opacity: toolbar.get() ? 1 : 0 }}
+        initial={false}
+        animate={{
+          opacity: toolbar.get() ? 1 : 0,
+          display: toolbar.get() ? "flex" : "none",
+        }}
         style={{ position: "absolute" }}
         className="absolute bottom-2 left-0"
       >

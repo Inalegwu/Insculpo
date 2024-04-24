@@ -12,9 +12,9 @@ configureObservablePersistence({
 
 export const globalState$ = observable<GlobalState>({
   colorMode: "light",
-  settingsVisible: false,
   firstLaunch: true,
   editorState: "viewing",
+  appId: null,
 });
 
 persistObservable(globalState$, {

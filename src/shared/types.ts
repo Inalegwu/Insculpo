@@ -3,9 +3,9 @@
 // example global state for an application with customization options
 export type GlobalState = {
   colorMode: "dark" | "light";
-  settingsVisible: boolean;
   firstLaunch: boolean;
   editorState: "writing" | "viewing";
+  appId: string | null;
 };
 
 export type Note = {
