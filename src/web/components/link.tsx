@@ -34,6 +34,8 @@ export default function Link({
 
   const { mutate: openLink } = t.links.openExternal.useMutation();
 
+  console.log(data);
+
   return (
     <HoverCard.Root>
       <HoverCard.Trigger onClick={() => openLink({ link: href! })}>
@@ -48,7 +50,7 @@ export default function Link({
             <img
               src={data?.image}
               alt={data?.title?.slice(0, 10)}
-              className="w-3/6 rounded-md"
+              className="w-2/6 rounded-md"
             />
             <Flex
               direction="column"
@@ -57,10 +59,10 @@ export default function Link({
               justify="between"
             >
               <Flex direction="column" grow="1" align="start" justify="start">
-                <Text className="text-[11.5px]" color="iris">
+                <Text className="text-[11.5px] font-medium" color="iris">
                   {data?.site_name}
                 </Text>
-                <Text className="text-[11px] text-gray-400">
+                <Text className="text-[11px] text-gray-400 font-light">
                   {data?.description}
                 </Text>
               </Flex>
@@ -75,10 +77,11 @@ export default function Link({
                 <Button
                   onClick={() => openLink({ link: href! })}
                   variant="soft"
-                  size="1"
+                  size="2"
+                  className="cursor-pointer"
                 >
                   <Text size="1">Visit</Text>
-                  <ArrowRight size={13} />
+                  <ArrowRight size={14} />
                 </Button>
               </Flex>
             </Flex>

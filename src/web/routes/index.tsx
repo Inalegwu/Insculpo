@@ -120,13 +120,14 @@ function Index() {
       ) : (
         <MarkdownView content={text.get()!} />
       )}
-      {/* change from preview mode to non-preview mode */}
+      {/* editor actions */}
       <motion.div
         animate={{ opacity: toolbar.get() ? 1 : 0 }}
         style={{ position: "absolute" }}
         className="absolute bottom-2 left-0"
       >
         <Flex align="center" gap="2" className="px-4 py-2 rounded-md">
+          {/* change editor state */}
           <Tooltip
             content={
               globalState$.editorState.get() === "writing"
@@ -144,6 +145,7 @@ function Index() {
               <Eye size={15} />
             </IconButton>
           </Tooltip>
+          {/* save note to device */}
           <Tooltip content="Export note">
             <IconButton
               onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
@@ -155,6 +157,7 @@ function Index() {
               <DownloadSimple size={15} />
             </IconButton>
           </Tooltip>
+          {/* create a new note */}
           <Tooltip content="New note">
             <IconButton
               radius="full"

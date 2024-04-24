@@ -1,38 +1,39 @@
-@font-face {
-  font-family: Recursive;
-  src: url("../assets/fonts/RecMonoCasual-Bold-1.085.ttf");
+@font-face{
+  font-family:Axiforma;
+  src:url("../assets/fonts/Kastelov  Axiforma Bold.otf");
 }
 
-@font-face {
-  font-family: Recursive;
-  src: url("../assets/fonts/RecMonoCasual-BoldItalic-1.085.ttf");
+@font-face{
+  font-family:Axiforma;
+  src:url("../assets/fonts/Kastelov  Axiforma Light.otf");
 }
 
-@font-face {
-  font-family: Recursive;
-  src: url("../assets/fonts/RecMonoCasual-Italic-1.085.ttf");
+@font-face{
+  font-family:Axiforma;
+  src:url("../assets/fonts/Kastelov  Axiforma Medium.otf");
 }
 
-@font-face {
-  font-family: Recursive;
-  src: url("../assets/fonts/RecMonoCasual-Regular-1.085.ttf");
+@font-face{
+  font-family:Axiforma;
+  src:url("../assets/fonts/Kastelov  Axiforma Regular.otf");
 }
 
 .radix-themes {
-  --default-font-family: Recursive ;
-  --heading-font-family: Recursive; 
-  --code-font-family:  Recursive;
-  --strong-font-family: Recursive;
-  --em-font-family:   Recursive;
-  --quote-font-family: Recursivw;
+  --default-font-family: Axiforma ;
+  --heading-font-family: Axiforma; 
+  --code-font-family:  Axiforma;
+  --strong-font-family: Axiforma;
+  --em-font-family:   Axiforma;
+  --quote-font-family: Axiforma;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Recursive;
+  font-family: Axiforma;
   text-decoration: none;
+
 }
 
 body {

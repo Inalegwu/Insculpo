@@ -1,22 +1,6 @@
 import { useObservable } from "@legendapp/state/react";
-import {
-  GearFine,
-  Info,
-  Minus,
-  Plus,
-  Sidebar,
-  Stack,
-  X,
-} from "@phosphor-icons/react";
-import {
-  Box,
-  Button,
-  Dialog,
-  Flex,
-  IconButton,
-  Text,
-  Tooltip,
-} from "@radix-ui/themes";
+import { GearFine, Info, Minus, Plus, Sidebar, X } from "@phosphor-icons/react";
+import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
@@ -190,7 +174,10 @@ export default function Layout({ children }: LayoutProps) {
                       justify="end"
                       className="py-1"
                     >
-                      <Text className="text-[10px] text-gray-300" color="gray">
+                      <Text
+                        className="text-[10px] text-gray-300 font-light"
+                        color="gray"
+                      >
                         All Notes
                       </Text>
                     </Flex>

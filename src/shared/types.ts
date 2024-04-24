@@ -15,6 +15,14 @@ export type Note = {
   updatedAt?: number;
 };
 
+export type NoteBook = {
+  id: string;
+  name: string;
+  dateCreated?: number;
+  dateUpdated?: number;
+  notes: string[];
+};
+
 export type Tag = {
   title?: string;
   description?: string;

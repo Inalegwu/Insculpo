@@ -29,7 +29,7 @@ function About() {
       <Flex direction="column" align="start" className="mt-4 mb-4">
         <Heading size="7">Insculpo</Heading>
         <Text size="1" className="text-gray-400">
-          Focus on taking notes , not organizing them
+          Focus on taking notes,not organizing them
         </Text>
       </Flex>
       <Flex className="mb-4 mt-4">
@@ -50,9 +50,9 @@ function About() {
         <Text size="2">
           When you're done writing , you can open your sidebar to view all your
           notes in one place like one giant notebook,with all your thoughts
-          close together.By not trying to be a second brain that does all all
-          the things,Insculpo focuses on letting you do one thing,and doing that
-          one thing very well and consistently every single time.
+          close together.By not trying to be a second brain that does all the
+          things,Insculpo focuses on letting you do one thing,and doing that one
+          thing very well and consistently every single time.
         </Text>
       </Flex>
       <img
