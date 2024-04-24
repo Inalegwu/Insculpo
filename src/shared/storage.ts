@@ -6,4 +6,10 @@ PouchDB.plugin(Find);
 
 const store = new PouchDB<Note>("insculpo_db");
 
+store.createIndex({
+  index: {
+    fields: ["name"],
+  },
+});
+
 export default store;

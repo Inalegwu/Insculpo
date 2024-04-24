@@ -2,7 +2,6 @@ import { publicProcedure, router } from "@src/trpc";
 import * as fs from "node:fs";
 import { v4 } from "uuid";
 import z from "zod";
-import type { Note } from "../types";
 
 export const notesRouter = router({
   getNotes: publicProcedure.query(async ({ ctx }) => {
@@ -68,40 +67,22 @@ export const notesRouter = router({
   findNote: publicProcedure
     .input(z.object({ query: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const docs = await ctx.db.allDocs({
-        include_docs: true,
+      const results = await ctx.db.find({
+        selector: {
+          name: {
+            $regex: input.query,
+          },
+          body: {
+            $regex: input.query,
+          },
+        },
+        limit: 5,
+        sort: ["name"],
       });
 
-      const results: PouchDB.Core.ExistingDocument<
-        Note & PouchDB.Core.AllDocsMeta
-      >[] = [];
+      console.log(results.docs.map((v) => ({ name: v.name, id: v._id })));
 
-      for (let index = 0; index < docs.rows.length; index++) {
-        const element = docs.rows[index];
-
-        if (
-          element.doc?.body?.includes(input.query) ||
-          element.doc?.name?.includes(input.query) ||
-          element.doc?.name
-            ?.toLocaleLowerCase()
-            .includes(input.query.toLocaleLowerCase()) ||
-          element.doc?.body
-            ?.toLocaleLowerCase()
-            .includes(input.query.toLocaleLowerCase()) ||
-          element.doc?.body
-            ?.toLocaleUpperCase()
-            .includes(input.query.toLocaleUpperCase()) ||
-          element.doc?.name
-            ?.toLocaleUpperCase()
-            .includes(input.query.toLocaleUpperCase())
-        ) {
-          results.push(element.doc);
-        }
-      }
-
-      console.log(results);
-
-      return results;
+      return results.docs;
     }),
   deleteNote: publicProcedure
     .input(

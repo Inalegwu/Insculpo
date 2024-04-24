@@ -2,6 +2,7 @@ import { useObservable } from "@legendapp/state/react";
 import { GearFine, Info, Minus, Plus, Sidebar, X } from "@phosphor-icons/react";
 import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
+import { formatTextForSidebar } from "@src/shared/utils";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
@@ -86,6 +87,18 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [nav, routeState]);
 
+  const handleSearchResultClicked = useCallback(
+    (id: string) => {
+      noteState.activeNoteId.set(id);
+      if (routeState.location.pathname !== "/") {
+        nav({
+          to: "/",
+        });
+      }
+    },
+    [nav, routeState],
+  );
+
   return (
     <Flex
       width="100%"
@@ -106,7 +119,7 @@ export default function Layout({ children }: LayoutProps) {
           <Flex
             direction="column"
             gap="2"
-            className="px-2 py-2 bg-white rounded-md w-4/6 shadow-lg rounded-md"
+            className="px-2 py-2 bg-white rounded-md w-4/6 shadow-lg rounded-md dark:bg-slate-700"
           >
             <input
               onFocus={() => {
@@ -120,7 +133,7 @@ export default function Layout({ children }: LayoutProps) {
               placeholder="Search Notes..."
               ref={inputRef}
               onChange={(e) => findNote({ query: e.currentTarget.value })}
-              className="px-3 py-3 w-full text-[14px] border-none bg-slate-50 outline-none"
+              className="px-3 py-3 w-full text-[14px] border-none bg-slate-50 outline-none rounded-md font-light dark:bg-slate-800 dark:text-white dark:border-solid dark:border-1 dark:border-gray-200/20"
             />
             <FlatList
               data={results || []}
@@ -132,8 +145,20 @@ export default function Layout({ children }: LayoutProps) {
                 </Flex>
               )}
               renderItem={({ item }) => (
-                <Flex align="center" justify="between">
-                  <Text>{item.updatedAt}</Text>
+                <Flex
+                  align="center"
+                  onClick={() => handleSearchResultClicked(item._id)}
+                  justify="between"
+                  className="px-1 py-2 cursor-pointer"
+                >
+                  <Flex direction="column">
+                    <Text color="iris" className="text-[11.5px]">
+                      {item.name}
+                    </Text>
+                    <Text className="text-[11px] text-gray-400">
+                      {formatTextForSidebar(item.body.slice(0, 40))}
+                    </Text>
+                  </Flex>
                 </Flex>
               )}
             />
