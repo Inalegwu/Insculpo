@@ -1,14 +1,98 @@
-## Insculpo
-#### Latin : Engrave, Cut Into.
+# Insculpo
+### Latin : Engrave, Cut Into.
 
-Insculpo is a simplified note-taking app , focused on the note-taking experience and working backward from there.
-<br/>It is designed mainly for my personal use and maybe in the future will be available for public use.
+<i>Your notebook with superpowers</i>
 
-Many note-taking apps today feature very complex UI's and data strucures and how to organize every little note you write.This works for a lot of people , but I'm not one of them , I don't exactly take notes , I scribble on any piece of paper or writing materials I have in front of me , I've even scribbled on a leaf.So the structure and organization of many of these notes apps , hinder me from getting to the point of my note and instead thinking of which folder it fits into and which tags will help me find it the fastest.
-
-Insculpo is designed to rid me of that and instead allow me to focus on getting the note down first and only think of organzing it when the thoughts have been solidified.
-
-It features a centralized and full-screen text area.This , is where the writing will take place.Then when you're done and finally ready to arrange things , you can open up the sidebar and do the arranging you need to , but only when you're sure everything is solid.
+Insculpo is a note taking app that puts actually taking notes first , reminiscent of the physical notebooks we all know and love.
 
 
-If you find the project interesting , you can contact me to know more and maybe get a private build of the app to use if you like it enough.
+Taking the idea of an old school notebook into mind, Insculpo is designed to be local first and entire offline capable so you can have access to your notes at any and all times, With support for other devices for syncing on the roadmap as well.
+
+
+### Built with
+- [Electron](https://electronjs.org)
+- [React](https://react.dev)
+- [TRPC](https://trpc.io)
+- [PouchDB](https://pouchdb.com)
+- [Radix Themes](https://radix-ui.com/)
+- [UnoCSS](https://unocss.dev)
+
+
+## Getting Started
+
+Insulpo uses pnpm as the primary package manager.
+
+### Prerequites
+
+- node (however you install node on your system)
+
+    ```
+        proto install node
+        nvm install latest
+    ```
+
+- pnpm
+
+    ```
+        npm install -g pnpm@latest
+    ```
+
+
+### Installation
+Get up an running developing Insculpo locally
+
+1. Clone the Repo
+    ```
+        git clone https://github.com/Insculpo.git
+    ```
+2. Install packages
+    ```
+        pnpm install
+    ```
+3. Run in development environment
+    ```
+        pnpm dev
+    ```
+
+
+### Roadmap
+Insculpo by nature doesn't cover a large scope but there are things that are essential to a proper note taking app
+
+- [] Mobile Client
+- [] Web Client
+- [] Synchronization
+
+
+
+### Contribution
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+
+Please bear in mind that all features being requested will have to undergo a vetting process and will have to be agreed to meet the overall goals of the project to be accepted.
+
+1. Fork the Project
+
+2. Create your Feature Branch (```git checkout -b feature/AmazingFeature```)
+
+3. Commit your Changes (``git commit -m 'Add some AmazingFeature'```)
+
+4. Push to the Branch (```git push origin feature/AmazingFeature```)
+
+5. Open a Pull Request
+
+
+### Licensce
+Distributed under the MIT License. See LICENSE.txt for more information.
+
+
+### Contact
+[Disgruntled Dev](disgruntleddev@outloo.com)
+
+
+### Acknowledgements
+This project wouldn't be possible without the following packages and as such I am grateful for their work
+
+- [TRPC](https://trpc.io)
+- [PouchDB](https://pouchdb.com)
+- [React Markdown](https://github.com/remarkjs/react-markdown)
