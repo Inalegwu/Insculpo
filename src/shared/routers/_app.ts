@@ -1,7 +1,6 @@
 import { publicProcedure, router } from "@src/trpc";
 import pkg from "../../../package.json";
 import { linksRouter } from "./links";
-import { notebooksRouter } from "./notebooks";
 import { notesRouter } from "./notes";
 import { syncRouter } from "./sync";
 import { windowRouter } from "./window";
@@ -13,7 +12,6 @@ export const appRouter = router({
   }),
   links: linksRouter,
   notes: notesRouter,
-  notebooks: notebooksRouter,
   sync: syncRouter,
 });
 

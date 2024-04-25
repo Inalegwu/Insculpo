@@ -72,15 +72,10 @@ export const notesRouter = router({
           name: {
             $regex: input.query,
           },
-          body: {
-            $regex: input.query,
-          },
         },
         limit: 5,
         sort: ["name"],
       });
-
-      console.log(results.docs.map((v) => ({ name: v.name, id: v._id })));
 
       return results.docs;
     }),
@@ -115,7 +110,7 @@ export const notesRouter = router({
         continue;
       }
       fs.writeFile(
-        `${destination}/${note.doc.name}`,
+        `${destination}/${note.doc.name}.md`,
         note.doc.body,
         {
           encoding: "utf8",

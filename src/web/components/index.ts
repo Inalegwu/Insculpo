@@ -1,3 +1,4 @@
+import CheckBox from "./checkbox";
 import Document from "./document";
 import ErrorBoundaryFallBack from "./error-boundary";
 import FlatList from "./flatlist";
@@ -7,6 +8,7 @@ import MarkdownView from "./markdown-view";
 import NotFoundRoute from "./not-found";
 
 export {
+  CheckBox,
   Document,
   ErrorBoundaryFallBack,
   FlatList,

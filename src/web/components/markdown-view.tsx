@@ -1,5 +1,5 @@
-import { Box, Checkbox, Flex, Heading, Text } from "@radix-ui/themes";
-import { Link } from "@src/web/components";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { CheckBox, Link } from "@src/web/components";
 import { globalState$ } from "@src/web/state";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -86,10 +86,7 @@ export default function MarkdownView({ content }: { content: string }) {
         },
         li(props) {
           return props.role === "checkbox" ? (
-            <Flex align="center" gap="1">
-              <Checkbox defaultChecked={false} />
-              {props.children}
-            </Flex>
+            <CheckBox children={props.children} />
           ) : (
             <li>{props.children}</li>
           );

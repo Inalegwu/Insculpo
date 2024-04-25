@@ -14,7 +14,8 @@
       "@shared/*": ["src/shared/*"],
       "@components/*": ["src/web/components/*"],
       "@assets/*": ["src/assets/*"],
-      "@pages/*": ["src/web/routes/*"]
+      "@pages/*": ["src/web/routes/*"],
+      "@utils": ["src/shared/utils.ts"]
     },
     "allowSyntheticDefaultImports": true
   },

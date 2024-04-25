@@ -1,4 +1,4 @@
-import { debounce } from "@src/shared/utils";
+import { debounce } from "@utils";
 import { useEffect, useMemo } from "react";
 
 function useDebounce<A = unknown[], R = void>(

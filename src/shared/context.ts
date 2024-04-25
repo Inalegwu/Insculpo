@@ -1,4 +1,4 @@
-import { inferAsyncReturnType } from "@trpc/server";
+import type { inferAsyncReturnType } from "@trpc/server";
 import { BrowserWindow, app } from "electron";
 import store from "./storage";
 

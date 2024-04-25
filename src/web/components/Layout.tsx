@@ -1,15 +1,24 @@
 import { useObservable } from "@legendapp/state/react";
-import { GearFine, Info, Minus, Plus, Sidebar, X } from "@phosphor-icons/react";
+import {
+  Download,
+  GearFine,
+  Info,
+  Minus,
+  Plus,
+  Sidebar,
+  X,
+} from "@phosphor-icons/react";
 import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import { formatTextForSidebar } from "@src/shared/utils";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { formatTextForSidebar } from "@utils";
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -32,6 +41,15 @@ export default function Layout({ children }: LayoutProps) {
   const searchInputFocus = useObservable(false);
 
   const { mutate: findNote, data: results } = t.notes.findNote.useMutation();
+  const { mutate: dumpAllNotes } = t.notes.dumpNotes.useMutation({
+    onSuccess: () => {
+      toast.success("All notes exported successfully");
+    },
+    onError: (e) => {
+      console.log(e.message);
+      toast.error("Couldn't export notes");
+    },
+  });
 
   useEffect(() => {
     if (globalState$.colorMode.get() === "dark") {
@@ -187,14 +205,14 @@ export default function Layout({ children }: LayoutProps) {
         <AnimatePresence mode="wait">
           {/* sidebar */}
           <motion.div
-            initial={{ width: "0%", opacity: 0 }}
+            initial={false}
             animate={{
               opacity: passedThres.get() ? 1 : 0,
               width: passedThres.get() ? "30%" : "0%",
             }}
             transition={{
-              width: { duration: 0.5 },
-              opacity: { duration: 0.7 },
+              width: { duration: 0.6 },
+              opacity: { duration: 0.1 },
             }}
             onMouseOver={() => sideBarFocus.set(true)}
             onMouseLeave={() => sideBarFocus.set(false)}
@@ -305,6 +323,16 @@ export default function Layout({ children }: LayoutProps) {
                       onClick={handleNewClicked}
                     >
                       <Plus size={13} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip content="Export all notes">
+                    <IconButton
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                      onClick={() => dumpAllNotes()}
+                    >
+                      <Download size={13} />
                     </IconButton>
                   </Tooltip>
                 </Flex>

@@ -1,4 +1,4 @@
-import { throttle } from "@src/shared/utils";
+import { throttle } from "@utils";
 import { useEffect, useMemo } from "react";
 
 export function useThrottle<A = unknown[], R = void>(

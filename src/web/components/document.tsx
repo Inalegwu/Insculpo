@@ -2,9 +2,9 @@ import { Download, Trash } from "@phosphor-icons/react";
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import type { Note } from "@src/shared/types";
-import { formatTextForSidebar } from "@src/shared/utils";
 import { noteState } from "@src/web/state";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { formatTextForSidebar } from "@utils";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 
@@ -22,6 +22,7 @@ export default function Document({ doc }: DocumentProps) {
       toast.success("Note exported successfully");
     },
     onError: (e) => {
+      console.error(e);
       toast.error("Couldn't export note");
     },
   });
@@ -29,7 +30,6 @@ export default function Document({ doc }: DocumentProps) {
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
     onSuccess: (_, v) => {
       utils.notes.invalidate();
-      noteState.activeNoteId.set(null);
       if (noteState.activeNoteId.get() === v.noteId) {
         noteState.activeNoteId.set(null);
       }
@@ -67,10 +67,10 @@ export default function Document({ doc }: DocumentProps) {
             <Flex grow="1" />
           )}
           <Flex direction="column" align="end" justify="center">
-            <Text color="iris" weight="bold" className="text-[11px]">
+            <Text color="iris" weight="bold" className="text-[11px] font-bold">
               {doc?.name?.slice(0, 28)}
             </Text>
-            <Text className="text-[9.7px] text-gray-400 font-medium">
+            <Text className="text-[10px] text-gray-400 font-light">
               {formatTextForSidebar(doc?.body?.slice(0, 30) || "")}
             </Text>
           </Flex>

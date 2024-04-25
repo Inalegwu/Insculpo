@@ -33,15 +33,15 @@
   box-sizing: border-box;
   font-family: Axiforma;
   text-decoration: none;
-
 }
 
 body {
-   -webkit-user-select: none;
+  -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
   overflow: hidden;
 }
+
 
 #drag-region {
   user-select: none;

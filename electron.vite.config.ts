@@ -19,6 +19,7 @@ export default defineConfig({
         "@components": resolve(__dirname, "src/web/components/"),
         "@assets": resolve(__dirname, "src/assets/"),
         "@pages": resolve(__dirname, "src/web/pages"),
+        "@utils": resolve(__dirname, "src/shared/utils"),
       },
     },
   },
@@ -39,6 +40,7 @@ export default defineConfig({
         "@components": resolve(__dirname, "src/web/components/"),
         "@assets": resolve(__dirname, "src/assets/"),
         "@pages": resolve(__dirname, "src/web/pages"),
+        "@utils": resolve(__dirname, "src/shared/utils"),
       },
     },
     plugins: [

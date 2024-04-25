@@ -16,7 +16,6 @@ export type Note = {
 };
 
 export type NoteBook = {
-  id: string;
   name: string;
   dateCreated?: number;
   dateUpdated?: number;

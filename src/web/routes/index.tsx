@@ -42,9 +42,8 @@ function Index() {
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
       if (d) {
-        utils.notes.invalidate();
-        noteState.activeNoteId.set(d.id);
         utils.notes.getNotes.invalidate();
+        noteState.activeNoteId.set(d.id);
       }
     },
     onError: (e) => {

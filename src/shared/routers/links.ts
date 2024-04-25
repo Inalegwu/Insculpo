@@ -1,9 +1,9 @@
 import { publicProcedure, router } from "@src/trpc";
+import { extractOGTag } from "@utils";
 import axios from "axios";
 import { load } from "cheerio";
 import { shell } from "electron";
 import { z } from "zod";
-import { extractOGTag } from "../utils";
 
 export const linksRouter = router({
   openExternal: publicProcedure
