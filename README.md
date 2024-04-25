@@ -27,14 +27,14 @@ Insulpo uses pnpm as the primary package manager.
 - node (however you install node on your system)
 
     ```
-        proto install node
-        nvm install latest
+    proto install node
+    nvm install latest
     ```
 
 - pnpm
 
     ```
-        npm install -g pnpm@latest
+    npm install -g pnpm@latest
     ```
 
 
@@ -43,24 +43,24 @@ Get up an running developing Insculpo locally
 
 1. Clone the Repo
     ```
-        git clone https://github.com/Insculpo.git
+    git clone https://github.com/Insculpo.git
     ```
 2. Install packages
     ```
-        pnpm install
+    pnpm install
     ```
 3. Run in development environment
     ```
-        pnpm dev
+    pnpm dev
     ```
 
 
 ### Roadmap
 Insculpo by nature doesn't cover a large scope but there are things that are essential to a proper note taking app
 
-- [] Mobile Client
-- [] Web Client
-- [] Synchronization
+- [ ] Mobile Client
+- [ ] Web Client
+- [ ] Synchronization
 
 
 
