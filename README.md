@@ -83,7 +83,7 @@ Please bear in mind that all features being requested will have to undergo a vet
 
 
 ### Licensce
-Distributed under the MIT License. See LICENSE.txt for more information.
+Distributed under the BSD 4-Clause License. See LICENSE.txt for more information.
 
 
 ### Contact
