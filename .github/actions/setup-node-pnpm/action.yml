@@ -1,0 +1,18 @@
+name : 'Setup Node + PNPM  + Install Dependencies'
+description : 'Setup Node + PNPM + Install Dependencies'
+
+runs:
+  using : 'composite'
+  steps:
+    - uses : pnpm/action-setup@v2
+      with :
+        version : 9
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 20
+        cache: 'pnpm'
+
+    - name : 📦 Box Install Project Deps
+      run  : pnpm install
+      shell : bash
