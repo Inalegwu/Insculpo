@@ -1,4 +1,5 @@
-import { Flex, Heading, ScrollArea, Text } from "@radix-ui/themes";
+import { Copyright } from "@phosphor-icons/react";
+import { Flex, Heading, Text } from "@radix-ui/themes";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Link } from "../components";
 
@@ -8,52 +9,31 @@ export const Route = createLazyFileRoute("/about")({
 
 function About() {
   return (
-    <ScrollArea
-      type="scroll"
-      scrollbars="vertical"
-      size="1"
-      className="w-full h-full flex flex-col gap-4 px-25 py-20 "
+    <Flex
+      align="start"
+      justify="center"
+      direction="column"
+      width="100%"
+      height="100%"
+      gap="2"
+      className="px-25 py-20 "
     >
-      <Flex direction="column" align="start" className="mt-4 mb-4">
+      <Flex direction="column" align="start" className="mt-4">
         <Heading size="9">Insculpo</Heading>
-        <Text size="5" className="text-gray-400">
+        <Text size="5" className="text-gray-400 dark:text-gray-500">
           Your notebook, with superpowers
         </Text>
       </Flex>
-      <Flex className="mb-4 mt-4">
-        <Text size="3" weight="light">
-          Insculpo is a markdown based note-taking app focused on taking notes
-          first and organizing them later by allowing you to get to the point of
-          the note first and only organizing when your thoughts are crystal
-          clear by removing the fatigue of the inital note taking process and
-          simply giving you a blank notepad at the start.
-        </Text>{" "}
-      </Flex>
-      <Flex className="mb-4 mt-4">
-        <Text size="3" weight="light">
-          When you're done writing , you can open your sidebar to view all your
-          notes in one place like one giant notebook,with all your thoughts
-          close together.
-        </Text>
-      </Flex>
-      <Flex className="mb-4 mt-4">
-        <Text size="3" weight="light">
-          By not trying to be a second brain that does all the things,
-          <Text color="iris" className="ml-1 mr-1">
-            Insculpo
-          </Text>
-          focuses on letting you do one thing,and doing that one thing very well
-          and consistently every single time.
-        </Text>
-      </Flex>
-      <Flex className="mt-4 mb-4">
-        <Text size="3" className="text-gray-400">
-          Made with 🖤 by{" "}
-          <Link href="https://google.com" className="ml-1 mr-1">
-            Disgruntled Devs
-          </Link>
-        </Text>
-      </Flex>
-    </ScrollArea>
+      <Text size="2" className="text-gray-400 mt-2 mb-2">
+        Made with 🖤 by{" "}
+        <Link href="https://google.com" className="ml-1 mr-1">
+          Disgruntled Devs
+        </Link>{" "}
+        , part of the <Link href="https://google.com">Officina</Link> Suite
+      </Text>
+      <Text size="1" color="gray">
+        2024 <Copyright size={13} /> Disgruntled Devs
+      </Text>
+    </Flex>
   );
 }

@@ -198,7 +198,7 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.4 }}
           layout
         >
-          <Box className="w-full h-full rounded-md bg-slate-50 dark:bg-[#0f0f0f] font-light border-1 border-solid border-gray-400/40 dark:border-gray-400/10">
+          <Box className="w-full h-full rounded-md bg-slate-50 dark:bg-dark-9 font-light border-1 border-solid border-gray-400/40 dark:border-gray-400/10">
             {children}
           </Box>
         </motion.div>

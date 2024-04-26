@@ -9,9 +9,11 @@ export default function CheckBox(props: Props) {
   const checkboxRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <Flex align="center" direction="row" gap="3">
-      <Checkbox ref={checkboxRef} defaultChecked={false} color="iris" />
-      <Text size="2">{props.children}</Text>
-    </Flex>
+    <Text as="label">
+      <Flex align="center" gap="2">
+        <Checkbox ref={checkboxRef} defaultChecked={false} color="iris" />
+        <Text size="2">{props.children}</Text>
+      </Flex>
+    </Text>
   );
 }

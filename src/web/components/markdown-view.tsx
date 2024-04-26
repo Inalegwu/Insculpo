@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { Blockquote, Box, Flex, Heading } from "@radix-ui/themes";
 import { CheckBox, Link } from "@src/web/components";
 import { globalState$ } from "@src/web/state";
 import Markdown from "react-markdown";
@@ -67,22 +67,7 @@ export default function MarkdownView({ content }: { content: string }) {
           return <Heading size="3">{props.children}</Heading>;
         },
         blockquote(props) {
-          return (
-            <Flex
-              align="center"
-              justify="start"
-              gap="4"
-              className="px-5 py-5 font-medium max-h-lg bg-slate-400/10 rounded-xl text-wrap"
-            >
-              <Flex className="h-[18vh] border-1 border-solid border-indigo-500/30 border-opacity-[0.4] rounded-full" />
-              <Text
-                className="text-indigo-500 dark:text-indigo-300 w-full"
-                size="2"
-              >
-                {props.children}
-              </Text>
-            </Flex>
-          );
+          return <Blockquote size="4">{props.children}</Blockquote>;
         },
         li(props) {
           return props.role === "checkbox" ? (
