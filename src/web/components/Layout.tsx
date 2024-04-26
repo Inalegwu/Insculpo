@@ -11,7 +11,7 @@ import {
 import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
-import { useDebounce, useTimeout, useWindow } from "@src/web/hooks";
+import { useDebounce, useEditor, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$, noteState } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { formatTextForSidebar } from "@utils";
@@ -29,6 +29,8 @@ export default function Layout({ children }: LayoutProps) {
   const { mutate: close } = t.window.closeWindow.useMutation();
   const routeState = useRouterState();
   const nav = useNavigate();
+
+  const [text, activeNoteId] = useEditor();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -93,13 +95,15 @@ export default function Layout({ children }: LayoutProps) {
   useWindow("mousemove", mouseMove);
 
   const handleNewClicked = useCallback(() => {
-    noteState.activeNoteId.set(null);
+    activeNoteId.set(null);
+    text.set("");
+    globalState$.editorState.set("writing");
     if (routeState.location.pathname !== "/") {
       nav({
         to: "/",
       });
     }
-  }, [nav, routeState]);
+  }, [nav, routeState, activeNoteId, text]);
 
   const handleSearchResultClicked = useCallback(
     (id: string) => {

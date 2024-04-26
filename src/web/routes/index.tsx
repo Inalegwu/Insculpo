@@ -5,11 +5,12 @@ import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
 import {
   useDebounce,
+  useEditor,
   useInterval,
   useTimeout,
   useWindow,
 } from "@src/web/hooks";
-import { globalState$, noteState } from "@src/web/state";
+import { globalState$ } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import type React from "react";
@@ -22,8 +23,9 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const utils = t.useUtils();
-  const text = useObservable<string>("");
   const toolbar = useObservable(false);
+
+  const [text, activeNoteId] = useEditor();
 
   const editorState = globalState$.editorState.get();
 
@@ -38,14 +40,14 @@ function Index() {
   useInterval(() => {
     if (text.get() === "") return;
 
-    saveNote({ noteId: noteState.activeNoteId.get(), content: text.get() });
+    saveNote({ noteId: activeNoteId.get(), content: text.get() });
   }, 2000);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
       if (d) {
         utils.notes.getNotes.invalidate();
-        noteState.activeNoteId.set(d.id);
+        activeNoteId.set(d.id);
       }
     },
     onError: (e) => {
@@ -70,12 +72,12 @@ function Index() {
 
   t.notes.getNote.useQuery(
     {
-      noteId: noteState.activeNoteId.get(),
+      noteId: activeNoteId.get(),
     },
     {
       onSuccess: (d) => {
         if (d === null) return;
-        noteState.activeNoteId.set(d._id);
+        activeNoteId.set(d._id);
         text.set(d.body);
       },
     },
@@ -98,9 +100,9 @@ function Index() {
 
   const handleNewNoteClick = useCallback(() => {
     globalState$.editorState.set("writing");
-    noteState.activeNoteId.set(null);
+    activeNoteId.set(null);
     text.set("");
-  }, [text]);
+  }, [text, activeNoteId]);
 
   const switchEditorState = useCallback(() => {
     if (editorState === "writing") {
@@ -159,7 +161,7 @@ function Index() {
           {/* save note to device */}
           <Tooltip content="Export note">
             <IconButton
-              onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
+              onClick={() => dumpNote({ noteId: activeNoteId.get() })}
               variant="soft"
               radius="full"
               size="3"

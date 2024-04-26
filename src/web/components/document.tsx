@@ -35,7 +35,8 @@ export default function Document({ doc }: DocumentProps) {
       }
     },
     onError: (e) => {
-      toast.error(e.message);
+      console.log(e);
+      toast.error("Couldn't delete right now");
     },
   });
 
