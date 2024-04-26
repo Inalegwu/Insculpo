@@ -67,7 +67,15 @@ export default function MarkdownView({ content }: { content: string }) {
           return <Heading size="3">{props.children}</Heading>;
         },
         blockquote(props) {
-          return <Blockquote size="4">{props.children}</Blockquote>;
+          return (
+            <Blockquote
+              color={colorMode === "dark" ? "gray" : "iris"}
+              size="4"
+              className="mt-3 mb-3"
+            >
+              {props.children}
+            </Blockquote>
+          );
         },
         li(props) {
           return props.role === "checkbox" ? (

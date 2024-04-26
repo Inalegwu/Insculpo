@@ -27,6 +27,8 @@ function Index() {
 
   const editorState = globalState$.editorState.get();
 
+  const isDarkMode = globalState$.colorMode.get() === "dark";
+
   useTimeout(() => {
     if (toolbar.get()) {
       toolbar.set(false);
@@ -129,7 +131,12 @@ function Index() {
         style={{ position: "absolute" }}
         className="absolute bottom-2 left-0"
       >
-        <Flex align="center" gap="2" className="px-4 py-2 rounded-md">
+        <Flex
+          align="center"
+          direction="column"
+          gap="2"
+          className="px-4 py-2 rounded-md"
+        >
           {/* change editor state */}
           <Tooltip
             content={
@@ -140,10 +147,11 @@ function Index() {
           >
             <IconButton
               onClick={switchEditorState}
-              variant="outline"
+              variant="soft"
               radius="full"
-              size="2"
+              size="3"
               className="cursor-pointer"
+              color={isDarkMode ? "gray" : "iris"}
             >
               <Eye size={15} />
             </IconButton>
@@ -152,10 +160,11 @@ function Index() {
           <Tooltip content="Export note">
             <IconButton
               onClick={() => dumpNote({ noteId: noteState.activeNoteId.get() })}
-              variant="outline"
+              variant="soft"
               radius="full"
-              size="2"
+              size="3"
               className="cursor-pointer"
+              color={isDarkMode ? "gray" : "iris"}
             >
               <DownloadSimple size={15} />
             </IconButton>
@@ -165,9 +174,10 @@ function Index() {
             <IconButton
               radius="full"
               onClick={handleNewNoteClick}
-              variant="outline"
+              variant="soft"
               className="cursor-pointer"
-              size="2"
+              size="3"
+              color={isDarkMode ? "gray" : "iris"}
             >
               <Plus size={15} />
             </IconButton>
