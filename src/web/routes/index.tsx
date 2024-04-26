@@ -1,5 +1,4 @@
 import { useObservable } from "@legendapp/state/react";
-import { DownloadSimple, Eye, Plus } from "@phosphor-icons/react";
 import { Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
 import { MarkdownView } from "@src/web/components";
@@ -16,6 +15,7 @@ import { motion } from "framer-motion";
 import type React from "react";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
+import * as Feather from "react-icons/fi";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -155,7 +155,7 @@ function Index() {
               className="cursor-pointer"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <Eye size={15} />
+              <Feather.FiEye size={13} />
             </IconButton>
           </Tooltip>
           {/* save note to device */}
@@ -168,7 +168,7 @@ function Index() {
               className="cursor-pointer"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <DownloadSimple size={15} />
+              <Feather.FiDownload size={13} />
             </IconButton>
           </Tooltip>
           {/* create a new note */}
@@ -181,7 +181,7 @@ function Index() {
               size="3"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <Plus size={15} />
+              <Feather.FiPlus size={13} />
             </IconButton>
           </Tooltip>
         </Flex>

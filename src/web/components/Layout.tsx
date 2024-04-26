@@ -1,13 +1,4 @@
 import { useObservable } from "@legendapp/state/react";
-import {
-  Download,
-  GearFine,
-  Info,
-  Minus,
-  Plus,
-  Sidebar,
-  X,
-} from "@phosphor-icons/react";
 import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
@@ -19,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
+import * as Feather from "react-icons/fi";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -50,6 +42,15 @@ export default function Layout({ children }: LayoutProps) {
     onError: (e) => {
       console.log(e.message);
       toast.error("Couldn't export notes");
+    },
+  });
+
+  // TODO implement a pseudo transparent
+  // background using this and also
+  // use this in radix-theme
+  t.system.getAccentColor.useQuery(undefined, {
+    onSuccess: (d) => {
+      console.log(d);
     },
   });
 
@@ -247,7 +248,8 @@ export default function Layout({ children }: LayoutProps) {
                     className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                     onClick={() => passedThres.set(false)}
                   >
-                    <Sidebar size={13} />
+                    {/* <Sidebar size={13} /> */}
+                    <Feather.FiSidebar size={11} />
                   </Button>
                   <Button
                     variant="ghost"
@@ -255,7 +257,7 @@ export default function Layout({ children }: LayoutProps) {
                     className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                     onClick={() => minimize()}
                   >
-                    <Minus size={13} />
+                    <Feather.FiMinus size={11} />
                   </Button>
                   <Button
                     variant="ghost"
@@ -264,7 +266,7 @@ export default function Layout({ children }: LayoutProps) {
                     type="button"
                     onClick={() => close()}
                   >
-                    <X size={13} />
+                    <Feather.FiX size={11} />
                   </Button>
                 </Flex>
                 <FlatList
@@ -305,13 +307,13 @@ export default function Layout({ children }: LayoutProps) {
                       radius="full"
                       size="2"
                     >
-                      <Info size={13} />
+                      <Feather.FiInfo size={11} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip content="Preferences">
                     <IconButton asChild variant="ghost" radius="full" size="2">
                       <Link to="/settings">
-                        <GearFine size={13} />
+                        <Feather.FiSettings size={11} />
                       </Link>
                     </IconButton>
                   </Tooltip>
@@ -322,7 +324,7 @@ export default function Layout({ children }: LayoutProps) {
                       size="2"
                       onClick={handleNewClicked}
                     >
-                      <Plus size={13} />
+                      <Feather.FiPlus size={11} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip content="Export all notes">
@@ -332,7 +334,7 @@ export default function Layout({ children }: LayoutProps) {
                       size="2"
                       onClick={() => dumpAllNotes()}
                     >
-                      <Download size={13} />
+                      <Feather.FiDownload size={11} />
                     </IconButton>
                   </Tooltip>
                 </Flex>

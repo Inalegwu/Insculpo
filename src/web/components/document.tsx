@@ -1,4 +1,3 @@
-import { Download, Trash } from "@phosphor-icons/react";
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import type { Note } from "@src/shared/types";
@@ -6,6 +5,7 @@ import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { formatTextForSidebar } from "@utils";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
+import * as Feather from "react-icons/fi";
 import { useEditor } from "../hooks";
 
 type DocumentProps = {
@@ -78,14 +78,10 @@ export default function Document({ doc }: DocumentProps) {
           </Flex>
         </Flex>
       </ContextMenu.Trigger>
-      <ContextMenu.Content
-        size="1"
-        variant="soft"
-        className="dark:bg-slate-700"
-      >
+      <ContextMenu.Content size="1" variant="soft" className="dark:bg-dark-9">
         <ContextMenu.Item onClick={() => dumpNote({ noteId: doc?._id || "" })}>
           <Flex gap="1" align="center">
-            <Download />
+            <Feather.FiDownload />
             <Text size="1">Export Note</Text>
           </Flex>
         </ContextMenu.Item>
@@ -99,7 +95,7 @@ export default function Document({ doc }: DocumentProps) {
           }
         >
           <Flex gap="1" align="center">
-            <Trash />
+            <Feather.FiTrash />
             <Text size="1">Delete Note</Text>
           </Flex>
         </ContextMenu.Item>

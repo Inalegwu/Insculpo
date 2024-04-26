@@ -3,6 +3,7 @@ import pkg from "../../../package.json";
 import { linksRouter } from "./links";
 import { notesRouter } from "./notes";
 import { syncRouter } from "./sync";
+import { systemRouter } from "./system";
 import { windowRouter } from "./window";
 
 export const appRouter = router({
@@ -13,6 +14,7 @@ export const appRouter = router({
   links: linksRouter,
   notes: notesRouter,
   sync: syncRouter,
+  system: systemRouter,
 });
 
 export type AppRouter = typeof appRouter;

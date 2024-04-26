@@ -1,6 +1,6 @@
-import { Copyright } from "@phosphor-icons/react";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import * as Phosphor from "react-icons/pi";
 import { Link } from "../components";
 
 export const Route = createLazyFileRoute("/about")({
@@ -32,7 +32,7 @@ function About() {
         , part of the <Link href="https://google.com">Officina</Link> Suite
       </Text>
       <Text size="1" color="gray">
-        2024 <Copyright size={13} /> Disgruntled Devs
+        2024 <Phosphor.PiCopyright size={13} /> Disgruntled Devs
       </Text>
     </Flex>
   );
