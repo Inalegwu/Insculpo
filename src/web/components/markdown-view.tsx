@@ -16,7 +16,7 @@ export default function MarkdownView({ content }: { content: string }) {
   return (
     <Markdown
       children={content}
-      className="bg-slate-50 text-sm w-full h-full border-1 border-solid border-gray-400/50 px-25 py-20 rounded-md overflow-y-scroll dark:bg-slate-700 dark:border-gray-500/30 line-height-[2]"
+      className="text-sm w-full h-full px-25 py-20 rounded-md overflow-y-scroll line-height-[2]"
       remarkPlugins={[
         [remarkGfm, { singleTilde: false }],
         [remarkToc, { heading: "Contents", ordered: true }],

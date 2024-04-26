@@ -121,7 +121,7 @@ export default function Layout({ children }: LayoutProps) {
     <Flex
       width="100%"
       align="center"
-      className="transition w-full h-screen bg-gray-100 relative p-2 dark:bg-gray-800 font-light"
+      className="transition w-full h-screen bg-gray-100 relative p-2 dark:bg-black font-light"
     >
       <AnimatePresence initial={false}>
         <motion.div
@@ -198,7 +198,7 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.4 }}
           layout
         >
-          <Box className="w-full h-full rounded-md bg-white dark:bg-slate-700 font-light">
+          <Box className="w-full h-full rounded-md bg-slate-50 dark:bg-[#0f0f0f] font-light border-1 border-solid border-gray-400/40 dark:border-gray-400/10">
             {children}
           </Box>
         </motion.div>

@@ -12,7 +12,7 @@ function About() {
       type="scroll"
       scrollbars="vertical"
       size="1"
-      className="w-full h-full flex bg-slate-50 flex-col gap-4 rounded-lg border-1 border-solid border-gray-400/50 px-25 py-20 rounded-md dark:bg-slate-700 dark:border-gray-500/30"
+      className="w-full h-full flex flex-col gap-4 px-25 py-20 "
     >
       <Flex direction="column" align="start" className="mt-4 mb-4">
         <Heading size="9">Insculpo</Heading>
