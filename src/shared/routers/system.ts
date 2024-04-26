@@ -5,8 +5,6 @@ export const systemRouter = router({
   getAccentColor: publicProcedure.query(async () => {
     const accentColor = systemPreferences.getAccentColor();
 
-    console.log(accentColor);
-
     return accentColor;
   }),
 });

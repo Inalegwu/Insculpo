@@ -10,7 +10,7 @@ export const Route = createRootRoute({
         position="bottom-right"
         toastOptions={{
           className:
-            "bg-indigo-500/30 text-indigo-500 text-[11px] shadow-lg dark:bg-slate-700 dark:text-gray-300",
+            "bg-slate-50 text-[11px] shadow-lg dark:bg-dark-8 dark:text-gray-400",
         }}
         reverseOrder
       />

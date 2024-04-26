@@ -18,6 +18,11 @@
   src:url("../assets/fonts/Kastelov  Axiforma Regular.otf");
 }
 
+@font-face{
+  font-family: Recursive;
+  src: url("../assets/fonts/RecMonoCasual-Regular-1.085.ttf");
+}
+
 .radix-themes {
   --default-font-family: Axiforma ;
   --heading-font-family: Axiforma; 
@@ -53,11 +58,4 @@ body {
 ::-webkit-scrollbar {
   width: 0;
   background: transparent;
-}
-
-button{
-  appearance:none;
-  border:none;
-  background:none;
-  outline:none;
 }

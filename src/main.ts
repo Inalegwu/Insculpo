@@ -15,6 +15,7 @@ const createWindow = () => {
     minHeight: 500,
     maxHeight: 1000,
     maxWidth: 1000,
+    backgroundMaterial: "mica",
     webPreferences: {
       sandbox: false,
       preload: join(__dirname, "../preload/preload.js"),

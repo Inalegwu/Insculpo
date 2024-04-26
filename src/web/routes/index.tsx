@@ -118,7 +118,7 @@ function Index() {
         <TextArea
           onChange={handleEditorInput}
           value={text.get()!}
-          className="w-full h-full text-sm  rounded-md line-height-loose"
+          className="w-full h-full text-sm  rounded-md line-height-loose font-[Recursive]"
         />
       ) : (
         <MarkdownView content={text.get()!} />

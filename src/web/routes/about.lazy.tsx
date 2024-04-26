@@ -26,10 +26,10 @@ function About() {
       </Flex>
       <Text size="2" className="text-gray-400 mt-2 mb-2">
         Made with 🖤 by{" "}
-        <Link href="https://google.com" className="ml-1 mr-1">
+        <Link href="" className="ml-1 mr-1">
           Disgruntled Devs
         </Link>{" "}
-        , part of the <Link href="https://google.com">Officina</Link> Suite
+        , part of the <Link href="">Officina</Link> Suite
       </Text>
       <Text size="1" color="gray">
         2024 <Phosphor.PiCopyright size={13} /> Disgruntled Devs

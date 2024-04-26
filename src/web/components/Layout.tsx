@@ -45,15 +45,6 @@ export default function Layout({ children }: LayoutProps) {
     },
   });
 
-  // TODO implement a pseudo transparent
-  // background using this and also
-  // use this in radix-theme
-  t.system.getAccentColor.useQuery(undefined, {
-    onSuccess: (d) => {
-      console.log(d);
-    },
-  });
-
   useEffect(() => {
     if (globalState$.colorMode.get() === "dark") {
       document.body.classList.add("dark");
