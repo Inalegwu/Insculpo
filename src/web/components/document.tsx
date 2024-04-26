@@ -2,11 +2,11 @@ import { Download, Trash } from "@phosphor-icons/react";
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import type { Note } from "@src/shared/types";
-import { noteState } from "@src/web/state";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { formatTextForSidebar } from "@utils";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
+import { useEditor } from "../hooks";
 
 type DocumentProps = {
   doc?: PouchDB.Core.ExistingDocument<Note>;
@@ -16,6 +16,7 @@ export default function Document({ doc }: DocumentProps) {
   const utils = t.useUtils();
   const routeState = useRouterState();
   const nav = useNavigate();
+  const [_, activeNoteId] = useEditor();
 
   const { mutate: dumpNote } = t.notes.dumpNote.useMutation({
     onSuccess: () => {
@@ -30,8 +31,8 @@ export default function Document({ doc }: DocumentProps) {
   const { mutate: deleteNote } = t.notes.deleteNote.useMutation({
     onSuccess: (_, v) => {
       utils.notes.invalidate();
-      if (noteState.activeNoteId.get() === v.noteId) {
-        noteState.activeNoteId.set(null);
+      if (activeNoteId.get() === v.noteId) {
+        activeNoteId.set(null);
       }
     },
     onError: (e) => {
@@ -42,14 +43,14 @@ export default function Document({ doc }: DocumentProps) {
 
   const handleNoteClick = useCallback(
     (id: string) => {
-      noteState.activeNoteId.set(id);
+      activeNoteId.set(id);
       if (routeState.location.pathname !== "/") {
         nav({
           to: "/",
         });
       }
     },
-    [routeState, nav],
+    [routeState, nav, activeNoteId],
   );
 
   return (
@@ -62,7 +63,7 @@ export default function Document({ doc }: DocumentProps) {
           onClick={() => handleNoteClick(doc?._id!)}
           className="py-3 rounded-md"
         >
-          {noteState.activeNoteId.get() === doc?._id ? (
+          {activeNoteId.get() === doc?._id ? (
             <Flex className="h-[1vh] w-[1vh] bg-indigo-500/30 rounded-full transition transition-duration-[10]" />
           ) : (
             <Flex grow="1" />

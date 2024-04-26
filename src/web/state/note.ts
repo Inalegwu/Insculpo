@@ -11,7 +11,7 @@ configureObservablePersistence({
 
 type NoteState = {
   activeNoteId: string | null;
-  noteContent: string;
+  noteContent: string | null;
 };
 
 export const noteState = observable<NoteState>({
