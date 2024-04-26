@@ -56,16 +56,12 @@ export default function Layout({ children }: LayoutProps) {
       document.body.classList.add("dark");
     }
 
-    if (
-      globalState$.appId === null &&
-      globalState$.firstLaunch &&
-      routeState.location.pathname === "/"
-    ) {
+    if (globalState$.firstLaunch.get()) {
       nav({
         to: "/firstlaunch",
       });
     }
-  }, [nav, routeState]);
+  }, [nav]);
 
   useTimeout(() => {
     if (finder.get() && !searchInputFocus.get()) {
