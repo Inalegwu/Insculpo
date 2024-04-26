@@ -4,8 +4,8 @@ import { globalState$ } from "@src/web/state";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
+  duotoneLight,
   nord,
-  solarizedlight,
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
@@ -26,7 +26,7 @@ export default function MarkdownView({ content }: { content: string }) {
           const match = /language-(\w+)/.exec(className || "");
           return !inline && match ? (
             <SyntaxHighlighter
-              style={colorMode === "light" ? solarizedlight : nord}
+              style={colorMode === "light" ? duotoneLight : nord}
               PreTag="div"
               customStyle={{
                 fontSize: 13,
