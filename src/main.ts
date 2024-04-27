@@ -28,7 +28,7 @@ const createWindow = () => {
     createContext,
   });
 
-  mainWindow.webContents.on("dom-ready", () => {
+  mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.show();
   });
 
