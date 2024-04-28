@@ -67,8 +67,6 @@ export function throttle<A = unknown[], R = void>(
   let timeout: NodeJS.Timeout;
   const throttledFn = (args: A): Promise<R> =>
     new Promise((resolve) => {
-      // don't do anything if we should still
-      // be waiting
       if (shouldWait) {
         return;
       }

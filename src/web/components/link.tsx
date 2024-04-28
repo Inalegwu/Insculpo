@@ -8,8 +8,8 @@ import {
 import t from "@src/shared/config";
 import { motion } from "framer-motion";
 import type React from "react";
-import * as Feather from "react-icons/fi";
-import * as Phosphor from "react-icons/pi";
+import { FiArrowRight } from "react-icons/fi";
+import { PiSpinner } from "react-icons/pi";
 
 type LinkProps = React.ClassAttributes<HTMLAnchorElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -74,7 +74,7 @@ export default function Link({
                   className="cursor-pointer"
                 >
                   <Text size="1">Visit</Text>
-                  <Feather.FiArrowRight size={14} />
+                  <FiArrowRight size={14} />
                 </Button>
               </Flex>
             </Flex>
@@ -87,7 +87,7 @@ export default function Link({
             transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.9 }}
             className="text-indigo-500 dark:text-white"
           >
-            <Phosphor.PiSpinner size={20} />
+            <PiSpinner size={20} />
           </motion.div>
         )}
       </HoverCard.Content>

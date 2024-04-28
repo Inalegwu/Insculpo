@@ -3,14 +3,22 @@ import { Box, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useEditor, useTimeout, useWindow } from "@src/web/hooks";
-import { globalState$, noteState } from "@src/web/state";
+import { globalState$ } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { formatTextForSidebar } from "@utils";
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import * as Feather from "react-icons/fi";
+import {
+  FiDownload,
+  FiInfo,
+  FiMinus,
+  FiPlus,
+  FiSettings,
+  FiSidebar,
+  FiX,
+} from "react-icons/fi";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -35,6 +43,7 @@ export default function Layout({ children }: LayoutProps) {
   const searchInputFocus = useObservable(false);
 
   const { mutate: findNote, data: results } = t.notes.findNote.useMutation();
+
   const { mutate: dumpAllNotes } = t.notes.dumpNotes.useMutation({
     onSuccess: () => {
       toast.success("All notes exported successfully");
@@ -99,14 +108,14 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleSearchResultClicked = useCallback(
     (id: string) => {
-      noteState.activeNoteId.set(id);
+      activeNoteId.set(id);
       if (routeState.location.pathname !== "/") {
         nav({
           to: "/",
         });
       }
     },
-    [nav, routeState],
+    [nav, routeState, activeNoteId],
   );
 
   return (
@@ -240,7 +249,7 @@ export default function Layout({ children }: LayoutProps) {
                     onClick={() => passedThres.set(false)}
                   >
                     {/* <Sidebar size={13} /> */}
-                    <Feather.FiSidebar size={11} />
+                    <FiSidebar size={11} />
                   </Button>
                   <Button
                     variant="ghost"
@@ -248,7 +257,7 @@ export default function Layout({ children }: LayoutProps) {
                     className="w-3 h-5 rounded-full flex items-center justify-center text-black/20 dark:text-gray-400"
                     onClick={() => minimize()}
                   >
-                    <Feather.FiMinus size={11} />
+                    <FiMinus size={11} />
                   </Button>
                   <Button
                     variant="ghost"
@@ -257,7 +266,7 @@ export default function Layout({ children }: LayoutProps) {
                     type="button"
                     onClick={() => close()}
                   >
-                    <Feather.FiX size={11} />
+                    <FiX size={11} />
                   </Button>
                 </Flex>
                 <FlatList
@@ -297,14 +306,21 @@ export default function Layout({ children }: LayoutProps) {
                       variant="ghost"
                       radius="full"
                       size="2"
+                      className="cursor-pointer"
                     >
-                      <Feather.FiInfo size={11} />
+                      <FiInfo size={11} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip content="Preferences">
-                    <IconButton asChild variant="ghost" radius="full" size="2">
+                    <IconButton
+                      className="cursor-pointer"
+                      variant="ghost"
+                      radius="full"
+                      size="2"
+                      asChild
+                    >
                       <Link to="/settings">
-                        <Feather.FiSettings size={11} />
+                        <FiSettings size={11} />
                       </Link>
                     </IconButton>
                   </Tooltip>
@@ -313,9 +329,10 @@ export default function Layout({ children }: LayoutProps) {
                       variant="ghost"
                       radius="full"
                       size="2"
+                      className="cursor-pointer"
                       onClick={handleNewClicked}
                     >
-                      <Feather.FiPlus size={11} />
+                      <FiPlus size={11} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip content="Export all notes">
@@ -323,9 +340,10 @@ export default function Layout({ children }: LayoutProps) {
                       variant="ghost"
                       radius="full"
                       size="2"
+                      className="cursor-pointer"
                       onClick={() => dumpAllNotes()}
                     >
-                      <Feather.FiDownload size={11} />
+                      <FiDownload size={11} />
                     </IconButton>
                   </Tooltip>
                 </Flex>

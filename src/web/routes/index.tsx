@@ -35,7 +35,7 @@ function Index() {
     if (toolbar.get()) {
       toolbar.set(false);
     }
-  }, 3000);
+  }, 2000);
 
   useInterval(() => {
     if (text.get() === "") return;
@@ -94,7 +94,7 @@ function Index() {
   // see it all the time
   const handleMouseMove = useDebounce((_e: MouseEvent) => {
     toolbar.set(true);
-  }, 50);
+  }, 1000);
 
   useWindow("mousemove", handleMouseMove);
 

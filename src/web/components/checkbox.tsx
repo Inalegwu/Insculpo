@@ -12,7 +12,9 @@ export default function CheckBox(props: Props) {
     <Text as="label">
       <Flex align="center" gap="2">
         <Checkbox ref={checkboxRef} defaultChecked={false} color="iris" />
-        <Text size="2">{props.children}</Text>
+        <Text size="1" weight="light" as="span">
+          {props.children}
+        </Text>
       </Flex>
     </Text>
   );
