@@ -2,7 +2,7 @@
   "name": "Insculpo",
   "description": "Your notebook with superpowers",
   "version": "0.0.1",
-  "license": "BSD-4-Clause",
+  "license": "MIT",
   "author": {
     "name": "DisgruntledDev",
     "email": "disgruntleddev@outlook.com"
