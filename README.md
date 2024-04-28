@@ -82,12 +82,8 @@ Please bear in mind that all features being requested will have to undergo a vet
 5. Open a Pull Request
 
 
-### Licensce
-Distributed under the BSD 4-Clause License. See LICENSE.txt for more information.
-
-
 ### Contact
-[Disgruntled Dev](disgruntleddev@outloo.com)
+[Disgruntled Dev](disgruntleddev@outlook.com)
 
 
 ### Acknowledgements
