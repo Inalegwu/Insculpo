@@ -1,15 +1,12 @@
-import Find from "pouchdb-find";
-import PouchDB from "pouchdb-node";
-import type { Note } from "./types";
+import Database from "better-sqlite3";
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import { app } from "electron";
+import * as schema from "./schema/index";
 
-PouchDB.plugin(Find);
+process.env = {
+  STORAGE_LOCATION: `${app.getPath("appData")}/Insculpo/insculpo.db`,
+};
 
-const store = new PouchDB<Note>("insculpo_db");
+const sqlite = new Database(process.env.STORAGE_LOCATION!);
 
-store.createIndex({
-  index: {
-    fields: ["name"],
-  },
-});
-
-export default store;
+export const db = drizzle(sqlite, { schema });

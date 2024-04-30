@@ -1,15 +1,15 @@
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
 import type { Note } from "@src/shared/types";
+import { formatTextForSidebar } from "@src/shared/utils";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
-import { formatTextForSidebar } from "@utils";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
-import * as Feather from "react-icons/fi";
+import { FiDownload, FiTrash } from "react-icons/fi";
 import { useEditor } from "../hooks";
 
 type DocumentProps = {
-  doc?: PouchDB.Core.ExistingDocument<Note>;
+  doc: Note;
 };
 
 export default function Document({ doc }: DocumentProps) {
@@ -60,28 +60,28 @@ export default function Document({ doc }: DocumentProps) {
           width="100%"
           align="end"
           justify="between"
-          onClick={() => handleNoteClick(doc?._id!)}
+          onClick={() => handleNoteClick(doc.id)}
           className="py-3 rounded-md"
         >
-          {activeNoteId.get() === doc?._id ? (
+          {activeNoteId.get() === doc.id ? (
             <Flex className="h-[1vh] w-[1vh] bg-indigo-500/30 rounded-full transition transition-duration-[10]" />
           ) : (
             <Flex grow="1" />
           )}
           <Flex direction="column" align="end" justify="center">
             <Text color="iris" weight="bold" className="text-[11px] font-bold">
-              {doc?.name?.slice(0, 28)}
+              {doc.name?.slice(0, 28)}
             </Text>
             <Text className="text-[10px] text-gray-400 font-light">
-              {formatTextForSidebar(doc?.body?.slice(0, 30) || "")}
+              {formatTextForSidebar(doc.content?.slice(0, 30) || "")}
             </Text>
           </Flex>
         </Flex>
       </ContextMenu.Trigger>
       <ContextMenu.Content size="1" variant="soft" className="dark:bg-dark-9">
-        <ContextMenu.Item onClick={() => dumpNote({ noteId: doc?._id || "" })}>
+        <ContextMenu.Item onClick={() => dumpNote({ noteId: doc.id || "" })}>
           <Flex gap="1" align="center">
-            <Feather.FiDownload />
+            <FiDownload />
             <Text size="1">Export Note</Text>
           </Flex>
         </ContextMenu.Item>
@@ -89,13 +89,12 @@ export default function Document({ doc }: DocumentProps) {
           color="red"
           onClick={() =>
             deleteNote({
-              noteId: doc?._id!,
-              rev: doc?._rev!,
+              noteId: doc.id,
             })
           }
         >
           <Flex gap="1" align="center">
-            <Feather.FiTrash />
+            <FiTrash />
             <Text size="1">Delete Note</Text>
           </Flex>
         </ContextMenu.Item>

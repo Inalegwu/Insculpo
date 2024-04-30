@@ -1,15 +1,15 @@
 import { publicProcedure, router } from "@src/trpc";
+import { eq } from "drizzle-orm";
 import * as fs from "node:fs";
 import { v4 } from "uuid";
 import z from "zod";
+import { notes } from "../schema";
 
 export const notesRouter = router({
   getNotes: publicProcedure.query(async ({ ctx }) => {
-    const notes = await ctx.db.allDocs({
-      include_docs: true,
-    });
+    const notes = await ctx.db.query.notes.findMany();
 
-    return notes.rows;
+    return notes;
   }),
   getNote: publicProcedure
     .input(
@@ -21,7 +21,9 @@ export const notesRouter = router({
       if (input.noteId === null) {
         return null;
       }
-      const note = await ctx.db.get(input.noteId);
+      const note = await ctx.db.query.notes.findFirst({
+        where: (note, { eq }) => eq(note.id, input.noteId!),
+      });
 
       return note;
     }),
@@ -38,64 +40,46 @@ export const notesRouter = router({
       const name = input.content.split("\n")[0].replace(/[^a-zA-Z0-9' ]/gi, "");
 
       if (input.noteId === null) {
-        const finalized = await ctx.db
-          .put({
-            _id: v4(),
-            body: input.content,
+        const finalized = ctx.db
+          .insert(notes)
+          .values({
+            id: v4(),
             name: name,
-            createdAt: Date.now(),
+            content: input.content,
           })
-          .then(async (v) => {
-            const note = await ctx.db.get(v.id);
-            return {
-              id: note._id,
-              body: note.body,
-              name: note.name,
-              createdAt: note.createdAt,
-            };
-          });
+          .returning({
+            id: notes.id,
+            name: notes.name,
+            content: notes.content,
+          })
+          .get();
         return finalized;
       }
 
-      await ctx.db.get(input.noteId).then((v) => {
-        v.body = input.content;
-        v.name = name;
-        v.updatedAt = Date.now();
-        ctx.db.put(v);
-      });
+      await ctx.db
+        .update(notes)
+        .set({
+          content: input.content,
+          name: name,
+        })
+        .where(eq(notes.id, input.noteId));
     }),
   findNote: publicProcedure
     .input(z.object({ query: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const results = await ctx.db.find({
-        selector: {
-          name: {
-            $regex: input.query,
-          },
-        },
-        limit: 5,
-        sort: ["name"],
-      });
-
-      return results.docs;
+      return null;
     }),
   deleteNote: publicProcedure
     .input(
       z.object({
         noteId: z.string(),
-        rev: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.remove({
-        _id: input.noteId,
-        _rev: input.rev,
-      });
+      await ctx.db.delete(notes).where(eq(notes.id, input.noteId));
     }),
   dumpNotes: publicProcedure.mutation(async ({ ctx }) => {
-    const notes = await ctx.db.allDocs({
-      include_docs: true,
-    });
+    const notes = await ctx.db.query.notes.findMany();
 
     const destination = `${ctx.app.getPath("documents")}/Insculpo`;
 
@@ -105,13 +89,18 @@ export const notesRouter = router({
       });
     }
 
-    for (const note of notes.rows) {
-      if (!note.doc) {
+    for (const note of notes) {
+      if (!note) {
         continue;
       }
+
+      if (!note.content) {
+        continue;
+      }
+
       fs.writeFile(
-        `${destination}/${note.doc.name}.md`,
-        note.doc.body,
+        `${destination}/${note.name}.md`,
+        note.content,
         {
           encoding: "utf8",
         },
@@ -124,12 +113,14 @@ export const notesRouter = router({
   dumpNote: publicProcedure
     .input(
       z.object({
-        noteId: z.string().nullable(),
+        noteId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       if (input.noteId === null) return;
-      const note = await ctx.db.get(input.noteId);
+      const note = await ctx.db.query.notes.findFirst({
+        where: (note, { eq }) => eq(note.id, input.noteId),
+      });
 
       const destination = `${ctx.app.getPath("documents")}/Insculpo`;
 
@@ -139,9 +130,13 @@ export const notesRouter = router({
         });
       }
 
+      if (!note || !note.content) {
+        return;
+      }
+
       fs.writeFile(
-        `${destination}/${note.name}.md`,
-        note.body,
+        `${destination}/${note?.name}.md`,
+        note?.content,
         {
           encoding: "utf8",
         },

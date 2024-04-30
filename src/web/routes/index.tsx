@@ -77,8 +77,8 @@ function Index() {
     {
       onSuccess: (d) => {
         if (d === null) return;
-        activeNoteId.set(d._id);
-        text.set(d.body);
+        activeNoteId.set(d?.id);
+        text.set(d?.content);
       },
     },
   );

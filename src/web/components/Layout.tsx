@@ -5,7 +5,6 @@ import { Document, FlatList } from "@src/web/components";
 import { useDebounce, useEditor, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$ } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { formatTextForSidebar } from "@utils";
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
@@ -38,11 +37,7 @@ export default function Layout({ children }: LayoutProps) {
   const { data: ver } = t.version.useQuery();
 
   const passedThres = useObservable(false);
-  const finder = useObservable(false);
   const sideBarFocus = useObservable(false);
-  const searchInputFocus = useObservable(false);
-
-  const { mutate: findNote, data: results } = t.notes.findNote.useMutation();
 
   const { mutate: dumpAllNotes } = t.notes.dumpNotes.useMutation({
     onSuccess: () => {
@@ -67,23 +62,10 @@ export default function Layout({ children }: LayoutProps) {
   }, [nav]);
 
   useTimeout(() => {
-    if (finder.get() && !searchInputFocus.get()) {
-      finder.set(false);
-    }
-  }, 3000);
-
-  useTimeout(() => {
     if (passedThres.get() && !sideBarFocus.get()) {
       passedThres.set(false);
     }
   }, 3000);
-
-  useWindow("keypress", (e) => {
-    if (e.keyCode === 6 && !finder.get()) {
-      finder.set(true);
-      inputRef.current?.focus();
-    }
-  });
 
   const mouseMove = useDebounce((e: MouseEvent) => {
     const threshold = e.clientX / window.innerWidth;
@@ -124,66 +106,6 @@ export default function Layout({ children }: LayoutProps) {
       align="center"
       className="transition w-full h-screen bg-gray-100 relative p-2 dark:bg-black font-light"
     >
-      <AnimatePresence initial={false}>
-        <motion.div
-          animate={{
-            opacity: finder.get() ? 1 : 0,
-            scale: finder.get() ? 1 : 0,
-            display: finder.get() ? "flex" : "none",
-          }}
-          className="absolute z-20 flex items-center justify-center"
-          style={{ width: "97%", height: "100%" }}
-          onClick={() => finder.set(false)}
-        >
-          <Flex
-            direction="column"
-            gap="2"
-            className="px-2 py-2 bg-white rounded-md w-4/6 shadow-lg rounded-md dark:bg-slate-700"
-          >
-            <input
-              onFocus={() => {
-                searchInputFocus.set(true);
-                inputRef.current?.focus();
-              }}
-              onBlur={() => {
-                searchInputFocus.set(false);
-                inputRef.current?.blur();
-              }}
-              placeholder="Search Notes..."
-              ref={inputRef}
-              onChange={(e) => findNote({ query: e.currentTarget.value })}
-              className="px-3 py-3 w-full text-[14px] border-none bg-slate-50 outline-none rounded-md font-light dark:bg-slate-800 dark:text-white dark:border-solid dark:border-1 dark:border-gray-200/20"
-            />
-            <FlatList
-              data={results || []}
-              listHeaderComponent={() => (
-                <Flex align="center" justify="start">
-                  <Text className="text-gray-400 text-[11px]">
-                    Search Results
-                  </Text>
-                </Flex>
-              )}
-              renderItem={({ item }) => (
-                <Flex
-                  align="center"
-                  onClick={() => handleSearchResultClicked(item._id)}
-                  justify="between"
-                  className="px-1 py-2 cursor-pointer"
-                >
-                  <Flex direction="column">
-                    <Text color="iris" className="text-[11.5px]">
-                      {item.name}
-                    </Text>
-                    <Text className="text-[11px] text-gray-400">
-                      {formatTextForSidebar(item.body.slice(0, 40))}
-                    </Text>
-                  </Flex>
-                </Flex>
-              )}
-            />
-          </Flex>
-        </motion.div>
-      </AnimatePresence>
       {/* actual body */}
       <Flex width="100%" height="100%">
         {/* page content */}
@@ -288,7 +210,7 @@ export default function Layout({ children }: LayoutProps) {
                     </Flex>
                   )}
                   renderItem={({ item, index }) => (
-                    <Document doc={item.doc} key={index} />
+                    <Document doc={item} key={index} />
                   )}
                 />
               </Flex>

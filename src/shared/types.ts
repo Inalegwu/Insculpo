@@ -1,25 +1,13 @@
 // custom type definitions can live here
 
+import type { notes } from "./schema";
+
 // example global state for an application with customization options
 export type GlobalState = {
   colorMode: "dark" | "light";
   firstLaunch: boolean;
   editorState: "writing" | "viewing";
   appId: string | null;
-};
-
-export type Note = {
-  name: string;
-  body: string;
-  createdAt?: number;
-  updatedAt?: number;
-};
-
-export type NoteBook = {
-  name: string;
-  dateCreated?: number;
-  dateUpdated?: number;
-  notes: string[];
 };
 
 export type Tag = {
@@ -31,3 +19,5 @@ export type Tag = {
   icon?: string;
   keywords?: string;
 };
+
+export type Note = typeof notes.$inferSelect;
