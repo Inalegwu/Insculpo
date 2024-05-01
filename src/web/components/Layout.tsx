@@ -7,7 +7,7 @@ import { globalState$ } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 import {
   FiDownload,
@@ -30,8 +30,6 @@ export default function Layout({ children }: LayoutProps) {
   const nav = useNavigate();
 
   const [text, activeNoteId] = useEditor();
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: notes } = t.notes.getNotes.useQuery();
   const { data: ver } = t.version.useQuery();

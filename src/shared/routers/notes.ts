@@ -7,7 +7,7 @@ import { notes } from "../schema";
 
 export const notesRouter = router({
   getNotes: publicProcedure.query(async ({ ctx }) => {
-    const notes = await ctx.db.query.notes.findMany();
+    const notes = await ctx.db.query.notes.findMany({});
 
     return notes;
   }),
@@ -25,6 +25,8 @@ export const notesRouter = router({
         where: (note, { eq }) => eq(note.id, input.noteId!),
       });
 
+      if (!note) return null;
+
       return note;
     }),
   saveNote: publicProcedure
@@ -35,8 +37,6 @@ export const notesRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (input.content === "") return;
-
       const name = input.content.split("\n")[0].replace(/[^a-zA-Z0-9' ]/gi, "");
 
       if (input.noteId === null) {

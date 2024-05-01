@@ -94,7 +94,7 @@ function Index() {
   // see it all the time
   const handleMouseMove = useDebounce((_e: MouseEvent) => {
     toolbar.set(true);
-  }, 1000);
+  }, 50);
 
   useWindow("mousemove", handleMouseMove);
 

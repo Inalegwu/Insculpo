@@ -16,6 +16,8 @@
     "dev": "electron-vite dev --watch",
     "prebuild": "electron-vite build",
     "build": "pnpm exec electron-builder",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:push": "drizzle-kit push:sqlite",
     "postinstall": "electron-builder install-app-deps",
     "app-release": "pnpm dlx np --no-publish --no-cleanup --no-tests --no-release-draft",
     "lint": "pnpm dlx @biomejs/biome check --apply ./src"
@@ -26,33 +28,23 @@
     "artifactName": "${productName}-${version}_${platform}_${arch}.${ext}",
     "buildDependenciesFromSource": true,
     "icon": "assets/icon.png",
-    "files": [
-      "out/**/*"
-    ],
+    "files": ["out/**/*"],
     "directories": {
       "output": "release/${version}"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
+      "target": ["dmg", "zip"]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ]
     },
     "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
+      "target": ["AppImage", "deb"]
     },
     "nsis": {
       "oneClick": false,

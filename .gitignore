@@ -8,9 +8,3 @@ out
 electron.vite.config.*.mjs
 *.gen.ts
 *.db
-insculpo_db
-insculpo_db-*
-insculpo_db-mrview-*-/*.*
-insculpo_db--*
-insculpo_db_*
-insculpo_db__*
