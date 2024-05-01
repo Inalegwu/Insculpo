@@ -1,19 +1,26 @@
 import CheckBox from "./checkbox";
-import Document from "./document";
 import ErrorBoundaryFallBack from "./error-boundary";
-import FlatList from "./flatlist";
+import FlatList, {
+  type Props as FlatListProps,
+  type RenderItemInfo,
+} from "./flatlist";
 import Layout from "./layout";
 import Link from "./link";
 import MarkdownView from "./markdown-view";
 import NotFoundRoute from "./not-found";
+import Note from "./note";
+import Notebook from "./notebook";
 
 export {
   CheckBox,
-  Document,
   ErrorBoundaryFallBack,
   FlatList,
   Layout,
   Link,
   MarkdownView,
   NotFoundRoute,
+  Note,
+  Notebook,
+  type FlatListProps,
+  type RenderItemInfo,
 };

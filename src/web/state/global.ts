@@ -15,6 +15,7 @@ export const globalState$ = observable<GlobalState>({
   firstLaunch: true,
   editorState: "viewing",
   appId: null,
+  route: "Notes",
 });
 
 persistObservable(globalState$, {

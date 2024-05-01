@@ -27,7 +27,7 @@ function About() {
       <Text size="2" className="text-gray-400 mt-2 mb-2">
         Made with 🖤 by{" "}
         <Link href="" className="ml-1 mr-1">
-          Disgruntled Devs
+          DisgruntledDevs
         </Link>{" "}
         , part of the <Link href="">Officina</Link> Suite
       </Text>

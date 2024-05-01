@@ -2,7 +2,6 @@ import { Switch, useObservable } from "@legendapp/state/react";
 import {
   Box,
   Button,
-  ContextMenu,
   Flex,
   IconButton,
   Popover,
@@ -11,7 +10,7 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import { Document, FlatList } from "@src/web/components";
+import { FlatList, Note, Notebook } from "@src/web/components";
 import { useDebounce, useEditor, useTimeout, useWindow } from "@src/web/hooks";
 import { globalState$ } from "@src/web/state";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
@@ -28,7 +27,6 @@ import {
   FiPlus,
   FiSettings,
   FiSidebar,
-  FiTrash,
   FiX,
 } from "react-icons/fi";
 
@@ -54,7 +52,7 @@ export default function Layout({ children }: LayoutProps) {
   const passedThres = useObservable(false);
   const sideBarFocus = useObservable(false);
 
-  const route = useObservable<Route>({ key: "Notes" });
+  const route = globalState$.route.get();
 
   const { mutate: dumpAllNotes } = t.notes.dumpNotes.useMutation({
     onSuccess: () => {
@@ -126,7 +124,7 @@ export default function Layout({ children }: LayoutProps) {
           transition={{ duration: 0.4 }}
           layout
         >
-          <Box className="w-full h-full rounded-md bg-slate-50 dark:bg-dark-9 font-light border-1 border-solid border-gray-400/40 dark:border-gray-400/10">
+          <Box className="w-full h-full rounded-md bg-slate-50 dark:bg-dark-9 font-light border-1 border-solid border-gray-400/40 dark:border-gray-400/10 shadow-sm">
             {children}
           </Box>
         </motion.div>
@@ -207,21 +205,21 @@ export default function Layout({ children }: LayoutProps) {
                     size="1"
                     color="gray"
                     className="w-2 h-4 rounded-full cursor-pointer"
-                    onClick={() => route.set({ key: "Notes" })}
+                    onClick={() => globalState$.route.set("Notes")}
                   >
-                    <FiArrowLeft />
+                    <FiArrowLeft size={15} />
                   </Button>
                   <Button
                     variant="ghost"
                     size="1"
                     color="gray"
                     className="w-2 h-4 rounded-full cursor-pointer"
-                    onClick={() => route.set({ key: "Notebooks" })}
+                    onClick={() => globalState$.route.set("Notebooks")}
                   >
-                    <FiArrowRight />
+                    <FiArrowRight size={15} />
                   </Button>
                 </Flex>
-                <Switch value={route.get().key}>
+                <Switch value={route}>
                   {{
                     Notes: () => <NoteListView />,
                     Notebooks: () => <NotebookListView />,
@@ -315,7 +313,7 @@ function NoteListView() {
           </Text>
         </Flex>
       )}
-      renderItem={({ item, index }) => <Document doc={item} key={index} />}
+      renderItem={({ item, index }) => <Note doc={item} key={index} />}
     />
   );
 }
@@ -327,12 +325,6 @@ function NotebookListView() {
   const notebookName = useObservable("");
 
   const { mutate: createNotebook } = t.notebooks.createNotebook.useMutation({
-    onSuccess: () => {
-      utils.notebooks.getNotebooks.invalidate();
-    },
-  });
-
-  const { mutate: deleteNotebook } = t.notebooks.deleteNotebook.useMutation({
     onSuccess: () => {
       utils.notebooks.getNotebooks.invalidate();
     },
@@ -388,36 +380,7 @@ function NotebookListView() {
           </Text>
         </Flex>
       )}
-      renderItem={({ item }) => (
-        <ContextMenu.Root>
-          <ContextMenu.Trigger className="cursor-pointer">
-            <Flex
-              direction="column"
-              align="end"
-              justify="center"
-              className="py-2"
-            >
-              <Text weight="bold" className="text-[11.5px]" color="iris">
-                {item.name}
-              </Text>
-              <Text className="text-[10px] text-gray-400">
-                {item.notes.length} Notes
-              </Text>
-            </Flex>
-          </ContextMenu.Trigger>
-          <ContextMenu.Content size="1" variant="soft">
-            <ContextMenu.Item
-              color="red"
-              onClick={() => deleteNotebook({ bookId: item.id })}
-            >
-              <Flex gap="1" align="center">
-                <FiTrash />
-                <Text size="1">Delete Notebook</Text>
-              </Flex>
-            </ContextMenu.Item>
-          </ContextMenu.Content>
-        </ContextMenu.Root>
-      )}
+      renderItem={({ item, index }) => <Notebook key={index} notebook={item} />}
     />
   );
 }

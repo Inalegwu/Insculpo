@@ -1,6 +1,6 @@
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import type { Note } from "@src/shared/types";
+import type { Note as NoteItem } from "@src/shared/types";
 import { formatTextForSidebar } from "@src/shared/utils";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCallback } from "react";
@@ -9,10 +9,10 @@ import { FiDownload, FiTrash } from "react-icons/fi";
 import { useEditor } from "../hooks";
 
 type DocumentProps = {
-  doc: Note;
+  doc: NoteItem;
 };
 
-export default function Document({ doc }: DocumentProps) {
+export default function Note({ doc }: DocumentProps) {
   const utils = t.useUtils();
   const routeState = useRouterState();
   const nav = useNavigate();
