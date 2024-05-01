@@ -8,7 +8,7 @@ export type GlobalState = {
   firstLaunch: boolean;
   editorState: "writing" | "viewing";
   appId: string | null;
-  route: "Notes" | "Notebooks";
+  route: "Notes" | "Notebooks" | "Tags";
 };
 
 export type Tag = {

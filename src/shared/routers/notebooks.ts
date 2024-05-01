@@ -80,6 +80,7 @@ export const notebooksRouter = router({
         .set({
           collectionId: input.collectionId,
         })
+        .where(eq(notes.id, input.noteId))
         .returning({
           id: notes.id,
           name: notes.name,
@@ -87,5 +88,19 @@ export const notebooksRouter = router({
         });
 
       return added;
+    }),
+  removeNoteFromCollection: publicProcedure
+    .input(
+      z.object({
+        noteId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const finalized = await ctx.db
+        .update(notes)
+        .set({
+          collectionId: null,
+        })
+        .where(eq(notes.id, input.noteId));
     }),
 });

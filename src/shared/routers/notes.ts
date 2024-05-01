@@ -61,6 +61,7 @@ export const notesRouter = router({
         .set({
           content: input.content,
           name: name,
+          dateUpdated: Date.now(),
         })
         .where(eq(notes.id, input.noteId));
     }),

@@ -16,12 +16,8 @@ export const notes = sqliteTable(
     name: text("title").notNull(),
     content: text("content").notNull(),
     collectionId: text("notebook_id").references(() => notebooks.id),
-    dateCreated: integer("date_created", {
-      mode: "timestamp",
-    }).default(new Date()),
-    dateUpdated: integer("date_updated", {
-      mode: "timestamp",
-    }).default(new Date()),
+    dateCreated: integer("date_created").default(Date.now()),
+    dateUpdated: integer("date_updated").default(Date.now()),
   },
   (t) => ({
     idIdx: index("id_index").on(t.id),

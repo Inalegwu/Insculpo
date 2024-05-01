@@ -103,6 +103,30 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [nav, routeState, activeNoteId, text]);
 
+  const handleLeftClick = useCallback(() => {
+    if (globalState$.route.get() === "Notes") return;
+
+    if (globalState$.route.get() === "Notebooks") {
+      globalState$.route.set("Notes");
+    }
+
+    if (globalState$.route.get() === "Tags") {
+      globalState$.route.set("Notebooks");
+    }
+  }, []);
+
+  const handleRightClick = useCallback(() => {
+    if (globalState$.route.get() === "Tags") return;
+
+    if (globalState$.route.get() === "Notebooks") {
+      globalState$.route.set("Tags");
+    }
+
+    if (globalState$.route.get() === "Notes") {
+      globalState$.route.set("Notebooks");
+    }
+  }, []);
+
   return (
     <Flex
       width="100%"
@@ -205,7 +229,7 @@ export default function Layout({ children }: LayoutProps) {
                     size="1"
                     color="gray"
                     className="w-2 h-4 rounded-full cursor-pointer"
-                    onClick={() => globalState$.route.set("Notes")}
+                    onClick={handleLeftClick}
                   >
                     <FiArrowLeft size={15} />
                   </Button>
@@ -214,7 +238,7 @@ export default function Layout({ children }: LayoutProps) {
                     size="1"
                     color="gray"
                     className="w-2 h-4 rounded-full cursor-pointer"
-                    onClick={() => globalState$.route.set("Notebooks")}
+                    onClick={handleRightClick}
                   >
                     <FiArrowRight size={15} />
                   </Button>
@@ -223,6 +247,7 @@ export default function Layout({ children }: LayoutProps) {
                   {{
                     Notes: () => <NoteListView />,
                     Notebooks: () => <NotebookListView />,
+                    Tags: () => <TagsListView />,
                   }}
                 </Switch>
               </Flex>
@@ -381,6 +406,21 @@ function NotebookListView() {
         </Flex>
       )}
       renderItem={({ item, index }) => <Notebook key={index} notebook={item} />}
+    />
+  );
+}
+
+function TagsListView() {
+  return (
+    <FlatList
+      data={[]}
+      className="px-2"
+      listHeaderComponent={() => (
+        <Flex align="center" justify="end" className="py-1">
+          <Text className="text-[10px] text-gray-400">All Tags</Text>
+        </Flex>
+      )}
+      renderItem={() => <Box />}
     />
   );
 }

@@ -41,7 +41,7 @@ function Index() {
     if (text.get() === "") return;
 
     saveNote({ noteId: activeNoteId.get(), content: text.get() });
-  }, 2000);
+  }, 1500);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
