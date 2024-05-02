@@ -231,6 +231,7 @@ export default function Layout({ children }: LayoutProps) {
                     className="w-2 h-4 rounded-full cursor-pointer"
                     onClick={handleLeftClick}
                   >
+                    { /* todo animate motion on click*/}
                     <FiArrowLeft size={15} />
                   </Button>
                   <Button

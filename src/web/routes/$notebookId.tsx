@@ -37,6 +37,7 @@ function Notebook() {
     onSuccess: () => {
       utils.notes.getNotes.invalidate();
       utils.notebooks.getNotebook.invalidate();
+      utils.notebooks.getNotebooks.invalidate();
     },
   });
 

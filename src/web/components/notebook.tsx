@@ -38,7 +38,7 @@ export default function Notebook({ notebook }: Props) {
             {notebook.name}
           </Text>
           <Text className="text-[10px] text-gray-400">
-            {notebook.notes.length} Notes
+            {notebook.notes.length} {notebook.notes.length > 1 ? "Notes" : "Note"}
           </Text>
         </Flex>
       </ContextMenu.Trigger>

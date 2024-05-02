@@ -41,11 +41,12 @@ function Index() {
     if (text.get() === "") return;
 
     saveNote({ noteId: activeNoteId.get(), content: text.get() });
-  }, 1500);
+  }, 500);
 
   const { mutate: saveNote } = t.notes.saveNote.useMutation({
     onSuccess: (d) => {
-      if (d) {
+      console.log(d);
+      if (d && activeNoteId.get()===null) {
         utils.notes.getNotes.invalidate();
         activeNoteId.set(d.id);
       }
