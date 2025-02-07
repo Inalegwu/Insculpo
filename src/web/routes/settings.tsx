@@ -1,7 +1,7 @@
 import { Box, Flex, Tabs, Text } from "@radix-ui/themes";
+import { Icon } from "@src/web/components";
 import { Appearance, Shortcuts, Sync } from "@src/web/components/settings";
 import { createFileRoute } from "@tanstack/react-router";
-import * as Phosphor from "react-icons/pi";
 
 export const Route = createFileRoute("/settings")({
   component: Settings,
@@ -14,19 +14,19 @@ function Settings() {
         <Tabs.List size="2">
           <Tabs.Trigger value="sync">
             <Flex align="center" gap="2">
-              <Phosphor.PiArrowsCounterClockwise />
+              <Icon name="CircleArrowLeft" />
               <Text>Sync</Text>
             </Flex>
           </Tabs.Trigger>
           <Tabs.Trigger value="appearance">
             <Flex align="center" gap="2">
-              <Phosphor.PiPalette />
+              <Icon name="Palette" />
               <Text>Appearance</Text>
             </Flex>
           </Tabs.Trigger>
           <Tabs.Trigger value="shortcuts">
             <Flex align="center" gap="2">
-              <Phosphor.PiKeyReturn />
+              <Icon name="Keyboard" />
               <Text>Shortcuts</Text>
             </Flex>
           </Tabs.Trigger>

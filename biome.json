@@ -12,7 +12,8 @@
         "noNonNullAssertion": "warn"
       },
       "a11y": {
-        "noAutofocus": "warn"
+        "noAutofocus": "warn",
+        "useButtonType": "off"
       },
       "correctness": {
         "noChildrenProp": "warn",

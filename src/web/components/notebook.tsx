@@ -1,21 +1,16 @@
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import type { NoteBook } from "@src/shared/types";
 import { useNavigate } from "@tanstack/react-router";
-import { FiTrash } from "react-icons/fi";
+import Icon from "./icon";
 
 type Props = {
-  notebook: NoteBook;
+  notebook: any;
 };
 
 export default function Notebook({ notebook }: Props) {
   const utils = t.useUtils();
   const nav = useNavigate();
-  const { mutate: deleteNotebook } = t.notebooks.deleteNotebook.useMutation({
-    onSuccess: () => {
-      utils.notebooks.getNotebooks.invalidate();
-    },
-  });
+ 
 
   return (
     <ContextMenu.Root>
@@ -45,10 +40,10 @@ export default function Notebook({ notebook }: Props) {
       <ContextMenu.Content size="1" variant="soft">
         <ContextMenu.Item
           color="red"
-          onClick={() => deleteNotebook({ bookId: notebook.id })}
+          onClick={() => console.log("hi there...")}
         >
           <Flex gap="1" align="center">
-            <FiTrash />
+            <Icon name="Trash" />
             <Text size="1">Delete Notebook</Text>
           </Flex>
         </ContextMenu.Item>

@@ -15,51 +15,8 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev --watch",
     "prebuild": "electron-vite build",
-    "build": "pnpm exec electron-builder",
-    "db:generate": "drizzle-kit generate:sqlite",
-    "db:push": "drizzle-kit push:sqlite",
-    "postinstall": "electron-builder install-app-deps",
-    "app-release": "pnpm dlx np --no-publish --no-cleanup --no-tests --no-release-draft",
-    "lint": "pnpm dlx @biomejs/biome check --apply ./src"
-  },
-  "build": {
-    "appId": "com.insculpo.app",
-    "productName": "Insculpo",
-    "artifactName": "${productName}-${version}_${platform}_${arch}.${ext}",
-    "buildDependenciesFromSource": true,
-    "icon": "assets/icon.png",
-    "files": [
-      "out/**/*"
-    ],
-    "directories": {
-      "output": "release/${version}"
-    },
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "build": "pnpm tsx build.ts",
+    "biome:lint": "pnpx @biomejs/biome lint ./src --apply"
   },
   "dependencies": {
     "@legendapp/state": "^2.1.4",
@@ -70,25 +27,24 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "axios": "^1.6.8",
-    "better-sqlite3": "^9.6.0",
     "cheerio": "1.0.0-rc.12",
-    "drizzle-orm": "^0.30.9",
+    "effect": "^3.12.10",
     "electron-trpc": "^0.5.2",
-    "framer-motion": "^11.1.7",
+    "lucide-react": "^0.475.0",
     "moment": "^2.30.1",
+    "motion": "^12.4.1",
+    "pouchdb-node": "^9.0.0",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^5.1.0",
     "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0",
     "remark-toc": "^9.0.0",
     "sort-by": "^1.2.0",
     "uuid": "^9.0.1",
-    "whatwg-url": "^14.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -96,7 +52,6 @@
     "@electron/rebuild": "^3.6.0",
     "@tanstack/router-devtools": "^1.12.13",
     "@tanstack/router-vite-plugin": "^1.12.8",
-    "@types/better-sqlite3": "^7.6.8",
     "@types/node": "^20.10.3",
     "@types/pouchdb-node": "^6.1.7",
     "@types/react": "^18.2.42",
@@ -104,11 +59,9 @@
     "@types/react-syntax-highlighter": "^15.5.11",
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
-    "drizzle-kit": "^0.20.17",
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1",
     "electron-vite": "^2.0.0",
-    "np": "^10.0.5",
     "typescript": "^5.3.2",
     "unocss": "^0.58.3",
     "vite": "^5.0.12"

@@ -1,7 +1,7 @@
 import { useObservable } from "@legendapp/state/react";
 import { Flex, IconButton, TextArea, Tooltip } from "@radix-ui/themes";
 import t from "@shared/config";
-import { MarkdownView } from "@src/web/components";
+import { Icon, MarkdownView } from "@src/web/components";
 import {
   useDebounce,
   useEditor,
@@ -11,11 +11,10 @@ import {
 } from "@src/web/hooks";
 import { globalState$ } from "@src/web/state";
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import type React from "react";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
-import * as Feather from "react-icons/fi";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -47,7 +46,7 @@ function Index() {
     onSuccess: (d) => {
       if (d) {
         utils.notes.getNotes.invalidate();
-        activeNoteId.set(d.id);
+        activeNoteId.set(d._id);
       }
     },
     onError: (e) => {
@@ -78,7 +77,7 @@ function Index() {
       onSuccess: (d) => {
         if (d === null) return;
         activeNoteId.set(d?.id);
-        text.set(d?.content);
+        text.set(d?.body);
       },
     },
   );
@@ -155,7 +154,7 @@ function Index() {
               className="cursor-pointer"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <Feather.FiEye size={13} />
+              <Icon name="Eye" size={13} />
             </IconButton>
           </Tooltip>
           {/* save note to device */}
@@ -168,7 +167,7 @@ function Index() {
               className="cursor-pointer"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <Feather.FiDownload size={13} />
+              <Icon name="Download" size={13} />
             </IconButton>
           </Tooltip>
           {/* create a new note */}
@@ -181,7 +180,7 @@ function Index() {
               size="3"
               color={isDarkMode ? "gray" : "iris"}
             >
-              <Feather.FiPlus size={13} />
+              <Icon name="Plus" size={13} />
             </IconButton>
           </Tooltip>
         </Flex>

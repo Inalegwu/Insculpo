@@ -1,15 +1,14 @@
 import { ContextMenu, Flex, Text } from "@radix-ui/themes";
 import t from "@src/shared/config";
-import type { Note as NoteItem } from "@src/shared/types";
 import { formatTextForSidebar } from "@src/shared/utils";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
-import { FiDownload, FiTrash } from "react-icons/fi";
 import { useEditor } from "../hooks";
+import Icon from "./icon";
 
 type DocumentProps = {
-  doc: NoteItem;
+  doc: any;
 };
 
 export default function Note({ doc }: DocumentProps) {
@@ -81,20 +80,18 @@ export default function Note({ doc }: DocumentProps) {
       <ContextMenu.Content size="1" variant="soft" className="dark:bg-dark-9">
         <ContextMenu.Item onClick={() => dumpNote({ noteId: doc.id || "" })}>
           <Flex gap="1" align="center">
-            <FiDownload />
+            <Icon name="Download" />
             <Text size="1">Export Note</Text>
           </Flex>
         </ContextMenu.Item>
         <ContextMenu.Item
           color="red"
           onClick={() =>
-            deleteNote({
-              noteId: doc.id,
-            })
+           console.log("here...")
           }
         >
           <Flex gap="1" align="center">
-            <FiTrash />
+            <Icon name="Trash" />
             <Text size="1">Delete Note</Text>
           </Flex>
         </ContextMenu.Item>

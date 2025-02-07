@@ -4,6 +4,7 @@ import FlatList, {
   type Props as FlatListProps,
   type RenderItemInfo,
 } from "./flatlist";
+import Icon from "./icon";
 import Layout from "./layout";
 import Link from "./link";
 import MarkdownView from "./markdown-view";
@@ -15,12 +16,13 @@ export {
   CheckBox,
   ErrorBoundaryFallBack,
   FlatList,
+  type FlatListProps,
+  Icon,
   Layout,
   Link,
   MarkdownView,
-  NotFoundRoute,
   Note,
   Notebook,
-  type FlatListProps,
+  NotFoundRoute,
   type RenderItemInfo,
 };

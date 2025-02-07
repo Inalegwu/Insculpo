@@ -1,0 +1,51 @@
+@font-face{
+  font-family:Font;
+  src:url("../assets/fonts/geist.ttf");
+}
+
+.radix-themes {
+  --default-font-family: Font ;
+  --heading-font-family: Font; 
+  --code-font-family:  Font;
+  --strong-font-family: Font;
+  --em-font-family:   Font;
+  --quote-font-family: Font;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Font;
+  text-decoration: none;
+}
+
+body {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+
+#drag-region {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  cursor: grab;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+button{
+  appearance:none;
+  border:none;
+  background:none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}

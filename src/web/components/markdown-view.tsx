@@ -14,6 +14,7 @@ export default function MarkdownView({ content }: { content: string }) {
 
   return (
     <Markdown
+      // biome-ignore lint/correctness/noChildrenProp: <explanation>
       children={content}
       className="text-sm w-full h-full px-25 py-20 rounded-md overflow-y-scroll line-height-[2]"
       remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
@@ -97,7 +98,7 @@ export default function MarkdownView({ content }: { content: string }) {
           );
         },
         br() {
-          return <Box className="px-1 py-1" />;
+          return <Box className="py-1" />;
         },
       }}
     />

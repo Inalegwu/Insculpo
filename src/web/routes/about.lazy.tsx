@@ -1,7 +1,6 @@
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import * as Phosphor from "react-icons/pi";
-import { Link } from "../components";
+import { Icon, Link } from "../components";
 
 export const Route = createLazyFileRoute("/about")({
   component: About,
@@ -32,7 +31,7 @@ function About() {
         , part of the <Link href="">Officina</Link> Suite
       </Text>
       <Text size="1" color="gray">
-        2024 <Phosphor.PiCopyright size={13} /> Disgruntled Devs
+        2024 <Icon name="Copyright" size={13} /> Disgruntled Devs
       </Text>
     </Flex>
   );

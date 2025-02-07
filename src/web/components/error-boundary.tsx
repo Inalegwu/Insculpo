@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
-import type { FallbackProps } from "react-error-boundary";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 
-function ErrorBoundaryFallBack(props: FallbackProps) {
+function ErrorBoundaryFallBack(props: ErrorComponentProps) {
   return (
     <Flex
       width="100%"
@@ -18,7 +18,7 @@ function ErrorBoundaryFallBack(props: FallbackProps) {
         <Text color="red">Oops, Something Broke</Text>
         <Text>{props.error.message}</Text>
       </Flex>
-      <Button radius="medium" onClick={() => props.resetErrorBoundary()}>
+      <Button radius="medium" onClick={() => props.reset()}>
         <Text>Reload The App</Text>
       </Button>
     </Flex>
