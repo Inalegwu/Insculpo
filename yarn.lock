@@ -1546,6 +1546,24 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.34.6.tgz#f3d03ce2d82723eb089188ea1494a719b09e1561"
   integrity sha512-0PVwmgzZ8+TZ9oGBmdZoQVXflbvuwzN/HRclujpl4N/q3i+y0lqLw8n1bXA8ru3sApDjlmONaNAuYr38y1Kr9w==
 
+"@signaldb/core@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@signaldb/core/-/core-1.2.2.tgz#2df9f29b20c3e80cc24f4ee9dc001e9b4e9dee3a"
+  integrity sha512-p9Xpb1b/XdmyVn7dr+slSKLdndOh0n7u3Wfd+DEXNzvacRqE/Mho+1651zguxbt+jykHwLNR41SFeo0gOhxKlg==
+  dependencies:
+    fast-sort "^3.4.1"
+    mingo "^6.5.1"
+
+"@signaldb/indexeddb@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@signaldb/indexeddb/-/indexeddb-1.0.0.tgz#e7e7758ef7242afc6fb89b44430f9b04aaf6f9b8"
+  integrity sha512-hqRt/ZeMBJXYqQNtalhT6R2fRlmT5niOXwIzaZ7mOV74YoyDOFyu7zk47GIGnFn3D84qQ3fhHBdFeyyf213uTg==
+
+"@signaldb/localstorage@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@signaldb/localstorage/-/localstorage-1.0.0.tgz#11cd9fcd5862bd150ad567aee1247d36b9d7c847"
+  integrity sha512-D/rU0TCbbkMv6kroKaADbyTcNE+gGcDaRW3IfUZIosmyZh94mk+WqH3LqtZppbkmyQ++HT7JA6gRJOzWS8xEbw==
+
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
@@ -3378,6 +3396,11 @@ fast-json-stable-stringify@^2.0.0:
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
   integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
 
+fast-sort@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/fast-sort/-/fast-sort-3.4.1.tgz#837e1abaafdc6c6c077b632913a7ec2dda283cb6"
+  integrity sha512-76uvGPsF6So53sZAqenP9UVT3p5l7cyTHkLWVCMinh41Y8NDrK1IYXJgaBMfc1gk7nJiSRZp676kddFG2Aa5+A==
+
 fastq@^1.6.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.19.0.tgz#a82c6b7c2bb4e44766d865f07997785fecfdcb89"
@@ -4810,6 +4833,11 @@ mimic-response@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-3.1.0.tgz#2d1d59af9c1b129815accc2c46a022a5ce1fa3c9"
   integrity sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
+
+mingo@^6.5.1:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/mingo/-/mingo-6.5.2.tgz#7a16958fad53d8d0979a5dbfb75c2bd711f40bef"
+  integrity sha512-dDa8txMjCxpJg3jXlgwHmiePfa1yNeNGNvwHeS/h5sU2vsnnOUE346FR29632Edi8yAx844rr8QWiNxEq6F2NA==
 
 minimatch@^3.0.4, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"

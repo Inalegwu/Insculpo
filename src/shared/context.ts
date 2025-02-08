@@ -1,6 +1,6 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import { app, BrowserWindow } from "electron";
-import { db } from "./storage";
+import { db, signalDB } from "./storage";
 
 export async function createContext() {
   const browserWindow = BrowserWindow.getFocusedWindow();
@@ -9,6 +9,7 @@ export async function createContext() {
     window: browserWindow,
     db,
     app,
+    signalDB,
   };
 }
 

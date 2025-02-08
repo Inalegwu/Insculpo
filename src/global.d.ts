@@ -22,6 +22,34 @@ declare global {
         subtitle: string;
         body: string;
     };
+
+    export type SignalNote = Note & {
+        id: string;
+    };
+
+    export type Notebook = {
+        id: string;
+        name: string;
+        notes: string[];
+    };
+
+    export type Course = {
+        courseCode: string;
+        courseName: string;
+        courseTutors: string[];
+    };
+
+    export type Class = {
+        id: string;
+        name: string;
+        course: Course;
+        tutor: {
+            name: string;
+        };
+        faculty: {
+            name: string;
+        };
+    };
 }
 
 export type {};

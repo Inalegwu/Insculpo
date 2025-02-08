@@ -2,10 +2,8 @@
 dist
 release
 node_modules
-.drizzle
 out
 *.vite.config.*.mjs
 electron.vite.config.*.mjs
 *.gen.ts
-*.db
 *-db

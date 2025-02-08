@@ -11,6 +11,7 @@ import {
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
+import ErrorComponent from "./components/error-component";
 import "./defaults.css";
 import { routeTree } from "./routeTree.gen";
 
@@ -18,9 +19,13 @@ enableReactTracking({
   auto: true,
 });
 
-const history = createHashHistory();
+const history = createHashHistory({});
 
-const router = createRouter({ routeTree, history });
+const router = createRouter({
+  routeTree,
+  history,
+  defaultErrorComponent: (props) => <ErrorComponent {...props} />,
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
